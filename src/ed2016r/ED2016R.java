@@ -5,6 +5,8 @@
  */
 package ed2016r;
 
+import ArrayList.ArrayUnorderedList;
+
 /**
  *
  * @author n_fon
@@ -15,7 +17,11 @@ public class ED2016R {
      * @param args the command line arguments
      */
     public static void main(String[] args) {
-        // TODO code application logic here
+        ArrayUnorderedList<Alternativa> Caminhos = new ArrayUnorderedList<>();
+        Caminhos.addRear(new Alternativa(800, 10, 2.2));
+        Caminhos.addRear(new Alternativa(1040, 13, 1.5));
+        
+        
     }
     
 }
