@@ -5,6 +5,7 @@
  */
 package ed2016r;
 
+import ArrayList.ArrayUnorderedList;
 import java.util.Iterator;
 
 /**
@@ -13,6 +14,10 @@ import java.util.Iterator;
  */
 public class Map implements MapADT<Cidade> {
 
+    private Cidade[] cidades;
+    private ArrayUnorderedList<Alternativa> adjMatrix[][];
+    
+    
     @Override
     public void addEdge(Cidade vertex1, Cidade vertex2, double weight) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
