@@ -12,6 +12,7 @@ package ed2016r;
 public class Cidade {
     private String nome;
     private int defesas;
+    private boolean conquistada;
 
     public Cidade(String nome, int defesas) {
         this.nome = nome;
@@ -33,6 +34,12 @@ public class Cidade {
     public void setDefesas(int defesas) {
         this.defesas = defesas;
     }
-    
-    
+
+    public boolean isConquistada() {
+        return conquistada;
+    }
+
+    public void setConquistada(boolean conquistada) {
+        this.conquistada = conquistada;
+    }
 }
