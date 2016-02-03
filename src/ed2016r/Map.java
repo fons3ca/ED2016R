@@ -11,50 +11,50 @@ import java.util.Iterator;
  *
  * @author Utilizador
  */
-public class Map<T> implements MapADT<T> {
+public class Map implements MapADT<Cidade> {
 
     @Override
-    public void addEdge(T vertex1, T vertex2, double weight) {
+    public void addEdge(Cidade vertex1, Cidade vertex2, double weight) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
-    public double shortestPathWeight(T vertex1, T vertex2) {
+    public double shortestPathWeight(Cidade vertex1, Cidade vertex2) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
-    public void addVertex(T vertex) {
+    public void addVertex(Cidade vertex) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
-    public void removeVertex(T vertex) {
+    public void removeVertex(Cidade vertex) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
-    public void addEdge(T vertex1, T vertex2) {
+    public void addEdge(Cidade vertex1, Cidade vertex2) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
-    public void removeEdge(T vertex1, T vertex2) {
+    public void removeEdge(Cidade vertex1, Cidade vertex2) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
-    public Iterator iteratorBFS(T startVertex) {
+    public Iterator iteratorBFS(Cidade startVertex) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
-    public Iterator iteratorDFS(T startVertex) {
+    public Iterator iteratorDFS(Cidade startVertex) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
-    public Iterator iteratorShortestPath(T startVertex, T targetVertex) {
+    public Iterator iteratorShortestPath(Cidade startVertex, Cidade targetVertex) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
@@ -73,6 +73,4 @@ public class Map<T> implements MapADT<T> {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
-     
-    
 }
