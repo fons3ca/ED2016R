@@ -5,56 +5,61 @@
  */
 package ed2016r;
 
+import ArrayList.ArrayUnorderedList;
 import java.util.Iterator;
 
 /**
  *
  * @author Utilizador
  */
-public class Map implements MapADT {
+public class Map implements MapADT<Cidade> {
 
+    private Cidade[] cidades;
+    private ArrayUnorderedList<Alternativa> adjMatrix[][];
+    
+    
     @Override
-    public void addEdge(Object vertex1, Object vertex2, double weight) {
+    public void addEdge(Cidade vertex1, Cidade vertex2, double weight) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
-    public double shortestPathWeight(Object vertex1, Object vertex2) {
+    public double shortestPathWeight(Cidade vertex1, Cidade vertex2) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
-    public void addVertex(Object vertex) {
+    public void addVertex(Cidade vertex) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
-    public void removeVertex(Object vertex) {
+    public void removeVertex(Cidade vertex) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
-    public void addEdge(Object vertex1, Object vertex2) {
+    public void addEdge(Cidade vertex1, Cidade vertex2) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
-    public void removeEdge(Object vertex1, Object vertex2) {
+    public void removeEdge(Cidade vertex1, Cidade vertex2) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
-    public Iterator iteratorBFS(Object startVertex) {
+    public Iterator iteratorBFS(Cidade startVertex) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
-    public Iterator iteratorDFS(Object startVertex) {
+    public Iterator iteratorDFS(Cidade startVertex) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
-    public Iterator iteratorShortestPath(Object startVertex, Object targetVertex) {
+    public Iterator iteratorShortestPath(Cidade startVertex, Cidade targetVertex) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
@@ -72,5 +77,5 @@ public class Map implements MapADT {
     public int size() {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
-    
+
 }
