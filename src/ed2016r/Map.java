@@ -23,6 +23,8 @@ public class Map extends Graph<Cidade> implements MapADT<Cidade> {
         this.wAdjMatrix = new ArrayUnorderedList[super.DEFAULT_CAPACITY][super.DEFAULT_CAPACITY];
     }
     
+    
+    
     @Override
     public void addEdge(Cidade vertex1, Cidade vertex2, Alternativa weight) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
