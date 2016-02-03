@@ -6,20 +6,27 @@
 package ed2016r;
 
 import ArrayList.ArrayUnorderedList;
+import Graph.*;
 import java.util.Iterator;
 
 /**
  *
  * @author Utilizador
  */
-public class Map implements MapADT<Cidade> {
+public class Map extends Graph<Cidade> implements MapADT<Cidade> {
 
-    private Cidade[] cidades;
-    private ArrayUnorderedList<Alternativa> adjMatrix[][];
+    private ArrayUnorderedList<Alternativa>[][] wAdjMatrix;
+    
+    
+    public Map() {
+        super();
+        this.wAdjMatrix = new ArrayUnorderedList[super.DEFAULT_CAPACITY][super.DEFAULT_CAPACITY];
+    }
+    
     
     
     @Override
-    public void addEdge(Cidade vertex1, Cidade vertex2, double weight) {
+    public void addEdge(Cidade vertex1, Cidade vertex2, Alternativa weight) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
@@ -27,55 +34,5 @@ public class Map implements MapADT<Cidade> {
     public double shortestPathWeight(Cidade vertex1, Cidade vertex2) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
-
-    @Override
-    public void addVertex(Cidade vertex) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-
-    @Override
-    public void removeVertex(Cidade vertex) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-
-    @Override
-    public void addEdge(Cidade vertex1, Cidade vertex2) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-
-    @Override
-    public void removeEdge(Cidade vertex1, Cidade vertex2) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-
-    @Override
-    public Iterator iteratorBFS(Cidade startVertex) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-
-    @Override
-    public Iterator iteratorDFS(Cidade startVertex) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-
-    @Override
-    public Iterator iteratorShortestPath(Cidade startVertex, Cidade targetVertex) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-
-    @Override
-    public boolean isEmpty() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-
-    @Override
-    public boolean isConnected() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-
-    @Override
-    public int size() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-
+    
 }

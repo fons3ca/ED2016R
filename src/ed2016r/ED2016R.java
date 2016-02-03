@@ -17,11 +17,12 @@ public class ED2016R {
      * @param args the command line arguments
      */
     public static void main(String[] args) {
-        ArrayUnorderedList<Alternativa> Caminhos = new ArrayUnorderedList<>();
-        Caminhos.addRear(new Alternativa(800, 10, 2.2));
-        Caminhos.addRear(new Alternativa(1040, 13, 1.5));
+//        ArrayUnorderedList<Alternativa> Caminhos = new ArrayUnorderedList<>();
+//        Caminhos.addRear(new Alternativa(800, 10, 2.2));
+//        Caminhos.addRear(new Alternativa(1040, 13, 1.5));    
         
         
+                
     }
     
 }

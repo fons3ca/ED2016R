@@ -20,7 +20,7 @@ public interface MapADT<T> extends GraphADT<T> {
      * @param vertex2 the second vertex
      * @param weight the weight
      */
-    public void addEdge(T vertex1, T vertex2, double weight);
+    public void addEdge(T vertex1, T vertex2, Alternativa weight);
 
     /**
      * Returns the weight of the shortest path in this network.
