@@ -321,4 +321,10 @@ public class Graph<T> implements GraphADT<T> {
         return this.numVertices;
     }
 
+    public T[] getVertices() {
+        return vertices;
+    }
+
+    
+    
 }

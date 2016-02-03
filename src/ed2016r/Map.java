@@ -7,15 +7,17 @@ package ed2016r;
 
 import ArrayList.ArrayUnorderedList;
 import Graph.*;
+import LinkedQueue.LinkedQueue;
 import java.util.Iterator;
 
 /**
  *
  * @author Utilizador
+ * @param <Cidade>
  */
-public class Map extends Graph<Cidade> implements MapADT<Cidade> {
+public class Map<Cidade> extends Graph<Cidade> implements MapADT<Cidade> {
 
-    private ArrayUnorderedList<Alternativa>[][] wAdjMatrix;
+    public ArrayUnorderedList<Alternativa>[][] wAdjMatrix;
 
     public Map() {
         super();
@@ -112,7 +114,7 @@ public class Map extends Graph<Cidade> implements MapADT<Cidade> {
             }
         }
     }
-
+    
     @Override
     public double shortestPathWeight(Cidade vertex1, Cidade vertex2) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
