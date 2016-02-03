@@ -10,6 +10,7 @@ import Graph.*;
 /**
  *
  * @author Utilizador
+ * @param <T>
  */
 public interface MapADT<T> extends GraphADT<T> {
     
