@@ -23,9 +23,6 @@ public class Map extends Graph<Cidade> implements MapADT<Cidade> {
         this.wAdjMatrix = new ArrayUnorderedList[super.DEFAULT_CAPACITY][super.DEFAULT_CAPACITY];
     }
     
-<<<<<<< HEAD
-    
-=======
     /**
      * Verifica se index é válido
      * @param index
@@ -70,7 +67,6 @@ public class Map extends Graph<Cidade> implements MapADT<Cidade> {
       }      
       numVertices++;
    }
->>>>>>> origin/master
     
     public void removeVertex (int index)
    {
