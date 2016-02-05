@@ -1,22 +1,22 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package ed2016r;
 
-import java.util.Iterator;
+import ArrayList.ArrayList;
+import ArrayList.ArrayUnorderedList;
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.util.Arrays;
 
-/**
- *
- * @author n_fon
- */
-public class ED2016R {
-
-    /**
-     * @param args the command line arguments
-     */
-    public static void main(String[] args) {
+class allpaths {
+  
+static int dim = 9, size = 0; // dim is number of nodes in graph
+ // size had been used to keep record of index to remove node from Arraylist
+    static boolean[] color = new boolean[dim + 1];      // to remember visit
+    static boolean[][] graph;
+    static ArrayUnorderedList<Integer> al = new ArrayUnorderedList<Integer>();
+ 
+    public static void main(String[] S) throws IOException {
+        
 
         //Instanciar o Mapa/Jogo
         Map mapa = new Map();
@@ -103,33 +103,68 @@ public class ED2016R {
         mapa.addEdge(winterfell, castleBlack, winterfellCastle);
         mapa.addEdge(winterfell, castleBlack, winterfellCastle2);   
         
-//        Iterator it = mapa.wAdjMatrix[0][2].iterator();
-//        System.out.println(((Cidade)mapa.getVertices()[0]).getNome() + " para " + ((Cidade)mapa.getVertices()[2]).getNome());
-//        while(it.hasNext()) {
-//            Alternativa alt = (Alternativa)it.next();
-//            System.out.println("--- Alternativa ---");
-//            System.out.println("Distancia: " + alt.getDistancia());
-//            System.out.println("Duracao: " + alt.getDuracao());
-//            System.out.println("Custo: " + alt.getCusto());
-//        }
+//        graph[0][0]=1;
+//        graph[0][1]=1;
+//        graph[0][2]=1;
+//        graph[0][3]=1;
+//        graph[1][0]=1;
+//        graph[1][1]=-1;
+//        graph[1][2]=-1;
+//        graph[1][3]=1;
+//        graph[2][0]=1;
+//        graph[2][1]=-1;
+//        graph[2][2]=1;
+//        graph[2][3]=-1;
+//        graph[3][0]=1;
+//        graph[3][1]=1;
+//        graph[3][2]=1;
+//        graph[3][3]=1;
 //        
-//        Iterator dfs = mapa.iteratorDFS(vaesDothrak);
-//        System.out.println();
-//        System.out.println("### Iterator DFS ###");
-//        while(dfs.hasNext()) {
-//            Cidade c = (Cidade)dfs.next();
-//            System.out.println(c.getNome());
+        
+        graph=mapa.getadj();
+        
+        
+        
+        
+//         BufferedReader br = new BufferedReader (new InputStreamReader(System.in));
+//        for (int I = 1; I <= dim; I++) {
+//            String[] s = br.readLine().split(" ");
+//            int len = s.length;
+//            for (int J = 1; J <= len; J++) {
+//                graph[I][J] = Integer.parseInt(s[J - 1]);
+//            }
 //        }
-//        
-//        Iterator bfs = mapa.iteratorBFS(vaesDothrak);
-//        System.out.println();
-//        System.out.println("### Iterator BFS ###");
-//        while(bfs.hasNext()) {
-//            Cidade c = (Cidade)bfs.next();
-//            System.out.println(c.getNome());
-//        }
-                
-        mapa.dfsAllPaths1(qohor, pentos);
+        Arrays.fill(color, false);      // initially all are unvisited
+// 
+//        int src = Integer.parseInt(br.readLine());      //Source node
+//        int dst = Integer.parseInt(br.readLine());      //Destination node
+ 
+        dfs(2, 3, mapa);  // backtracking
+        
     }
-    
+ 
+    static void dfs(int src, int dst, Map mapa) {
+        al.addRear(src);
+        size++;
+        color[src] = true;
+        if (src == dst) {       // tests for base condition to stop
+            System.out.println("Find destination");
+            for (Integer i : al) {
+                //     Prints the path
+                System.out.print(mapa.getVertices()[i] + "  ");
+            }
+            System.out.println();
+            return;
+        }
+        for (int I = 0; I < dim; I++) {
+            if (graph[src][I] == true) {
+                if (color[I] == false) {
+                    dfs(I, dst, mapa);        // These lines do
+                    color[I] = false;   // main job of backtracking
+                    size--;
+                    al.removeIndex(size);
+                }
+            }
+        }
+    }
 }

@@ -8,6 +8,7 @@ package ed2016r;
 import ArrayList.ArrayUnorderedList;
 import Graph.*;
 import LinkedQueue.LinkedQueue;
+
 import java.util.Iterator;
 
 /**
@@ -135,5 +136,42 @@ public class Map<Cidade> extends Graph<Cidade> implements MapADT<Cidade> {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
+    public void dfsAllPaths1(Cidade source, Cidade destination) {
+        ArrayUnorderedList<Integer> al = new ArrayUnorderedList<Integer>();
+        int size = 0;
+        int dim = this.size();
+        boolean[] color = new boolean[dim+1];
+        for (int i = 0; i < color.length; i++) {
+            color[i]=false;
+        }
+        int src = getIndex(source);
+        int dst = getIndex(destination);
+        dfsAllPaths(src, dst, al,size,dim,color);
+    }
     
+    
+    public void dfsAllPaths(int source, int destination, ArrayUnorderedList<Integer> al,int size, int dim, boolean[] color) {
+        al.addRear(source);
+        size++;
+        color[source] = true;
+        if (source == destination) {       // tests for base condition to stop
+            System.out.println("Find destination");
+            for (Integer i : al) {
+                //     Prints the path
+                System.out.print(vertices[i].toString() + "  ");
+            }
+            System.out.println();
+            return;
+        }
+        for (int I = 0; I <= dim; I++) {
+            if (adjMatrix[source][I] == true) {
+                if (color[I] == false) {
+                    dfsAllPaths(I, destination, al, size,dim,color);        // These lines do
+                    color[I] = false;   // main job of backtracking
+                    size--;
+                    al.removeIndex(size);
+                }
+            }
+        }
+    }
 }

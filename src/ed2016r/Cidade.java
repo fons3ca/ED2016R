@@ -42,4 +42,11 @@ public class Cidade {
     public void setConquistada(boolean conquistada) {
         this.conquistada = conquistada;
     }
+
+    @Override
+    public String toString() {
+        return "" + this.nome;
+    }
+    
+    
 }
