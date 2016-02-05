@@ -116,8 +116,24 @@ public class Map<Cidade> extends Graph<Cidade> implements MapADT<Cidade> {
     }
     
     @Override
+    public void removeEdge(Cidade vertex1, Cidade vertex2){
+        this.removeEdge(getIndex(vertex1), getIndex(vertex2));
+    }
+    
+    @Override
+    public void removeEdge(int index1, int index2){
+        if (indexIsValid(index1) && indexIsValid(index2)) {
+            adjMatrix[index1][index2] = false;
+            adjMatrix[index2][index1] = false;
+            wAdjMatrix[index1][index2] = null;
+            wAdjMatrix[index2][index1] = null;
+        }
+    }
+    
+    @Override
     public double shortestPathWeight(Cidade vertex1, Cidade vertex2) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
+    
 }
