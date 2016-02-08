@@ -142,7 +142,19 @@ public class ED2016R {
             System.out.print(mapa.getVertices()[(int)it.next()] + "  ");
         }
         
-
+        LinkedQueue<Object> lq = new LinkedQueue<>();
+        
+        lq.enqueue(pentos);
+        lq.enqueue(vaesCastle);
+        lq.enqueue(castleBlack);
+        
+        Iterator it4 = lq.iterator();
+        System.out.println("----------------------------------------------");
+        while (it4.hasNext()) {
+            System.out.println(it4.next().toString());
+            
+        }
+        
     }
     
 }

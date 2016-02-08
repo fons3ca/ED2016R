@@ -5,6 +5,9 @@
  */
 package LinkedQueue;
 
+import java.util.Iterator;
+
+
 /**
  *
  * @author n_fon
@@ -92,5 +95,27 @@ public class LinkedQueue<T> implements QueueADT<T>{
     public int size() {
         return this.count;
     }
-   
+ 
+    public Iterator<T> iterator() {
+        Iterator<T> it = new Iterator<T>() {
+            LinkedNode<T> current = front;
+
+            @Override
+            public boolean hasNext() {
+                if (this.current != null) {
+                    return true;
+                }
+                return false;
+            }
+
+            @Override
+            public T next() {
+                T element = this.current.getElement();
+                this.current = this.current.getNext();
+                return element;
+            }
+        };
+        return it;
+    }
+    
 }

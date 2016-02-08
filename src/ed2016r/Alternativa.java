@@ -10,12 +10,14 @@ package ed2016r;
  * @author Utilizador
  */
 public class Alternativa {
-    
+
+    private String nome;
     private int distancia;
     private double duracao;
     private double custo;
 
-    public Alternativa(int distancia, double duracao, double custo) {
+    public Alternativa(String nome, int distancia, double duracao, double custo) {
+        this.nome = nome;
         this.distancia = distancia;
         this.duracao = duracao;
         this.custo = custo;
@@ -44,6 +46,18 @@ public class Alternativa {
     public void setCusto(double custo) {
         this.custo = custo;
     }
-    
-    
+
+    public String getNome() {
+        return nome;
+    }
+
+    public void setNome(String nome) {
+        this.nome = nome;
+    }
+
+    @Override
+    public String toString() {
+        return "Alternativa{" + "nome=" + nome + ", distancia=" + distancia + ", duracao=" + duracao + ", custo=" + custo + '}';
+    }
+
 }

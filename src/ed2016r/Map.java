@@ -24,7 +24,7 @@ public class Map<Cidade> extends Graph<Cidade> implements MapADT<Cidade> {
     private boolean[] visited;      // to remember visit
     private ArrayUnorderedList<Integer> al;
     private int size;
-    
+
     public Map() {
         super();
         this.wAdjMatrix = new ArrayUnorderedList[super.DEFAULT_CAPACITY][super.DEFAULT_CAPACITY];
@@ -137,26 +137,27 @@ public class Map<Cidade> extends Graph<Cidade> implements MapADT<Cidade> {
             wAdjMatrix[index2][index1] = null;
         }
     }
-    public Cidade getCidadeAt(int i){
+
+    public Cidade getCidadeAt(int i) {
         return this.vertices[i];
     }
+
     @Override
     public double shortestPathWeight(Cidade vertex1, Cidade vertex2) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     public LinkedQueue<ArrayUnorderedList<Integer>> dfsAllPaths(Cidade source, Cidade destination) {
-        this.size=0;
+        this.size = 0;
         visited = new boolean[this.numVertices + 1];
         for (int i = 0; i < visited.length; i++) {
-            this.visited[i]=false;
+            this.visited[i] = false;
         }
         LinkedQueue<ArrayUnorderedList<Integer>> resultQueue = new LinkedQueue<>();
         dfsAllPathsR(getIndex(source), getIndex(destination), resultQueue);
         return resultQueue;
     }
 
-    
     public void dfsAllPathsR(int src, int dst, LinkedQueue<ArrayUnorderedList<Integer>> resultQueue) {
         al.addRear(src);
         size++;
@@ -184,5 +185,8 @@ public class Map<Cidade> extends Graph<Cidade> implements MapADT<Cidade> {
             }
         }
     }
+
+    public void getMinTropaPath(Cidade inicio, Cidade fim) {
         
+    }
 }
