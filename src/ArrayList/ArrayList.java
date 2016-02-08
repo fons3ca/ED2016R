@@ -52,10 +52,20 @@ public class ArrayList<T> implements ListADT<T> {
         return null;
     }
 
+    public void removeIndex(int index) {
+        if (!this.isEmpty() && index>=0) {
+            for (int j = index; j < this.rear; j++) {
+                this.collection[j] = this.collection[j + 1];
+            }
+            rear--;
+        }
+    }
+
     @Override
     public T remove(T element) {
         for (int i = 0; i < this.rear; i++) {
             if (this.collection[i].equals(element)) {
+                rear--;
                 for (int j = i; j < this.rear; j++) {
                     this.collection[j] = this.collection[j + 1];
                 }

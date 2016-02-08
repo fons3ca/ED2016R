@@ -29,6 +29,9 @@ public class Graph<T> implements GraphADT<T> {
         this.adjMatrix = new boolean[DEFAULT_CAPACITY][DEFAULT_CAPACITY];
         this.vertices = (T[]) (new Object[DEFAULT_CAPACITY]);
     }
+    public boolean[][] getadj(){
+        return this.adjMatrix; 
+    }
     
     @Override
     public void addVertex(T vertex) {

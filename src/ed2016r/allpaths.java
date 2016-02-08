@@ -1,24 +1,22 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package ed2016r;
 
+import ArrayList.ArrayList;
 import ArrayList.ArrayUnorderedList;
-import LinkedQueue.LinkedQueue;
-import java.util.Iterator;
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.util.Arrays;
 
-/**
- *
- * @author n_fon
- */
-public class ED2016R {
-
-    /**
-     * @param args the command line arguments
-     */
-    public static void main(String[] args) {
+class allpaths {
+  
+static int dim = 9, size = 0; // dim is number of nodes in graph
+ // size had been used to keep record of index to remove node from Arraylist
+    static boolean[] color = new boolean[dim + 1];      // to remember visit
+    static boolean[][] graph;
+    static ArrayUnorderedList<Cidade> al = new ArrayUnorderedList<Cidade>();
+ 
+    public static void main(String[] S) throws IOException {
+        
 
         //Instanciar o Mapa/Jogo
         Map mapa = new Map();
@@ -104,44 +102,34 @@ public class ED2016R {
         mapa.addEdge(theEyrie, winterfell, eyrieWinterfell2);
         mapa.addEdge(winterfell, castleBlack, winterfellCastle);
         mapa.addEdge(winterfell, castleBlack, winterfellCastle2);   
-        
-//        Iterator it = mapa.wAdjMatrix[0][2].iterator();
-//        System.out.println(((Cidade)mapa.getVertices()[0]).getNome() + " para " + ((Cidade)mapa.getVertices()[2]).getNome());
-//        while(it.hasNext()) {
-//            Alternativa alt = (Alternativa)it.next();
-//            System.out.println("--- Alternativa ---");
-//            System.out.println("Distancia: " + alt.getDistancia());
-//            System.out.println("Duracao: " + alt.getDuracao());
-//            System.out.println("Custo: " + alt.getCusto());
-//        }
-//        
-//        Iterator dfs = mapa.iteratorDFS(vaesDothrak);
-//        System.out.println();
-//        System.out.println("### Iterator DFS ###");
-//        while(dfs.hasNext()) {
-//            Cidade c = (Cidade)dfs.next();
-//            System.out.println(c.getNome());
-//        }
-//        
-//        Iterator bfs = mapa.iteratorBFS(vaesDothrak);
-//        System.out.println();
-//        System.out.println("### Iterator BFS ###");
-//        while(bfs.hasNext()) {
-//            Cidade c = (Cidade)bfs.next();
-//            System.out.println(c.getNome());
-//        }
-             
-               
-        LinkedQueue<ArrayUnorderedList<Integer>> resultQueue = mapa.dfsAllPaths(qohor, pentos);
-        
-        ArrayUnorderedList<Integer> al = resultQueue.dequeue();
-        
-        Iterator it = al.iterator();
-        while (it.hasNext()) {
-            System.out.print(mapa.getVertices()[(int)it.next()] + "  ");
-        }
-        
-
+   
+        graph=mapa.getadj();
+        Arrays.fill(color, false);      // initially all are unvisited
+        dfs(qohor, pentos, mapa);  // backtrackin
     }
-    
+ 
+    static void dfs(Cidade src, Cidade dst, Map mapa) {
+        al.addRear(src);
+        size++;
+        color[mapa.getIndex(src)] = true;
+        if (src.equals(dst)) {       // tests for base condition to stop
+            System.out.println("Find destination");
+            for (Cidade i : al) {
+                //     Prints the path
+                System.out.print(i.toString() + "  ");
+            }
+            System.out.println();
+            return;
+        }
+        for (int I = 0; I < dim; I++) {
+            if (graph[mapa.getIndex(dst)][I] == true) {
+                if (color[I] == false) {
+                    dfs((Cidade) mapa.getCidadeAt(I), dst, mapa);        // These lines do
+                    color[I] = false;   // main job of backtracking
+                    size--;
+                    al.removeIndex(size);
+                }
+            }
+        }
+    }
 }
