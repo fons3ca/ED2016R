@@ -5,7 +5,7 @@
  */
 package ed2016r;
 
-import ArrayList.ArrayUnorderedList;
+import List.ArrayUnorderedList;
 import LinkedQueue.LinkedQueue;
 import java.util.Iterator;
 
@@ -134,9 +134,10 @@ public class ED2016R {
                
         LinkedQueue<ArrayUnorderedList<Integer>> resultQueue = mapa.dfsAllPaths(qohor, pentos);
         
-        ArrayUnorderedList<Integer> al = resultQueue.dequeue();
         
-        Iterator it = al.iterator();
+        ArrayUnorderedList<Integer> caminho = resultQueue.dequeue();
+        
+        Iterator it = caminho.iterator();
         while (it.hasNext()) {
             System.out.print(mapa.getVertices()[(int)it.next()] + "  ");
         }

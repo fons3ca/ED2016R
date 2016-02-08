@@ -1,7 +1,7 @@
 package ed2016r;
 
-import ArrayList.ArrayList;
-import ArrayList.ArrayUnorderedList;
+import List.ArrayList;
+import List.ArrayUnorderedList;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;

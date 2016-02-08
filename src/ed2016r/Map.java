@@ -5,8 +5,8 @@
  */
 package ed2016r;
 
-import ArrayList.ArrayUnorderedList;
-import ArrayList.UnorderedListADT;
+import List.ArrayUnorderedList;
+import List.UnorderedListADT;
 import Graph.*;
 import LinkedQueue.LinkedQueue;
 import com.sun.prism.impl.PrismSettings;

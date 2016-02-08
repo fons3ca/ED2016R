@@ -5,7 +5,7 @@
  */
 package Graph;
 
-import ArrayList.ArrayUnorderedList;
+import List.ArrayUnorderedList;
 import Heap.LinkedHeap;
 import LinkedQueue.LinkedQueue;
 import LinkedStack.EmptyCollectionException;

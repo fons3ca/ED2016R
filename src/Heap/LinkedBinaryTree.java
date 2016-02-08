@@ -8,7 +8,7 @@ package Heap;
 import Exceptions.EmptyCollectionException;
 import Exceptions.NotFoundCollectionException;
 import java.util.Iterator;
-import ArrayList.ArrayUnorderedList;
+import List.ArrayUnorderedList;
 
 /**
  *

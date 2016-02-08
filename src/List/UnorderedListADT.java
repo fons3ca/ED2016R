@@ -3,14 +3,16 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package ArrayList;
+package List;
 
-public interface OrderedListADT<T> extends ListADT<T> {
+public interface UnorderedListADT<T> extends ListADT<T> {
  /**
  * Adds the specified element to this list at
  * the proper location
  *
  * @param element the element to be added to this list
  */
- public void add (T element);
+ public void addFront (T element);
+ public void addRear (T element);
+ public void addAfter (T element, T target);
 }
