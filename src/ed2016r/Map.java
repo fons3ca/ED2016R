@@ -6,10 +6,8 @@
 package ed2016r;
 
 import List.ArrayUnorderedList;
-import List.UnorderedListADT;
 import Graph.*;
 import LinkedQueue.LinkedQueue;
-import com.sun.prism.impl.PrismSettings;
 
 import java.util.Iterator;
 
@@ -186,7 +184,12 @@ public class Map<Cidade> extends Graph<Cidade> implements MapADT<Cidade> {
         }
     }
 
-    public void getMinTropaPath(Cidade inicio, Cidade fim) {
-        
+    public int getMinTropaNecessario(Cidade inicio, Cidade fim) {
+        return 0;
+    }
+    
+    public Iterator getMinTropaPathIterator(Cidade inicio, Cidade fim) {
+        Iterator it = null;
+        return it;
     }
 }
