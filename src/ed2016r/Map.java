@@ -6,8 +6,10 @@
 package ed2016r;
 
 import ArrayList.ArrayUnorderedList;
+import ArrayList.UnorderedListADT;
 import Graph.*;
 import LinkedQueue.LinkedQueue;
+import com.sun.prism.impl.PrismSettings;
 
 import java.util.Iterator;
 
@@ -18,11 +20,15 @@ import java.util.Iterator;
  */
 public class Map<Cidade> extends Graph<Cidade> implements MapADT<Cidade> {
 
-    public ArrayUnorderedList<Alternativa>[][] wAdjMatrix;
-
+    protected ArrayUnorderedList<Alternativa>[][] wAdjMatrix;
+    private boolean[] visited;      // to remember visit
+    private ArrayUnorderedList<Integer> al;
+    private int size;
+    
     public Map() {
         super();
         this.wAdjMatrix = new ArrayUnorderedList[super.DEFAULT_CAPACITY][super.DEFAULT_CAPACITY];
+        this.al = new ArrayUnorderedList<>();
     }
 
     /**
@@ -43,9 +49,10 @@ public class Map<Cidade> extends Graph<Cidade> implements MapADT<Cidade> {
 
     /**
      * Se existe estes vertices envia para AddEdge os indexs
+     *
      * @param vertex1
      * @param vertex2
-     * @param alt 
+     * @param alt
      */
     @Override
     public void addEdge(Cidade vertex1, Cidade vertex2, Alternativa alt) {
@@ -115,14 +122,14 @@ public class Map<Cidade> extends Graph<Cidade> implements MapADT<Cidade> {
             }
         }
     }
-    
+
     @Override
-    public void removeEdge(Cidade vertex1, Cidade vertex2){
+    public void removeEdge(Cidade vertex1, Cidade vertex2) {
         this.removeEdge(getIndex(vertex1), getIndex(vertex2));
     }
-    
+
     @Override
-    public void removeEdge(int index1, int index2){
+    public void removeEdge(int index1, int index2) {
         if (indexIsValid(index1) && indexIsValid(index2)) {
             adjMatrix[index1][index2] = false;
             adjMatrix[index2][index1] = false;
@@ -130,48 +137,52 @@ public class Map<Cidade> extends Graph<Cidade> implements MapADT<Cidade> {
             wAdjMatrix[index2][index1] = null;
         }
     }
-    
+    public Cidade getCidadeAt(int i){
+        return this.vertices[i];
+    }
     @Override
     public double shortestPathWeight(Cidade vertex1, Cidade vertex2) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
-    public void dfsAllPaths1(Cidade source, Cidade destination) {
-        ArrayUnorderedList<Integer> al = new ArrayUnorderedList<Integer>();
-        int size = 0;
-        int dim = this.size();
-        boolean[] color = new boolean[dim+1];
-        for (int i = 0; i < color.length; i++) {
-            color[i]=false;
+    public LinkedQueue<ArrayUnorderedList<Integer>> dfsAllPaths(Cidade source, Cidade destination) {
+        this.size=0;
+        visited = new boolean[this.numVertices + 1];
+        for (int i = 0; i < visited.length; i++) {
+            this.visited[i]=false;
         }
-        int src = getIndex(source);
-        int dst = getIndex(destination);
-        dfsAllPaths(src, dst, al,size,dim,color);
+        LinkedQueue<ArrayUnorderedList<Integer>> resultQueue = new LinkedQueue<>();
+        dfsAllPathsR(getIndex(source), getIndex(destination), resultQueue);
+        return resultQueue;
     }
+
     
-    
-    public void dfsAllPaths(int source, int destination, ArrayUnorderedList<Integer> al,int size, int dim, boolean[] color) {
-        al.addRear(source);
+    public void dfsAllPathsR(int src, int dst, LinkedQueue<ArrayUnorderedList<Integer>> resultQueue) {
+        al.addRear(src);
         size++;
-        color[source] = true;
-        if (source == destination) {       // tests for base condition to stop
-            System.out.println("Find destination");
+        visited[src] = true;
+        if (src == dst) {       // tests for base condition to stop
+            //System.out.println("Find destination");
+            ArrayUnorderedList<Integer> path = new ArrayUnorderedList<>();
             for (Integer i : al) {
-                //     Prints the path
-                System.out.print(vertices[i].toString() + "  ");
+//                     Prints the path --> introduzir numa lista
+                path.addRear(i);
+                //System.out.print(vertices[i] + "  ");
             }
-            System.out.println();
+            //System.out.println();
+            resultQueue.enqueue(path);
             return;
         }
-        for (int I = 0; I <= dim; I++) {
-            if (adjMatrix[source][I] == true) {
-                if (color[I] == false) {
-                    dfsAllPaths(I, destination, al, size,dim,color);        // These lines do
-                    color[I] = false;   // main job of backtracking
+        for (int I = 0; I < this.numVertices; I++) {
+            if (adjMatrix[src][I] == true) {
+                if (visited[I] == false) {
+                    dfsAllPathsR(I, dst, resultQueue);        // These lines do
+                    visited[I] = false;   // main job of backtracking
                     size--;
                     al.removeIndex(size);
                 }
             }
         }
     }
+        
 }

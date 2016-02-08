@@ -5,6 +5,8 @@
  */
 package ed2016r;
 
+import ArrayList.ArrayUnorderedList;
+import LinkedQueue.LinkedQueue;
 import java.util.Iterator;
 
 /**
@@ -128,8 +130,18 @@ public class ED2016R {
 //            Cidade c = (Cidade)bfs.next();
 //            System.out.println(c.getNome());
 //        }
-                
-        mapa.dfsAllPaths1(qohor, pentos);
+             
+               
+        LinkedQueue<ArrayUnorderedList<Integer>> resultQueue = mapa.dfsAllPaths(qohor, pentos);
+        
+        ArrayUnorderedList<Integer> al = resultQueue.dequeue();
+        
+        Iterator it = al.iterator();
+        while (it.hasNext()) {
+            System.out.print(mapa.getVertices()[(int)it.next()] + "  ");
+        }
+        
+
     }
     
 }

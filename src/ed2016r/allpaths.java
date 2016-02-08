@@ -13,7 +13,7 @@ static int dim = 9, size = 0; // dim is number of nodes in graph
  // size had been used to keep record of index to remove node from Arraylist
     static boolean[] color = new boolean[dim + 1];      // to remember visit
     static boolean[][] graph;
-    static ArrayUnorderedList<Integer> al = new ArrayUnorderedList<Integer>();
+    static ArrayUnorderedList<Cidade> al = new ArrayUnorderedList<Cidade>();
  
     public static void main(String[] S) throws IOException {
         
@@ -102,64 +102,29 @@ static int dim = 9, size = 0; // dim is number of nodes in graph
         mapa.addEdge(theEyrie, winterfell, eyrieWinterfell2);
         mapa.addEdge(winterfell, castleBlack, winterfellCastle);
         mapa.addEdge(winterfell, castleBlack, winterfellCastle2);   
-        
-//        graph[0][0]=1;
-//        graph[0][1]=1;
-//        graph[0][2]=1;
-//        graph[0][3]=1;
-//        graph[1][0]=1;
-//        graph[1][1]=-1;
-//        graph[1][2]=-1;
-//        graph[1][3]=1;
-//        graph[2][0]=1;
-//        graph[2][1]=-1;
-//        graph[2][2]=1;
-//        graph[2][3]=-1;
-//        graph[3][0]=1;
-//        graph[3][1]=1;
-//        graph[3][2]=1;
-//        graph[3][3]=1;
-//        
-        
+   
         graph=mapa.getadj();
-        
-        
-        
-        
-//         BufferedReader br = new BufferedReader (new InputStreamReader(System.in));
-//        for (int I = 1; I <= dim; I++) {
-//            String[] s = br.readLine().split(" ");
-//            int len = s.length;
-//            for (int J = 1; J <= len; J++) {
-//                graph[I][J] = Integer.parseInt(s[J - 1]);
-//            }
-//        }
         Arrays.fill(color, false);      // initially all are unvisited
-// 
-//        int src = Integer.parseInt(br.readLine());      //Source node
-//        int dst = Integer.parseInt(br.readLine());      //Destination node
- 
-        dfs(2, 3, mapa);  // backtracking
-        
+        dfs(qohor, pentos, mapa);  // backtrackin
     }
  
-    static void dfs(int src, int dst, Map mapa) {
+    static void dfs(Cidade src, Cidade dst, Map mapa) {
         al.addRear(src);
         size++;
-        color[src] = true;
-        if (src == dst) {       // tests for base condition to stop
+        color[mapa.getIndex(src)] = true;
+        if (src.equals(dst)) {       // tests for base condition to stop
             System.out.println("Find destination");
-            for (Integer i : al) {
+            for (Cidade i : al) {
                 //     Prints the path
-                System.out.print(mapa.getVertices()[i] + "  ");
+                System.out.print(i.toString() + "  ");
             }
             System.out.println();
             return;
         }
         for (int I = 0; I < dim; I++) {
-            if (graph[src][I] == true) {
+            if (graph[mapa.getIndex(dst)][I] == true) {
                 if (color[I] == false) {
-                    dfs(I, dst, mapa);        // These lines do
+                    dfs((Cidade) mapa.getCidadeAt(I), dst, mapa);        // These lines do
                     color[I] = false;   // main job of backtracking
                     size--;
                     al.removeIndex(size);
