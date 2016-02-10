@@ -21,7 +21,7 @@ public class ED2016R {
     public static void main(String[] args) {
 
         //Instanciar o Mapa/Jogo
-        Map mapa = new Map();
+        Map<Cidade> mapa = new Map<>();
         
         //Instanciar as Cidades
         Cidade vaesDothrak = new Cidade("Vaes Dothrak", 73);//0
@@ -132,28 +132,32 @@ public class ED2016R {
 //        }
              
                
-        LinkedQueue<ArrayUnorderedList<Integer>> resultQueue = mapa.dfsAllPaths(qohor, pentos);
+//        ArrayUnorderedList<ArrayUnorderedList<Integer>> resultQueue = mapa.dfsAllPaths(qohor, pentos);
+//        
+//        
+//        ArrayUnorderedList<Integer> caminho = resultQueue.removeLast();
+//        
+//        Iterator it = caminho.iterator();
+//        while (it.hasNext()) {
+//            Cidade a = mapa.getCidadeAt((Integer)it.next());
+//            System.out.print(a.toString() + "  ");
+//        }
+//        
+//        LinkedQueue<Object> lq = new LinkedQueue<>();
+//        
+//        lq.enqueue(pentos);
+//        lq.enqueue(vaesCastle);
+//        lq.enqueue(castleBlack);
+//        
+//        Iterator it4 = lq.iterator();
+//        System.out.println("\n----------------------------------------------");
+//        while (it4.hasNext()) {
+//            System.out.println(it4.next().toString());
+//            
+//        }
         
+        ArrayUnorderedList a = mapa.getMinTroops(qohor, pentos);
         
-        ArrayUnorderedList<Integer> caminho = resultQueue.dequeue();
-        
-        Iterator it = caminho.iterator();
-        while (it.hasNext()) {
-            System.out.print(mapa.getVertices()[(int)it.next()] + "  ");
-        }
-        
-        LinkedQueue<Object> lq = new LinkedQueue<>();
-        
-        lq.enqueue(pentos);
-        lq.enqueue(vaesCastle);
-        lq.enqueue(castleBlack);
-        
-        Iterator it4 = lq.iterator();
-        System.out.println("\n----------------------------------------------");
-        while (it4.hasNext()) {
-            System.out.println(it4.next().toString());
-            
-        }
         
     }
     

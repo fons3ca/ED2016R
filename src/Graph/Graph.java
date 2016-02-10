@@ -13,6 +13,7 @@ import java.util.Iterator;
 /**
  *
  * @author n_fon
+ * @param <T>
  */
 public class Graph<T> implements GraphADT<T> {
 

@@ -60,4 +60,5 @@ public class Alternativa {
         return nome + ", [distancia=" + distancia + ", duracao=" + duracao + ", custo=" + custo + ']';
     }
 
+
 }

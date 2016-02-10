@@ -32,104 +32,104 @@ static int dim = 9, size = 0; // dim is number of nodes in graph
         Cidade winterfell = new Cidade("Winterfell", 64);//7
         Cidade castleBlack = new Cidade("Castle Black", 0);//8
         
-        //Instanciar os Caminhos / Edges / Alternativas
-        Alternativa vaesCastle = new Alternativa(800, 10, 2.2);
-        Alternativa vaesCastle2 = new Alternativa(1040, 13, 1.5);
-        Alternativa vaesLhaza = new Alternativa(180, 2.3, 1.7);
-        Alternativa vaesLhaza2 = new Alternativa(198, 3.0, 0.3);
-        Alternativa vaesQohor = new Alternativa(400, 4.5, 0.2);
-        Alternativa vaesQohor2 = new Alternativa(520, 5.9, 1.2);
-        Alternativa lhazaQohor = new Alternativa(300, 2.5, 0.4);
-        Alternativa lhazaQohor2 = new Alternativa(390, 3.3, 2.7);
-        Alternativa lhazaPentos = new Alternativa(500, 6.3, 0.3);
-        Alternativa lhazaPentos2 = new Alternativa(650, 8.2, 2.8);
-        Alternativa qohorPentos = new Alternativa(180, 3.7, 1.7);
-        Alternativa qohorPentos2 = new Alternativa(126, 4.8, 0.6);
-        Alternativa pentosKings = new Alternativa(160, 3.5, 2.4);
-        Alternativa pentosKings2 = new Alternativa(208, 4.6, 0.2);
-        Alternativa pentosCrossroads = new Alternativa(200, 3.5, 1.2);
-        Alternativa pentosCrossroads2 = new Alternativa(140, 4.6, 2.5);
-        Alternativa pentosEyrie = new Alternativa(180, 4.9, 2.5);
-        Alternativa pentosEyrie2 = new Alternativa(234, 6.4, 3);
-        Alternativa kingsCrossroads = new Alternativa(100, 1.2, 2);
-        Alternativa kingsCrossroads2 = new Alternativa(110, 1.6, 1.4);
-        Alternativa crossroadsEyrie = new Alternativa(50, 1.1, 0.7);
-        Alternativa crossroadsEyrie2 = new Alternativa(65, 1.4, 2.2);
-        Alternativa crossroadsWinterfell = new Alternativa(250, 5.5, 1.2);
-        Alternativa crossroadsWinterfell2 = new Alternativa(275, 7.2, 0.4);
-        Alternativa eyrieWinterfell = new Alternativa(210, 2.8, 2.6);
-        Alternativa eyrieWinterfell2 = new Alternativa(231, 3.6, 2.1);
-        Alternativa winterfellCastle = new Alternativa(120, 1.9, 0.9);
-        Alternativa winterfellCastle2 = new Alternativa(108, 2.5, 3);
-        
-        //Adicionar as Cidades
-        mapa.addVertex(vaesDothrak);//0
-        mapa.addVertex(lhazareen);//1
-        mapa.addVertex(qohor);//2
-        mapa.addVertex(pentos);//3
-        mapa.addVertex(kingsLanding);//4
-        mapa.addVertex(crossroads);//5
-        mapa.addVertex(theEyrie);//6
-        mapa.addVertex(winterfell);//7
-        mapa.addVertex(castleBlack);//8
-        
-        //Adicionar os Caminhos / Edges / Alternativas
-        mapa.addEdge(vaesDothrak, castleBlack, vaesCastle);
-        mapa.addEdge(vaesDothrak, castleBlack, vaesCastle2);
-        mapa.addEdge(vaesDothrak, lhazareen, vaesLhaza);
-        mapa.addEdge(vaesDothrak, lhazareen, vaesLhaza2);
-        mapa.addEdge(vaesDothrak, qohor, vaesQohor);
-        mapa.addEdge(vaesDothrak, qohor, vaesQohor2);
-        mapa.addEdge(lhazareen, qohor, lhazaQohor);
-        mapa.addEdge(lhazareen, qohor, lhazaQohor2);
-        mapa.addEdge(lhazareen, pentos, lhazaPentos);
-        mapa.addEdge(lhazareen, pentos, lhazaPentos2);
-        mapa.addEdge(qohor, pentos, qohorPentos);
-        mapa.addEdge(qohor, pentos, qohorPentos2);
-        mapa.addEdge(pentos, kingsLanding, pentosKings);
-        mapa.addEdge(pentos, kingsLanding, pentosKings2);
-        mapa.addEdge(pentos, crossroads, pentosCrossroads);
-        mapa.addEdge(pentos, crossroads, pentosCrossroads2);
-        mapa.addEdge(pentos, theEyrie, pentosEyrie);
-        mapa.addEdge(pentos, theEyrie, pentosEyrie2);
-        mapa.addEdge(kingsLanding, crossroads, kingsCrossroads);
-        mapa.addEdge(kingsLanding, crossroads, kingsCrossroads2);
-        mapa.addEdge(crossroads, theEyrie, crossroadsEyrie);
-        mapa.addEdge(crossroads, theEyrie, crossroadsEyrie2);
-        mapa.addEdge(crossroads, winterfell, crossroadsWinterfell);
-        mapa.addEdge(crossroads, winterfell, crossroadsWinterfell2);
-        mapa.addEdge(theEyrie, winterfell, eyrieWinterfell);
-        mapa.addEdge(theEyrie, winterfell, eyrieWinterfell2);
-        mapa.addEdge(winterfell, castleBlack, winterfellCastle);
-        mapa.addEdge(winterfell, castleBlack, winterfellCastle2);   
-   
-        graph=mapa.getadj();
-        Arrays.fill(color, false);      // initially all are unvisited
-        dfs(qohor, pentos, mapa);  // backtrackin
-    }
- 
-    static void dfs(Cidade src, Cidade dst, Map mapa) {
-        al.addRear(src);
-        size++;
-        color[mapa.getIndex(src)] = true;
-        if (src.equals(dst)) {       // tests for base condition to stop
-            System.out.println("Find destination");
-            for (Cidade i : al) {
-                //     Prints the path
-                System.out.print(i.toString() + "  ");
-            }
-            System.out.println();
-            return;
-        }
-        for (int I = 0; I < dim; I++) {
-            if (graph[mapa.getIndex(dst)][I] == true) {
-                if (color[I] == false) {
-                    dfs((Cidade) mapa.getCidadeAt(I), dst, mapa);        // These lines do
-                    color[I] = false;   // main job of backtracking
-                    size--;
-                    al.removeIndex(size);
-                }
-            }
-        }
+//        //Instanciar os Caminhos / Edges / Alternativas
+//        Alternativa vaesCastle = new Alternativa(800, 10, 2.2);
+//        Alternativa vaesCastle2 = new Alternativa(1040, 13, 1.5);
+//        Alternativa vaesLhaza = new Alternativa(180, 2.3, 1.7);
+//        Alternativa vaesLhaza2 = new Alternativa(198, 3.0, 0.3);
+//        Alternativa vaesQohor = new Alternativa(400, 4.5, 0.2);
+//        Alternativa vaesQohor2 = new Alternativa(520, 5.9, 1.2);
+//        Alternativa lhazaQohor = new Alternativa(300, 2.5, 0.4);
+//        Alternativa lhazaQohor2 = new Alternativa(390, 3.3, 2.7);
+//        Alternativa lhazaPentos = new Alternativa(500, 6.3, 0.3);
+//        Alternativa lhazaPentos2 = new Alternativa(650, 8.2, 2.8);
+//        Alternativa qohorPentos = new Alternativa(180, 3.7, 1.7);
+//        Alternativa qohorPentos2 = new Alternativa(126, 4.8, 0.6);
+//        Alternativa pentosKings = new Alternativa(160, 3.5, 2.4);
+//        Alternativa pentosKings2 = new Alternativa(208, 4.6, 0.2);
+//        Alternativa pentosCrossroads = new Alternativa(200, 3.5, 1.2);
+//        Alternativa pentosCrossroads2 = new Alternativa(140, 4.6, 2.5);
+//        Alternativa pentosEyrie = new Alternativa(180, 4.9, 2.5);
+//        Alternativa pentosEyrie2 = new Alternativa(234, 6.4, 3);
+//        Alternativa kingsCrossroads = new Alternativa(100, 1.2, 2);
+//        Alternativa kingsCrossroads2 = new Alternativa(110, 1.6, 1.4);
+//        Alternativa crossroadsEyrie = new Alternativa(50, 1.1, 0.7);
+//        Alternativa crossroadsEyrie2 = new Alternativa(65, 1.4, 2.2);
+//        Alternativa crossroadsWinterfell = new Alternativa(250, 5.5, 1.2);
+//        Alternativa crossroadsWinterfell2 = new Alternativa(275, 7.2, 0.4);
+//        Alternativa eyrieWinterfell = new Alternativa(210, 2.8, 2.6);
+//        Alternativa eyrieWinterfell2 = new Alternativa(231, 3.6, 2.1);
+//        Alternativa winterfellCastle = new Alternativa(120, 1.9, 0.9);
+//        Alternativa winterfellCastle2 = new Alternativa(108, 2.5, 3);
+//        
+//        //Adicionar as Cidades
+//        mapa.addVertex(vaesDothrak);//0
+//        mapa.addVertex(lhazareen);//1
+//        mapa.addVertex(qohor);//2
+//        mapa.addVertex(pentos);//3
+//        mapa.addVertex(kingsLanding);//4
+//        mapa.addVertex(crossroads);//5
+//        mapa.addVertex(theEyrie);//6
+//        mapa.addVertex(winterfell);//7
+//        mapa.addVertex(castleBlack);//8
+//        
+//        //Adicionar os Caminhos / Edges / Alternativas
+//        mapa.addEdge(vaesDothrak, castleBlack, vaesCastle);
+//        mapa.addEdge(vaesDothrak, castleBlack, vaesCastle2);
+//        mapa.addEdge(vaesDothrak, lhazareen, vaesLhaza);
+//        mapa.addEdge(vaesDothrak, lhazareen, vaesLhaza2);
+//        mapa.addEdge(vaesDothrak, qohor, vaesQohor);
+//        mapa.addEdge(vaesDothrak, qohor, vaesQohor2);
+//        mapa.addEdge(lhazareen, qohor, lhazaQohor);
+//        mapa.addEdge(lhazareen, qohor, lhazaQohor2);
+//        mapa.addEdge(lhazareen, pentos, lhazaPentos);
+//        mapa.addEdge(lhazareen, pentos, lhazaPentos2);
+//        mapa.addEdge(qohor, pentos, qohorPentos);
+//        mapa.addEdge(qohor, pentos, qohorPentos2);
+//        mapa.addEdge(pentos, kingsLanding, pentosKings);
+//        mapa.addEdge(pentos, kingsLanding, pentosKings2);
+//        mapa.addEdge(pentos, crossroads, pentosCrossroads);
+//        mapa.addEdge(pentos, crossroads, pentosCrossroads2);
+//        mapa.addEdge(pentos, theEyrie, pentosEyrie);
+//        mapa.addEdge(pentos, theEyrie, pentosEyrie2);
+//        mapa.addEdge(kingsLanding, crossroads, kingsCrossroads);
+//        mapa.addEdge(kingsLanding, crossroads, kingsCrossroads2);
+//        mapa.addEdge(crossroads, theEyrie, crossroadsEyrie);
+//        mapa.addEdge(crossroads, theEyrie, crossroadsEyrie2);
+//        mapa.addEdge(crossroads, winterfell, crossroadsWinterfell);
+//        mapa.addEdge(crossroads, winterfell, crossroadsWinterfell2);
+//        mapa.addEdge(theEyrie, winterfell, eyrieWinterfell);
+//        mapa.addEdge(theEyrie, winterfell, eyrieWinterfell2);
+//        mapa.addEdge(winterfell, castleBlack, winterfellCastle);
+//        mapa.addEdge(winterfell, castleBlack, winterfellCastle2);   
+//   
+//        graph=mapa.getadj();
+//        Arrays.fill(color, false);      // initially all are unvisited
+//        dfs(qohor, pentos, mapa);  // backtrackin
+//    }
+// 
+//    static void dfs(Cidade src, Cidade dst, Map mapa) {
+//        al.addRear(src);
+//        size++;
+//        color[mapa.getIndex(src)] = true;
+//        if (src.equals(dst)) {       // tests for base condition to stop
+//            System.out.println("Find destination");
+//            for (Cidade i : al) {
+//                //     Prints the path
+//                System.out.print(i.toString() + "  ");
+//            }
+//            System.out.println();
+//            return;
+//        }
+//        for (int I = 0; I < dim; I++) {
+//            if (graph[mapa.getIndex(dst)][I] == true) {
+//                if (color[I] == false) {
+//                    dfs((Cidade) mapa.getCidadeAt(I), dst, mapa);        // These lines do
+//                    color[I] = false;   // main job of backtracking
+//                    size--;
+//                    al.removeIndex(size);
+//                }
+//            }
+//        }
     }
 }
