@@ -192,4 +192,44 @@ public class Map<Cidade> extends Graph<Cidade> implements MapADT<Cidade> {
         Iterator it = null;
         return it;
     }
+    
+    public ArrayUnorderedList getMinTroops(Cidade src, Cidade dst) {
+        int numTropasTemp = 0;
+        int numTropas =0;
+        int cur;
+        int next;
+        ArrayUnorderedList<Object> result;
+        ArrayUnorderedList<Object> temp = new ArrayUnorderedList<>();
+        //todos os caminho possiveis
+        LinkedQueue<ArrayUnorderedList<Integer>> a = this.dfsAllPaths(src, dst);
+        Iterator it = a.iterator();
+        while (it.hasNext()) {
+            ArrayUnorderedList currentPath = (ArrayUnorderedList) it.next();
+            Iterator cpit = currentPath.iterator();
+            cur = (int) cpit.next();
+            next = (int) cpit.next();
+            while (cpit.hasNext()) {
+                cur = next;
+                next = (int)cpit.next();
+                temp.addRear(this.vertices[cur]);
+                //num de tropas perdidas na viagem pela alternativa 1
+                double cansados1 = (this.wAdjMatrix[cur][next].first().getCusto()) * (this.wAdjMatrix[cur][next].first().getDistancia());
+                //num de tropas perdidas na viagem pela alternativa 2
+                double cansados2 = (this.wAdjMatrix[cur][next].last().getCusto()) * (this.wAdjMatrix[cur][next].first().getDistancia());
+                //num tropas perdidas no combate
+//                double perdasCombate = (Math.pow((this.vertices[next].getDefesas()/10),1.8))*100;
+                if (cansados1 >= cansados2) {
+                    numTropasTemp += cansados2;
+                    temp.addRear(this.wAdjMatrix[cur][next].last());
+                } else {
+                    numTropasTemp += cansados1;
+                    temp.addRear(this.wAdjMatrix[cur][next].first());
+                }
+                
+            }
+
+        }
+
+        return null;
+    }
 }
