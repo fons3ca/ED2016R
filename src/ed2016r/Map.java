@@ -207,7 +207,9 @@ public class Map extends Graph<Cidade> implements MapADT<Cidade> {
         //todos os caminho possiveis
         LinkedQueue<ArrayUnorderedList<Integer>> a = this.dfsAllPaths(src, dst);
         Iterator it = a.iterator();
+        //iterar sobre todos os caminhos possiveis
         while (it.hasNext()) {
+            //currentPath é o caminho seguinte no Array de caminhos
             ArrayUnorderedList currentPath = (ArrayUnorderedList) it.next();
             Iterator cpit = currentPath.iterator();
             cur = (int) cpit.next();

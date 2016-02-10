@@ -147,7 +147,7 @@ public class ED2016R {
 //        lq.enqueue(pentos);
 //        lq.enqueue(vaesCastle);
 //        lq.enqueue(castleBlack);
-        ArrayUnorderedList a = mapa.getMinTroopsPath(castleBlack,qohor);
+        ArrayUnorderedList a = mapa.getMinTroopsPath(castleBlack,pentos);
         
         Iterator it = a.iterator();
         
