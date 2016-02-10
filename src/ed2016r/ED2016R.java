@@ -155,8 +155,12 @@ public class ED2016R {
         System.out.println("----------------------------------------------");
 =======
         Iterator it4 = lq.iterator();
+<<<<<<< HEAD
         System.out.println("\n----------------------------------------------");
 >>>>>>> parent of e868cfe... sdsdsdsd
+=======
+        System.out.println("----------------------------------------------");
+>>>>>>> parent of 00d9297... asdasd
         while (it4.hasNext()) {
             System.out.println(it4.next().toString());
             
