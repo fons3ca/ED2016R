@@ -196,7 +196,7 @@ public class Map extends Graph<Cidade> implements MapADT<Cidade> {
         return it;
     }
 
-    public ArrayUnorderedList getMinTroopsPath(Cidade src, Cidade dst) {
+    public ArrayUnorderedList getMinTroopsPath(Cidade src, Cidade dst, int tropas) {
         int numTropasTemp = 0;
         int numTropas = -1;
         int cur;
@@ -213,8 +213,11 @@ public class Map extends Graph<Cidade> implements MapADT<Cidade> {
             ArrayUnorderedList currentPath = (ArrayUnorderedList) it.next();
             Iterator cpit = currentPath.iterator();
             cur = (int) cpit.next();
-            next = (int) cpit.next();
+            next = cur;
             do {
+                if (cpit.hasNext()) {
+                    next = (int) cpit.next();
+                }
                 temp.addRear(this.vertices[cur]);
                 //num de tropas perdidas na viagem pela alternativa 1
                 double cansados1 = (this.wAdjMatrix[cur][next].first().getCusto()) * (this.wAdjMatrix[cur][next].first().getDistancia());
@@ -225,17 +228,15 @@ public class Map extends Graph<Cidade> implements MapADT<Cidade> {
                 
                 if (cansados2 <= cansados1) {
                     numTropasTemp += cansados2;
-                    
+                    numTropasTemp += perdasCombate;
                     temp.addRear(this.wAdjMatrix[cur][next].last());
                 } else {
                     numTropasTemp += cansados1;
-                    
+                    numTropasTemp += perdasCombate;
                     temp.addRear(this.wAdjMatrix[cur][next].first());
                 }
                 cur = next;
-                if (cpit.hasNext()) {
-                    next = (int) cpit.next();
-                }
+                
             } while (cpit.hasNext());//fim do caminho
             temp.addRear(this.vertices[next]);
             if (numTropas == -1 || numTropas > numTropasTemp) {
@@ -251,7 +252,33 @@ public class Map extends Graph<Cidade> implements MapADT<Cidade> {
                 numTropasTemp = 0;
             }
         }
-
+        System.out.println("--------------------------------------------------");
+        System.out.println("Minhas tropas: " + tropas);
+        System.out.println("Tropas necessárias: " + numTropas);
+        System.out.println("--------------------------------------------------");
         return result;
+    }
+    
+    public boolean canConquer(ArrayUnorderedList caminho, int tropas) {
+        Iterator it = caminho.iterator();
+        double custo = 0;
+        
+        while(it.hasNext()) {
+            Object obj = it.next();
+            if(obj instanceof Cidade) {
+                double def = ((Cidade) obj).getDefesas();
+                custo += (Math.pow((((Cidade)obj).getDefesas()/10),1.8))*100;
+            } else if(obj instanceof Alternativa) {
+                double altCost = ((Alternativa) obj).getCusto() * ((Alternativa) obj).getDistancia();
+                custo += altCost;
+            }
+        }
+        if(tropas > custo) {
+            System.out.println("Consegue conquistar e o melhor caminho é: ");
+            return true;
+        } else {
+            System.out.println("Não consegue conquistar por nenhum caminho!");
+            return false;
+        }
     }
 }

@@ -147,13 +147,17 @@ public class ED2016R {
 //        lq.enqueue(pentos);
 //        lq.enqueue(vaesCastle);
 //        lq.enqueue(castleBlack);
-        ArrayUnorderedList a = mapa.getMinTroopsPath(castleBlack,pentos);
         
-        Iterator it = a.iterator();
+        int tropas = 5000;
+
+        ArrayUnorderedList path = mapa.getMinTroopsPath(castleBlack, theEyrie, tropas);
         
-        while (it.hasNext()) {
-            System.out.println(it.next().toString() + "  ");
-            
+        if(mapa.canConquer(path, tropas)) {
+            Iterator it = path.iterator();
+            System.out.println("--------------------------------------------------");
+            while (it.hasNext()) {
+                System.out.println(it.next().toString() + "  ");
+            }
         }
     }
     
