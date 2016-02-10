@@ -147,7 +147,14 @@ public class ED2016R {
 //        lq.enqueue(pentos);
 //        lq.enqueue(vaesCastle);
 //        lq.enqueue(castleBlack);
+        ArrayUnorderedList a = mapa.getMinTroopsPath(castleBlack,qohor);
         
+        Iterator it = a.iterator();
+        
+        while (it.hasNext()) {
+            System.out.println(it.next().toString() + "  ");
+            
+        }
     }
     
 }

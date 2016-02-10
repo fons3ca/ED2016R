@@ -16,7 +16,7 @@ import java.util.Iterator;
  * @author Utilizador
  * @param <Cidade>
  */
-public class Map<Cidade> extends Graph<Cidade> implements MapADT<Cidade> {
+public class Map extends Graph<Cidade> implements MapADT<Cidade> {
 
     protected ArrayUnorderedList<Alternativa>[][] wAdjMatrix;
     private boolean[] visited;      // to remember visit
@@ -27,6 +27,9 @@ public class Map<Cidade> extends Graph<Cidade> implements MapADT<Cidade> {
         super();
         this.wAdjMatrix = new ArrayUnorderedList[super.DEFAULT_CAPACITY][super.DEFAULT_CAPACITY];
         this.al = new ArrayUnorderedList<>();
+        super.vertices = new Cidade[10];
+        
+        
     }
 
     /**
@@ -187,19 +190,20 @@ public class Map<Cidade> extends Graph<Cidade> implements MapADT<Cidade> {
     public int getMinTropaNecessario(Cidade inicio, Cidade fim) {
         return 0;
     }
-    
+
     public Iterator getMinTropaPathIterator(Cidade inicio, Cidade fim) {
         Iterator it = null;
         return it;
     }
-    
-    public ArrayUnorderedList getMinTroops(Cidade src, Cidade dst) {
+
+    public ArrayUnorderedList getMinTroopsPath(Cidade src, Cidade dst) {
         int numTropasTemp = 0;
-        int numTropas =0;
+        int numTropas = -1;
         int cur;
         int next;
-        ArrayUnorderedList<Object> result;
+
         ArrayUnorderedList<Object> temp = new ArrayUnorderedList<>();
+        ArrayUnorderedList<Object> result = new ArrayUnorderedList<>();
         //todos os caminho possiveis
         LinkedQueue<ArrayUnorderedList<Integer>> a = this.dfsAllPaths(src, dst);
         Iterator it = a.iterator();
@@ -208,28 +212,44 @@ public class Map<Cidade> extends Graph<Cidade> implements MapADT<Cidade> {
             Iterator cpit = currentPath.iterator();
             cur = (int) cpit.next();
             next = (int) cpit.next();
-            while (cpit.hasNext()) {
-                cur = next;
-                next = (int)cpit.next();
+            do {
                 temp.addRear(this.vertices[cur]);
                 //num de tropas perdidas na viagem pela alternativa 1
                 double cansados1 = (this.wAdjMatrix[cur][next].first().getCusto()) * (this.wAdjMatrix[cur][next].first().getDistancia());
                 //num de tropas perdidas na viagem pela alternativa 2
                 double cansados2 = (this.wAdjMatrix[cur][next].last().getCusto()) * (this.wAdjMatrix[cur][next].first().getDistancia());
                 //num tropas perdidas no combate
-//                double perdasCombate = (Math.pow((this.vertices[next].getDefesas()/10),1.8))*100;
-                if (cansados1 >= cansados2) {
+                double perdasCombate = (Math.pow((this.vertices[next].getDefesas()/10),1.8))*100;
+                
+                if (cansados2 <= cansados1) {
                     numTropasTemp += cansados2;
+                    
                     temp.addRear(this.wAdjMatrix[cur][next].last());
                 } else {
                     numTropasTemp += cansados1;
+                    
                     temp.addRear(this.wAdjMatrix[cur][next].first());
                 }
-                
-            }
+                cur = next;
+                if (cpit.hasNext()) {
+                    next = (int) cpit.next();
+                }
+            } while (cpit.hasNext());//fim do caminho
+            temp.addRear(this.vertices[next]);
+            if (numTropas == -1 || numTropas > numTropasTemp) {
+                numTropas = numTropasTemp;
+                result = new ArrayUnorderedList<>();
+                Iterator tempit = temp.iterator();
+                while (tempit.hasNext()) {
+                    result.addRear(tempit.next());
+                }
 
+            } else {
+                temp = new ArrayUnorderedList<>();
+                numTropasTemp = 0;
+            }
         }
 
-        return null;
+        return result;
     }
 }
