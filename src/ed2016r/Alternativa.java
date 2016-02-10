@@ -60,5 +60,4 @@ public class Alternativa {
         return "Alternativa{" + "nome=" + nome + ", distancia=" + distancia + ", duracao=" + duracao + ", custo=" + custo + '}';
     }
 
-
 }

@@ -21,7 +21,7 @@ public class ED2016R {
     public static void main(String[] args) {
 
         //Instanciar o Mapa/Jogo
-        Map<Cidade> mapa = new Map<>();
+        Map mapa = new Map();
         
         //Instanciar as Cidades
         Cidade vaesDothrak = new Cidade("Vaes Dothrak", 73);//0
@@ -132,41 +132,39 @@ public class ED2016R {
 //        }
              
                
-//        ArrayUnorderedList<ArrayUnorderedList<Integer>> resultQueue = mapa.dfsAllPaths(qohor, pentos);
-//        
-//        
-//        ArrayUnorderedList<Integer> caminho = resultQueue.removeLast();
-//        
-//        Iterator it = caminho.iterator();
-//        while (it.hasNext()) {
-//            Cidade a = mapa.getCidadeAt((Integer)it.next());
-//            System.out.print(a.toString() + "  ");
-//        }
-//        
-//        LinkedQueue<Object> lq = new LinkedQueue<>();
-//        
-//        lq.enqueue(pentos);
-//        lq.enqueue(vaesCastle);
-//        lq.enqueue(castleBlack);
-//        
-//        Iterator it4 = lq.iterator();
-//        System.out.println("\n----------------------------------------------");
-//        while (it4.hasNext()) {
-//            System.out.println(it4.next().toString());
-//            
-//        }
+        LinkedQueue<ArrayUnorderedList<Integer>> resultQueue = mapa.dfsAllPaths(qohor, pentos);
         
-        ArrayUnorderedList a = mapa.getMinTroops(qohor, pentos);
         
+        ArrayUnorderedList<Integer> caminho = resultQueue.dequeue();
+        
+        Iterator it = caminho.iterator();
+        while (it.hasNext()) {
+            System.out.print(mapa.getVertices()[(int)it.next()] + "  ");
+        }
+        
+        LinkedQueue<Object> lq = new LinkedQueue<>();
+        
+        lq.enqueue(pentos);
+        lq.enqueue(vaesCastle);
+        lq.enqueue(castleBlack);
+        
+<<<<<<< HEAD
 <<<<<<< HEAD
 =======
         Iterator it4 = lq.iterator();
         System.out.println("----------------------------------------------");
+=======
+        Iterator it4 = lq.iterator();
+        System.out.println("\n----------------------------------------------");
+>>>>>>> parent of e868cfe... sdsdsdsd
         while (it4.hasNext()) {
             System.out.println(it4.next().toString());
             
         }
+<<<<<<< HEAD
 >>>>>>> parent of 00d9297... asdasd
+=======
+>>>>>>> parent of e868cfe... sdsdsdsd
         
     }
     
