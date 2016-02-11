@@ -185,6 +185,18 @@ public class Map extends Graph<Cidade> implements MapADT<Cidade> {
             }
         }
     }
+    public void testarAlternativas(ArrayUnorderedList<ArrayUnorderedList<Integer>> allpaths){
+        Iterator allpathsIt = allpaths.iterator();
+        
+        ArrayUnorderedList<Integer> firstpath = (ArrayUnorderedList<Integer>) allpathsIt.next();
+        
+    }
+    
+    public void testeaaaaa(Iterator<Integer> path){
+        int current = path.next();
+        int next = path.next();
+        
+    }
 
     public int getMinTropaNecessario(Cidade inicio, Cidade fim) {
         return 0;
