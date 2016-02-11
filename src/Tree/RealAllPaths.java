@@ -7,7 +7,7 @@ package Tree;
 
 import List.ArrayUnorderedList;
 import ed2016r.Alternativa;
-import ed2016r.Map;
+import ed2016r.*;
 import java.util.Iterator;
 
 /**
@@ -33,9 +33,16 @@ public class RealAllPaths extends BinaryTree<Alternativa> {
         this.wAdjMatrix = wAdjMatrix;
     }
     
+    
+    public void add(Alternativa alt){
+        
+    }
+    
+    
     public void build(){
         for (int i = 0; i < path.length-1; i++) {
-            
+            ArrayUnorderedList<Alternativa> alt = wAdjMatrix[path[i]][path[i+1]];
+            super.root.setLeft(new BinaryTreeNode<>(alt.first()));
         }
     }
     
