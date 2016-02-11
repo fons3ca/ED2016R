@@ -28,8 +28,7 @@ public class Map extends Graph<Cidade> implements MapADT<Cidade> {
         this.wAdjMatrix = new ArrayUnorderedList[super.DEFAULT_CAPACITY][super.DEFAULT_CAPACITY];
         this.al = new ArrayUnorderedList<>();
         super.vertices = new Cidade[10];
-        
-        
+
     }
 
     /**
@@ -148,18 +147,18 @@ public class Map extends Graph<Cidade> implements MapADT<Cidade> {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
-    public LinkedQueue<ArrayUnorderedList<Integer>> dfsAllPaths(Cidade source, Cidade destination) {
+    public ArrayUnorderedList<ArrayUnorderedList<Integer>> dfsAllPaths(Cidade source, Cidade destination) {
         this.size = 0;
         visited = new boolean[this.numVertices + 1];
         for (int i = 0; i < visited.length; i++) {
             this.visited[i] = false;
         }
-        LinkedQueue<ArrayUnorderedList<Integer>> resultQueue = new LinkedQueue<>();
+        ArrayUnorderedList<ArrayUnorderedList<Integer>> resultQueue = new ArrayUnorderedList<>();
         dfsAllPathsR(getIndex(source), getIndex(destination), resultQueue);
         return resultQueue;
     }
 
-    public void dfsAllPathsR(int src, int dst, LinkedQueue<ArrayUnorderedList<Integer>> resultQueue) {
+    public void dfsAllPathsR(int src, int dst, ArrayUnorderedList<ArrayUnorderedList<Integer>> resultQueue) {
         al.addRear(src);
         size++;
         visited[src] = true;
@@ -172,7 +171,7 @@ public class Map extends Graph<Cidade> implements MapADT<Cidade> {
                 //System.out.print(vertices[i] + "  ");
             }
             //System.out.println();
-            resultQueue.enqueue(path);
+            resultQueue.addRear(path);
             return;
         }
         for (int I = 0; I < this.numVertices; I++) {
@@ -205,7 +204,7 @@ public class Map extends Graph<Cidade> implements MapADT<Cidade> {
         ArrayUnorderedList<Object> temp = new ArrayUnorderedList<>();
         ArrayUnorderedList<Object> result = new ArrayUnorderedList<>();
         //todos os caminho possiveis
-        LinkedQueue<ArrayUnorderedList<Integer>> a = this.dfsAllPaths(src, dst);
+        ArrayUnorderedList<ArrayUnorderedList<Integer>> a = this.dfsAllPaths(src, dst);
         Iterator it = a.iterator();
         //iterar sobre todos os caminhos possiveis
         while (it.hasNext()) {
@@ -224,8 +223,8 @@ public class Map extends Graph<Cidade> implements MapADT<Cidade> {
                 //num de tropas perdidas na viagem pela alternativa 2
                 double cansados2 = (this.wAdjMatrix[cur][next].last().getCusto()) * (this.wAdjMatrix[cur][next].first().getDistancia());
                 //num tropas perdidas no combate
-                double perdasCombate = (Math.pow((this.vertices[next].getDefesas()/10),1.8))*100;
-                
+                double perdasCombate = (Math.pow((this.vertices[next].getDefesas() / 10), 1.8)) * 100;
+
                 if (cansados2 <= cansados1) {
                     numTropasTemp += cansados2;
                     numTropasTemp += perdasCombate;
@@ -236,7 +235,7 @@ public class Map extends Graph<Cidade> implements MapADT<Cidade> {
                     temp.addRear(this.wAdjMatrix[cur][next].first());
                 }
                 cur = next;
-                
+
             } while (cpit.hasNext());//fim do caminho
             temp.addRear(this.vertices[next]);
             if (numTropas == -1 || numTropas > numTropasTemp) {
@@ -258,27 +257,74 @@ public class Map extends Graph<Cidade> implements MapADT<Cidade> {
         System.out.println("--------------------------------------------------");
         return result;
     }
-    
+
     public boolean canConquer(ArrayUnorderedList caminho, int tropas) {
         Iterator it = caminho.iterator();
         double custo = 0;
-        
-        while(it.hasNext()) {
+
+        while (it.hasNext()) {
             Object obj = it.next();
-            if(obj instanceof Cidade) {
+            if (obj instanceof Cidade) {
                 double def = ((Cidade) obj).getDefesas();
-                custo += (Math.pow((((Cidade)obj).getDefesas()/10),1.8))*100;
-            } else if(obj instanceof Alternativa) {
+                custo += (Math.pow((((Cidade) obj).getDefesas() / 10), 1.8)) * 100;
+            } else if (obj instanceof Alternativa) {
                 double altCost = ((Alternativa) obj).getCusto() * ((Alternativa) obj).getDistancia();
                 custo += altCost;
             }
         }
-        if(tropas > custo) {
+        if (tropas > custo) {
             System.out.println("Consegue conquistar e o melhor caminho é: ");
             return true;
         } else {
             System.out.println("Não consegue conquistar por nenhum caminho!");
             return false;
         }
+    }
+    
+    //metodo auxiliar
+    private ArrayUnorderedList<Integer> shortestPathByDays(Cidade src, Cidade dst, LinkedQueue<ArrayUnorderedList<Integer>> allpaths){
+        Iterator allpathsIt = allpaths.iterator();
+        ArrayUnorderedList<Integer> bestPath = null;
+        
+        int cur;
+        int next;
+        float numOfDaysCP = 0;
+        float numOfDaysOptimum=Float.MAX_VALUE;
+        while (allpathsIt.hasNext()) {
+            ArrayUnorderedList<Integer> currentPath = (ArrayUnorderedList<Integer>) allpathsIt.next();
+            Iterator currentPathIt = currentPath.iterator();
+            cur = (int) currentPathIt.next();
+            next = cur;
+            do {
+                if (currentPathIt.hasNext()) {
+                    next = (int) currentPathIt.next();
+                }
+                if (this.wAdjMatrix[cur][next].first().getDuracao() > this.wAdjMatrix[cur][next].last().getDuracao()) {
+                    numOfDaysCP += this.wAdjMatrix[cur][next].last().getDuracao();
+                } else {
+                    numOfDaysCP += this.wAdjMatrix[cur][next].first().getDuracao();
+                }
+            } while (currentPathIt.hasNext());
+            if (numOfDaysOptimum > numOfDaysCP) {
+                numOfDaysOptimum = numOfDaysCP;
+                bestPath = currentPath;
+            }
+        }
+        return bestPath;
+    }
+    
+    public ArrayUnorderedList<ArrayUnorderedList<Integer>> shortestPathByDays(Cidade src, Cidade dst, int numOpcoes) {
+        ArrayUnorderedList<ArrayUnorderedList<Integer>> result = new ArrayUnorderedList<>();
+        ArrayUnorderedList<ArrayUnorderedList<Integer>> allpaths = this.dfsAllPaths(src, dst);
+        
+        for (int i = 0; i < numOpcoes; i++) {
+            result.addRear(shortestPathByDays(src, dst, allpaths));
+            allpaths.
+        }
+        
+
+       
+
+        return result;
     }
 }

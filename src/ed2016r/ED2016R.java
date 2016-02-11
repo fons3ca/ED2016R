@@ -7,6 +7,9 @@ package ed2016r;
 
 import List.ArrayUnorderedList;
 import LinkedQueue.LinkedQueue;
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
 import java.util.Iterator;
 
 /**
@@ -18,7 +21,7 @@ public class ED2016R {
     /**
      * @param args the command line arguments
      */
-    public static void main(String[] args) {
+    public static void main(String[] args) throws IOException {
 
         //Instanciar o Mapa/Jogo
         Map mapa = new Map();
@@ -148,7 +151,12 @@ public class ED2016R {
 //        lq.enqueue(vaesCastle);
 //        lq.enqueue(castleBlack);
         
-        int tropas = 5000;
+                System.out.println("Please Enter number of troops: ");
+        InputStreamReader istream = new InputStreamReader(System.in) ;
+               BufferedReader bufRead = new BufferedReader(istream) ;
+               String firstName = bufRead.readLine();
+               
+        int tropas = Integer.parseInt(firstName.toString());
 
         ArrayUnorderedList path = mapa.getMinTroopsPath(castleBlack, theEyrie, tropas);
         
@@ -159,6 +167,7 @@ public class ED2016R {
                 System.out.println(it.next().toString() + "  ");
             }
         }
+
     }
     
 }
