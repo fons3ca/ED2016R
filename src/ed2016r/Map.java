@@ -282,7 +282,7 @@ public class Map extends Graph<Cidade> implements MapADT<Cidade> {
     }
     
     //metodo auxiliar
-    private ArrayUnorderedList<Integer> shortestPathByDays(Cidade src, Cidade dst, LinkedQueue<ArrayUnorderedList<Integer>> allpaths){
+    private ArrayUnorderedList<Integer> shortestPathByDays(Cidade src, Cidade dst, ArrayUnorderedList<ArrayUnorderedList<Integer>> allpaths){
         Iterator allpathsIt = allpaths.iterator();
         ArrayUnorderedList<Integer> bestPath = null;
         
@@ -301,6 +301,7 @@ public class Map extends Graph<Cidade> implements MapADT<Cidade> {
                 }
                 if (this.wAdjMatrix[cur][next].first().getDuracao() > this.wAdjMatrix[cur][next].last().getDuracao()) {
                     numOfDaysCP += this.wAdjMatrix[cur][next].last().getDuracao();
+                    //TODO meter alternativa no resultado
                 } else {
                     numOfDaysCP += this.wAdjMatrix[cur][next].first().getDuracao();
                 }
@@ -313,18 +314,49 @@ public class Map extends Graph<Cidade> implements MapADT<Cidade> {
         return bestPath;
     }
     
-    public ArrayUnorderedList<ArrayUnorderedList<Integer>> shortestPathByDays(Cidade src, Cidade dst, int numOpcoes) {
+    public ArrayUnorderedList<ArrayUnorderedList<Integer>> shortestPathByDays(Cidade src, Cidade dst, int numCaminhos, int numDiasMax) {
         ArrayUnorderedList<ArrayUnorderedList<Integer>> result = new ArrayUnorderedList<>();
         ArrayUnorderedList<ArrayUnorderedList<Integer>> allpaths = this.dfsAllPaths(src, dst);
         
-        for (int i = 0; i < numOpcoes; i++) {
-            result.addRear(shortestPathByDays(src, dst, allpaths));
-            allpaths.
-        }
+//        for (int i = 0; i < numOpcoes; i++) {
+//            result.addRear(shortestPathByDays(src, dst, allpaths));
+//            allpaths.
+//        }
         
-
+        
        
 
         return result;
+    }
+    
+    private void filterPathsByDuration(float duracao, ArrayUnorderedList<ArrayUnorderedList<Integer>> allpaths){
+        
+        
+        while (allpathsIt.hasNext()) {
+            ArrayUnorderedList<Integer> currentPath = (ArrayUnorderedList<Integer>) allpathsIt.next();
+            Iterator currentPathIt = currentPath.iterator();
+            cur = (int) currentPathIt.next();
+            next = cur;
+            do {
+                if (currentPathIt.hasNext()) {
+                    next = (int) currentPathIt.next();
+                }
+                if (this.wAdjMatrix[cur][next].first().getDuracao() > this.wAdjMatrix[cur][next].last().getDuracao()) {
+                    numOfDaysCP += this.wAdjMatrix[cur][next].last().getDuracao();
+                    //TODO meter alternativa no resultado
+                } else {
+                    numOfDaysCP += this.wAdjMatrix[cur][next].first().getDuracao();
+                }
+            } while (currentPathIt.hasNext());
+            if (numOfDaysOptimum > numOfDaysCP) {
+                numOfDaysOptimum = numOfDaysCP;
+                bestPath = currentPath;
+            }
+        }
+        
+    }
+    
+    private void filterPathsByDuration(float duracao, ArrayUnorderedList<ArrayUnorderedList<Integer>> allpaths){
+        
     }
 }
