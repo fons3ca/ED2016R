@@ -356,6 +356,28 @@ public class Map extends Graph<Cidade> implements MapADT<Cidade> {
         
     }
     
+    public ArrayUnorderedList<ArrayUnorderedList<Integer>> findBestPaths(Cidade start, Cidade target, Criterio criterios) {
+        // Vai buscar todos os caminhos
+        ArrayUnorderedList<ArrayUnorderedList<Integer>> allpaths = this.dfsAllPaths(start, target);
+        
+        if(criterios.getDuracaoTotal() > 0) {
+            // Se duracaoTotal > 0, filtra os caminhos por duracao total, ficando allpaths apenas com os caminhos filtrados
+            
+        } else if(criterios.getCustoMaximo() > 0) {
+            // Se custoMaximo > 0, filtra os caminhos por custo maximo, ficando allpaths apenas com os caminhos filtrados
+            
+        } else if(criterios.getPerdasCombate() > 0) {
+            // Se perdasCombate > 0, filtra os caminhos por limite de perdas em combate, ficando allpaths apenas com os caminhos filtrados
+            
+        } else if(criterios.getNumeroCombates() > 0) {
+            // Se numeroCombates > 0, filtra os caminhos por numero de combates limite, ficando allpaths apenas com os caminhos filtrados
+            
+        }
+        
+        // Retorna os caminhos dentro dos parametros
+        return allpaths;
+    }
+    
     private void filterPathsByMaxLoss(float MaxLoss, ArrayUnorderedList<ArrayUnorderedList<Integer>> allpaths){
         
     }

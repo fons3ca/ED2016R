@@ -9,13 +9,13 @@ package ed2016r;
  *
  * @author Utilizador
  */
-public class Criterios {
+public class Criterio {
     private double duracaoTotal;
     private double custoMaximo;
     private double perdasCombate;
     private double numeroCombates;
 
-    public Criterios(double duracaoTotal, double custoMaximo, double perdasCombate, double numeroCombates) {
+    public Criterio(double duracaoTotal, double custoMaximo, double perdasCombate, double numeroCombates) {
         this.duracaoTotal = duracaoTotal;
         this.custoMaximo = custoMaximo;
         this.perdasCombate = perdasCombate;
