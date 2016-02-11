@@ -329,11 +329,15 @@ public class Map extends Graph<Cidade> implements MapADT<Cidade> {
         return result;
     }
     
-    private void filterPathsByDuration(float duracao, ArrayUnorderedList<ArrayUnorderedList<Integer>> allpaths){
-        
+    private void filterPathsByDuration(float duracaoMax, ArrayUnorderedList<ArrayUnorderedList<Integer>> allpaths){
+        Iterator allpathsIt = allpaths.iterator();
+        int cur;
+        int next;
+        int numOfDaysCP = 0;
         
         while (allpathsIt.hasNext()) {
             ArrayUnorderedList<Integer> currentPath = (ArrayUnorderedList<Integer>) allpathsIt.next();
+            
             Iterator currentPathIt = currentPath.iterator();
             cur = (int) currentPathIt.next();
             next = cur;
@@ -348,9 +352,8 @@ public class Map extends Graph<Cidade> implements MapADT<Cidade> {
                     numOfDaysCP += this.wAdjMatrix[cur][next].first().getDuracao();
                 }
             } while (currentPathIt.hasNext());
-            if (numOfDaysOptimum > numOfDaysCP) {
-                numOfDaysOptimum = numOfDaysCP;
-                bestPath = currentPath;
+            if (numOfDaysCP>duracaoMax) {
+                allpathsIt.remove();
             }
         }
         
