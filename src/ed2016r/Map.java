@@ -356,7 +356,15 @@ public class Map extends Graph<Cidade> implements MapADT<Cidade> {
         
     }
     
-    private void filterPathsByDuration(float duracao, ArrayUnorderedList<ArrayUnorderedList<Integer>> allpaths){
+    private void filterPathsByMaxLoss(float MaxLoss, ArrayUnorderedList<ArrayUnorderedList<Integer>> allpaths){
+        
+    }
+    
+    private void filterPathsByLossPerCombat(float MaxLoss, ArrayUnorderedList<ArrayUnorderedList<Integer>> allpaths){
+        
+    }
+    
+    private void filterPathsByNumberOfCombats(int numCombat, ArrayUnorderedList<ArrayUnorderedList<Integer>> allpaths){
         
     }
 }
