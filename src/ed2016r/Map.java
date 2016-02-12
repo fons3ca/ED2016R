@@ -278,12 +278,16 @@ public class Map extends Graph<Cidade> implements MapADT<Cidade> {
                 custo += altCost;
             }
         }
-        if (tropas > custo) {
-            System.out.println("Consegue conquistar e o melhor caminho é: ");
-            return true;
-        } else {
-            System.out.println("Não consegue conquistar por nenhum caminho!");
-            return false;
+        return tropas > custo;
+    }
+    
+    public void conquerPath(ArrayUnorderedList<Integer> caminho, int tropas) {
+        if(canConquer(caminho, tropas)) {
+            Iterator it = caminho.iterator();
+            while(it.hasNext()) {
+                int next = (int)it.next();
+                vertices[next].setConquistada(true);
+            }
         }
     }
 
