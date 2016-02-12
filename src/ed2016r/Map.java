@@ -259,7 +259,12 @@ public class Map extends Graph<Cidade> implements MapADT<Cidade> {
         return result;
     }
 
-    public boolean canConquer(ArrayUnorderedList caminho, int tropas) {
+    public boolean canConquer(ArrayUnorderedList<Integer> caminho, int tropas) {
+        if (!vertices[(int) caminho.first()].isConquistada()) {
+            System.out.println("A cidade de inicio ainda nao foi conquistada!!");
+            return false;
+        }
+
         Iterator it = caminho.iterator();
         double custo = 0;
 
@@ -383,10 +388,16 @@ public class Map extends Graph<Cidade> implements MapADT<Cidade> {
                 double alt2Cost = this.wAdjMatrix[cur][next].last().getCusto() * this.wAdjMatrix[cur][next].last().getDistancia();
                 if (alt1Cost > alt2Cost) {
                     maxCostCP += alt2Cost;
-                    maxCostCP += (Math.pow((vertices[next].getDefesas() / 10), 1.8)) * 100;
+                    if (!vertices[next].isConquistada()) {
+                        maxCostCP += (Math.pow((vertices[next].getDefesas() / 10), 1.8)) * 100;
+                    }
+
                     //TODO meter alternativa no resultado
                 } else {
                     maxCostCP += alt1Cost;
+
+                }
+                if (!vertices[next].isConquistada()) {
                     maxCostCP += (Math.pow((vertices[next].getDefesas() / 10), 1.8)) * 100;
                 }
                 cur = next;
@@ -403,29 +414,23 @@ public class Map extends Graph<Cidade> implements MapADT<Cidade> {
         Iterator allpathsIt = allpaths.iterator();
         ArrayUnorderedList<ArrayUnorderedList<Integer>> result = new ArrayUnorderedList<>();
         double maxLoss = 0;
-        
-        
+
         while (allpathsIt.hasNext()) {
             ArrayUnorderedList<Integer> currentPath = (ArrayUnorderedList<Integer>) allpathsIt.next();
             Iterator currentPathIt = currentPath.iterator();
             while (currentPathIt.hasNext()) {
-                int current = (int)currentPathIt.next();
+                int current = (int) currentPathIt.next();
                 double a = (Math.pow((vertices[current].getDefesas() / 10), 1.8)) * 100;
                 //System.out.println("Cidade: " + vertices[current] + " maxLoss: " + maxLoss + " CurrentLoss: " + a);
-                if(maxLoss<a){
-                    maxLoss=a;
+                if (maxLoss < a) {
+                    maxLoss = a;
                 }
-                
             }
-            if(maxLoss<=maxLossesCombat){
+            if (maxLoss <= maxLossesCombat) {
                 result.addRear(currentPath);
             }
             maxLoss = 0;
         }
-        
-        
-        
-        
         return result;
     }
 

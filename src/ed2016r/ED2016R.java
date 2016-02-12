@@ -108,49 +108,7 @@ public class ED2016R {
         mapa.addEdge(winterfell, castleBlack, winterfellCastle);
         mapa.addEdge(winterfell, castleBlack, winterfellCastle2);   
         
-//        Iterator it = mapa.wAdjMatrix[0][2].iterator();
-//        System.out.println(((Cidade)mapa.getVertices()[0]).getNome() + " para " + ((Cidade)mapa.getVertices()[2]).getNome());
-//        while(it.hasNext()) {
-//            Alternativa alt = (Alternativa)it.next();
-//            System.out.println("--- Alternativa ---");
-//            System.out.println("Distancia: " + alt.getDistancia());
-//            System.out.println("Duracao: " + alt.getDuracao());
-//            System.out.println("Custo: " + alt.getCusto());
-//        }
-//        
-//        Iterator dfs = mapa.iteratorDFS(vaesDothrak);
-//        System.out.println();
-//        System.out.println("### Iterator DFS ###");
-//        while(dfs.hasNext()) {
-//            Cidade c = (Cidade)dfs.next();
-//            System.out.println(c.getNome());
-//        }
-//        
-//        Iterator bfs = mapa.iteratorBFS(vaesDothrak);
-//        System.out.println();
-//        System.out.println("### Iterator BFS ###");
-//        while(bfs.hasNext()) {
-//            Cidade c = (Cidade)bfs.next();
-//            System.out.println(c.getNome());
-//        }
-             
-               
-//        LinkedQueue<ArrayUnorderedList<Integer>> resultQueue = mapa.dfsAllPaths(qohor, pentos);
-//        
-//        
-//        ArrayUnorderedList<Integer> caminho = resultQueue.dequeue();
-//        
-//        Iterator it = caminho.iterator();
-//        while (it.hasNext()) {
-//            System.out.print(mapa.getVertices()[(int)it.next()] + "  ");
-//        }
-//        
-//        LinkedQueue<Object> lq = new LinkedQueue<>();
-//        
-//        lq.enqueue(pentos);
-//        lq.enqueue(vaesCastle);
-//        lq.enqueue(castleBlack);
-        
+
         //System.out.println("Please Enter number of troops: ");
         //InputStreamReader istream = new InputStreamReader(System.in) ;
         //BufferedReader bufRead = new BufferedReader(istream) ;
@@ -160,29 +118,6 @@ public class ED2016R {
 
         //ArrayUnorderedList path = mapa.getMinTroopsPath(castleBlack, theEyrie, tropas);
         
-        Criterio crit = new Criterio(-1, -1, 4000, -1);
-        ArrayUnorderedList<ArrayUnorderedList<Integer>> r = mapa.findBestPaths(theEyrie, qohor, crit);
-        
-        Iterator all = r.iterator();
-        Cidade[] city = mapa.getVertices();
-        while (all.hasNext()) {
-            ArrayUnorderedList<Integer> currentPath = (ArrayUnorderedList<Integer>) all.next();
-            Iterator curPath = currentPath.iterator();
-            System.out.println(" print ");
-            while (curPath.hasNext()) {
-                System.out.print("  " + city[(int)curPath.next()]);
-                
-            }
-            System.out.println("");
-        }
-        
-//        if(mapa.canConquer(path, tropas)) {
-//            Iterator it = path.iterator();
-//            System.out.println("--------------------------------------------------");
-//            while (it.hasNext()) {
-//                System.out.println(it.next().toString() + "  ");
-//            }
-//        }
 
     }
     
