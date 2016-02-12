@@ -285,10 +285,61 @@ public class Map extends Graph<Cidade> implements MapADT<Cidade> {
         if(canConquer(caminho, tropas)) {
             Iterator it = caminho.iterator();
             while(it.hasNext()) {
-                int next = (int)it.next();
-                vertices[next].setConquistada(true);
+                int cur = (int)it.next();
+                vertices[cur].setConquistada(true);
             }
         }
+    }
+    
+    public ArrayUnorderedList<ArrayUnorderedList<Object>> shortestPathByDuration(double maxDuration, ArrayUnorderedList<ArrayUnorderedList<Integer>> allpaths) {
+        // Variavel com o resultados para retornar
+        ArrayUnorderedList<ArrayUnorderedList<Object>> resultPaths = new ArrayUnorderedList<ArrayUnorderedList<Object>>();
+        
+        // 3 Alternativas para adicionar ao resultPaths
+        ArrayUnorderedList<Object> first = new ArrayUnorderedList<>();
+        ArrayUnorderedList<Object> second = new ArrayUnorderedList<>();
+        ArrayUnorderedList<Object> third = new ArrayUnorderedList<>();
+        
+        double firstDuration = Double.MAX_VALUE;
+        double secondDuration = Double.MAX_VALUE;
+        double thirdDuration = Double.MAX_VALUE;
+        
+        int cur, next;
+        double tmpDuration = 0;
+        ArrayUnorderedList<Object> temp = new ArrayUnorderedList<>();
+        
+        // Iterar os caminhos todos
+        Iterator it1 = allpaths.iterator();
+        while(it1.hasNext()) {
+            ArrayUnorderedList currentPath = (ArrayUnorderedList) it1.next();
+            Iterator cpit = currentPath.iterator();
+            cur = (int) cpit.next();
+            next = cur;
+            do {
+                if (cpit.hasNext()) {
+                    next = (int) cpit.next();
+                }
+                temp.addRear(vertices[cur]);
+                if(this.wAdjMatrix[cur][next].first().getDuracao() < this.wAdjMatrix[cur][next].last().getDuracao()) {
+                    tmpDuration += this.wAdjMatrix[cur][next].first().getDuracao();
+                } else {
+                    tmpDuration += this.wAdjMatrix[cur][next].last().getDuracao();
+                }
+                cur = next;
+            } while (cpit.hasNext());//fim do caminho
+            temp.addRear(vertices[next]);
+            if(tmpDuration < maxDuration) {
+                if(tmpDuration < firstDuration) {
+                    third = second;
+                    second = first;
+                    first = temp;
+                }
+            }
+            temp = new ArrayUnorderedList<>();
+        }
+        
+        
+        return resultPaths;
     }
 
     //metodo auxiliar
