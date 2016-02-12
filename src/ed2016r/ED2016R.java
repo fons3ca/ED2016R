@@ -18,14 +18,18 @@ import java.util.Iterator;
  */
 public class ED2016R {
 
+    final static String INVALID_OPTION = "Please enter a valid option!";
+
     /**
      * @param args the command line arguments
      */
     public static void main(String[] args) throws IOException {
+        InputStreamReader istream = new InputStreamReader(System.in);
+        BufferedReader bufRead = new BufferedReader(istream);
 
         //Instanciar o Mapa/Jogo
         Map mapa = new Map();
-        
+
         //Instanciar as Cidades
         Cidade vaesDothrak = new Cidade("Vaes Dothrak", 73);//0
         Cidade lhazareen = new Cidade("Lhazareen Village", 64);//1
@@ -36,37 +40,37 @@ public class ED2016R {
         Cidade theEyrie = new Cidade("The eyrie", 54);//6
         Cidade winterfell = new Cidade("Winterfell", 64);//7
         Cidade castleBlack = new Cidade("Castle Black", 0);//8
-        
+
         //Instanciar os Caminhos / Edges / Alternativas
         Alternativa vaesCastle = new Alternativa("Alternativa 1", 800, 10, 2.2);
         Alternativa vaesCastle2 = new Alternativa("Alternativa 2", 1040, 13, 1.5);
         Alternativa vaesLhaza = new Alternativa("Alternativa 1", 180, 2.3, 1.7);
-        Alternativa vaesLhaza2 = new Alternativa("Alternativa 2",198, 3.0, 0.3);
-        Alternativa vaesQohor = new Alternativa("Alternativa 1",400, 4.5, 0.2);
-        Alternativa vaesQohor2 = new Alternativa("Alternativa 2",520, 5.9, 1.2);
-        Alternativa lhazaQohor = new Alternativa("Alternativa 1",300, 2.5, 0.4);
-        Alternativa lhazaQohor2 = new Alternativa("Alternativa 2",390, 3.3, 2.7);
-        Alternativa lhazaPentos = new Alternativa("Alternativa 1",500, 6.3, 0.3);
-        Alternativa lhazaPentos2 = new Alternativa("Alternativa 2",650, 8.2, 2.8);
-        Alternativa qohorPentos = new Alternativa("Alternativa 1",180, 3.7, 1.7);
-        Alternativa qohorPentos2 = new Alternativa("Alternativa 2",126, 4.8, 0.6);
-        Alternativa pentosKings = new Alternativa("Alternativa 1",160, 3.5, 2.4);
-        Alternativa pentosKings2 = new Alternativa("Alternativa 2",208, 4.6, 0.2);
-        Alternativa pentosCrossroads = new Alternativa("Alternativa 1",200, 3.5, 1.2);
-        Alternativa pentosCrossroads2 = new Alternativa("Alternativa 2",140, 4.6, 2.5);
-        Alternativa pentosEyrie = new Alternativa("Alternativa 1",180, 4.9, 2.5);
-        Alternativa pentosEyrie2 = new Alternativa("Alternativa 2",234, 6.4, 3);
-        Alternativa kingsCrossroads = new Alternativa("Alternativa 1",100, 1.2, 2);
-        Alternativa kingsCrossroads2 = new Alternativa("Alternativa 2",110, 1.6, 1.4);
-        Alternativa crossroadsEyrie = new Alternativa("Alternativa 1",50, 1.1, 0.7);
-        Alternativa crossroadsEyrie2 = new Alternativa("Alternativa 2",65, 1.4, 2.2);
-        Alternativa crossroadsWinterfell = new Alternativa("Alternativa 1",250, 5.5, 1.2);
-        Alternativa crossroadsWinterfell2 = new Alternativa("Alternativa 2",275, 7.2, 0.4);
-        Alternativa eyrieWinterfell = new Alternativa("Alternativa 1",210, 2.8, 2.6);
-        Alternativa eyrieWinterfell2 = new Alternativa("Alternativa 2",231, 3.6, 2.1);
-        Alternativa winterfellCastle = new Alternativa("Alternativa 1",120, 1.9, 0.9);
-        Alternativa winterfellCastle2 = new Alternativa("Alternativa 2",108, 2.5, 3);
-        
+        Alternativa vaesLhaza2 = new Alternativa("Alternativa 2", 198, 3.0, 0.3);
+        Alternativa vaesQohor = new Alternativa("Alternativa 1", 400, 4.5, 0.2);
+        Alternativa vaesQohor2 = new Alternativa("Alternativa 2", 520, 5.9, 1.2);
+        Alternativa lhazaQohor = new Alternativa("Alternativa 1", 300, 2.5, 0.4);
+        Alternativa lhazaQohor2 = new Alternativa("Alternativa 2", 390, 3.3, 2.7);
+        Alternativa lhazaPentos = new Alternativa("Alternativa 1", 500, 6.3, 0.3);
+        Alternativa lhazaPentos2 = new Alternativa("Alternativa 2", 650, 8.2, 2.8);
+        Alternativa qohorPentos = new Alternativa("Alternativa 1", 180, 3.7, 1.7);
+        Alternativa qohorPentos2 = new Alternativa("Alternativa 2", 126, 4.8, 0.6);
+        Alternativa pentosKings = new Alternativa("Alternativa 1", 160, 3.5, 2.4);
+        Alternativa pentosKings2 = new Alternativa("Alternativa 2", 208, 4.6, 0.2);
+        Alternativa pentosCrossroads = new Alternativa("Alternativa 1", 200, 3.5, 1.2);
+        Alternativa pentosCrossroads2 = new Alternativa("Alternativa 2", 140, 4.6, 2.5);
+        Alternativa pentosEyrie = new Alternativa("Alternativa 1", 180, 4.9, 2.5);
+        Alternativa pentosEyrie2 = new Alternativa("Alternativa 2", 234, 6.4, 3);
+        Alternativa kingsCrossroads = new Alternativa("Alternativa 1", 100, 1.2, 2);
+        Alternativa kingsCrossroads2 = new Alternativa("Alternativa 2", 110, 1.6, 1.4);
+        Alternativa crossroadsEyrie = new Alternativa("Alternativa 1", 50, 1.1, 0.7);
+        Alternativa crossroadsEyrie2 = new Alternativa("Alternativa 2", 65, 1.4, 2.2);
+        Alternativa crossroadsWinterfell = new Alternativa("Alternativa 1", 250, 5.5, 1.2);
+        Alternativa crossroadsWinterfell2 = new Alternativa("Alternativa 2", 275, 7.2, 0.4);
+        Alternativa eyrieWinterfell = new Alternativa("Alternativa 1", 210, 2.8, 2.6);
+        Alternativa eyrieWinterfell2 = new Alternativa("Alternativa 2", 231, 3.6, 2.1);
+        Alternativa winterfellCastle = new Alternativa("Alternativa 1", 120, 1.9, 0.9);
+        Alternativa winterfellCastle2 = new Alternativa("Alternativa 2", 108, 2.5, 3);
+
         //Adicionar as Cidades
         mapa.addVertex(vaesDothrak);//0
         mapa.addVertex(lhazareen);//1
@@ -77,7 +81,7 @@ public class ED2016R {
         mapa.addVertex(theEyrie);//6
         mapa.addVertex(winterfell);//7
         mapa.addVertex(castleBlack);//8
-        
+
         //Adicionar os Caminhos / Edges / Alternativas
         mapa.addEdge(vaesDothrak, castleBlack, vaesCastle);
         mapa.addEdge(vaesDothrak, castleBlack, vaesCastle2);
@@ -106,19 +110,51 @@ public class ED2016R {
         mapa.addEdge(theEyrie, winterfell, eyrieWinterfell);
         mapa.addEdge(theEyrie, winterfell, eyrieWinterfell2);
         mapa.addEdge(winterfell, castleBlack, winterfellCastle);
-        mapa.addEdge(winterfell, castleBlack, winterfellCastle2);   
-        
+        mapa.addEdge(winterfell, castleBlack, winterfellCastle2);
 
-        //System.out.println("Please Enter number of troops: ");
-        //InputStreamReader istream = new InputStreamReader(System.in) ;
-        //BufferedReader bufRead = new BufferedReader(istream) ;
-        //String firstName = bufRead.readLine();
-               
-        //int tropas = Integer.parseInt(firstName.toString());
+        System.out.println("+++++++++++++++++++++++++++++++");
+        System.out.println("+Welcome to Game of <T>hrones!+");
+        System.out.println("+++++++++++++++++++++++++++++++\n");
+
+        System.out.println("Press ENTER to begin!");
+
+        bufRead.readLine();
+        System.out.println("+++++++++++++++++++++++++++++++");
+        System.out.println("+            MENU             +");
+        System.out.println("+++++++++++++++++++++++++++++++");
+        System.out.println("+ 1. Start game               +");
+        System.out.println("+ 2. Change game values       +");
+        System.out.println("+++++++++++++++++++++++++++++++");
+
+        String optS = bufRead.readLine();
+        int optI = -1;
+        try {
+            optI = Integer.parseInt(optS);
+        } catch (Exception e) {
+            System.out.println(INVALID_OPTION);
+        }
+        if (optI == 1) {//begin game
+            System.out.println("");
+            System.out.println("+++++++++++++++++++++++++++++++");
+            System.out.println("+        Game Started         +");
+            System.out.println("+++++++++++++++++++++++++++++++");
+            System.out.println("+ 1. Conquer Simulator        +");
+            System.out.println("+ 2. Iniciar conquista        +");
+            System.out.println("+++++++++++++++++++++++++++++++");
+            optS = bufRead.readLine();
+            try {
+                optI = Integer.parseInt(optS);
+            } catch (Exception e) {
+                System.out.println(INVALID_OPTION);
+            }
+            if (optI==1) {
+                
+            }
+        } else if (optI == 2) {
+            //mecanismo para alterar valores de cidades e caminhos
+        }
 
         //ArrayUnorderedList path = mapa.getMinTroopsPath(castleBlack, theEyrie, tropas);
-        
-
     }
-    
+
 }
