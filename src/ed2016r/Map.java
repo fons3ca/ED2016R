@@ -326,7 +326,7 @@ public class Map extends Graph<Cidade> implements MapADT<Cidade> {
         return result;
     }
 
-    private Iterator filterPathsByDuration(double duracaoMax, ArrayUnorderedList<ArrayUnorderedList<Integer>> allpaths) {
+    private ArrayUnorderedList<ArrayUnorderedList<Integer>> filterPathsByDuration(double duracaoMax, ArrayUnorderedList<ArrayUnorderedList<Integer>> allpaths) {
         Iterator allpathsIt = allpaths.iterator();
         int cur;
         int next;
@@ -353,10 +353,10 @@ public class Map extends Graph<Cidade> implements MapADT<Cidade> {
                 allpathsIt.remove();
             }
         }
-        return allpathsIt;
+        return allpaths;
     }
 
-    private Iterator filterPathsByMaxCost(double maxCost, ArrayUnorderedList<ArrayUnorderedList<Integer>> allpaths) {
+    private ArrayUnorderedList<ArrayUnorderedList<Integer>> filterPathsByMaxCost(double maxCost, ArrayUnorderedList<ArrayUnorderedList<Integer>> allpaths) {
         Iterator allpathsIt = allpaths.iterator();
         int cur;
         int next;
@@ -387,10 +387,10 @@ public class Map extends Graph<Cidade> implements MapADT<Cidade> {
                 allpathsIt.remove();
             }
         }
-        return allpathsIt;
+        return allpaths;
     }
 
-    private Iterator filterPathsByMaxLossPerCombat(double maxLossesCombat, ArrayUnorderedList<ArrayUnorderedList<Integer>> allpaths) {
+    private ArrayUnorderedList<ArrayUnorderedList<Integer>> filterPathsByMaxLossPerCombat(double maxLossesCombat, ArrayUnorderedList<ArrayUnorderedList<Integer>> allpaths) {
         Iterator allpathsIt = allpaths.iterator();
         int cur;
         int next;
@@ -411,61 +411,45 @@ public class Map extends Graph<Cidade> implements MapADT<Cidade> {
                 }
             } while (currentPathIt.hasNext());
         }
-        return allpathsIt;
+        return allpaths;
     }
 
-    private void filterPathsByMaxCombats(int maxCombats, ArrayUnorderedList<ArrayUnorderedList<Integer>> allpaths) {
+    private ArrayUnorderedList<ArrayUnorderedList<Integer>> filterPathsByMaxCombats(int maxCombats, ArrayUnorderedList<ArrayUnorderedList<Integer>> allpaths) {
         Iterator allpathsIt = allpaths.iterator();
-        int cur;
-        int next;
-        int combatCount = -1;
-        int currIndex = -1;
-        ArrayUnorderedList<Integer> remove = new ArrayUnorderedList<>();
         ArrayUnorderedList<ArrayUnorderedList<Integer>> result = new ArrayUnorderedList<>();
-        
         
         while (allpathsIt.hasNext()) {
             ArrayUnorderedList<Integer> currentPath = (ArrayUnorderedList<Integer>) allpathsIt.next();
-            currIndex++;
             System.out.println("Current size: " + (currentPath.size() - 1));
             if ((currentPath.size() - 1) <= maxCombats) {
                 result.addRear(currentPath);
             }
         }
-        
-        Iterator rst = result.iterator();
-        while (rst.hasNext()) {
-            ArrayUnorderedList<Integer> currentPath = (ArrayUnorderedList<Integer>) rst.next();
-            Iterator CurIt = currentPath.iterator();
-            System.out.println("Path");
-            while (CurIt.hasNext()) {
-                System.out.print("  " + vertices[(int)CurIt.next()]);
-            }
-            
-        }
-        
+        return result;
     }
 
     public ArrayUnorderedList<ArrayUnorderedList<Integer>> findBestPaths(Cidade start, Cidade target, Criterio criterios) {
         // Vai buscar todos os caminhos
-        ArrayUnorderedList<ArrayUnorderedList<Integer>> allpaths = this.dfsAllPaths(start, target);
+        ArrayUnorderedList<ArrayUnorderedList<Integer>> result = this.dfsAllPaths(start, target);
 
         if (criterios.getDuracaoTotal() > -1) {
             // Se duracaoTotal > 0, filtra os caminhos por duracao total, ficando allpaths apenas com os caminhos filtrados
-            filterPathsByDuration(criterios.getDuracaoTotal(), allpaths);
-        } else if (criterios.getCustoMaximo() > -1) {
-            // Se custoMaximo > 0, filtra os caminhos por custo maximo, ficando allpaths apenas com os caminhos filtrados
-            filterPathsByMaxCost(criterios.getCustoMaximo(), allpaths);
-        } else if (criterios.getPerdasCombate() > -1) {
-            // Se perdasCombate > 0, filtra os caminhos por limite de perdas em combate, ficando allpaths apenas com os caminhos filtrados
-            filterPathsByMaxLossPerCombat(criterios.getPerdasCombate(), allpaths);
-        } else if (criterios.getNumeroCombates() > -1) {
-            // Se numeroCombates > 0, filtra os caminhos por numero de combates limite, ficando allpaths apenas com os caminhos filtrados
-            filterPathsByMaxCombats(criterios.getNumeroCombates(), allpaths);
+            result = filterPathsByDuration(criterios.getDuracaoTotal(), result);
         }
-        //printPaths(allpaths);
-        // Retorna os caminhos dentro dos parametros
-        return allpaths;
+        if (criterios.getCustoMaximo() > -1) {
+            // Se custoMaximo > 0, filtra os caminhos por custo maximo, ficando allpaths apenas com os caminhos filtrados
+            result = filterPathsByMaxCost(criterios.getCustoMaximo(), result);
+        }
+        if (criterios.getPerdasCombate() > -1) {
+            // Se perdasCombate > 0, filtra os caminhos por limite de perdas em combate, ficando allpaths apenas com os caminhos filtrados
+            result = filterPathsByMaxLossPerCombat(criterios.getPerdasCombate(), result);
+        } 
+        if (criterios.getNumeroCombates() > -1) {
+            // Se numeroCombates > 0, filtra os caminhos por numero de combates limite, ficando allpaths apenas com os caminhos filtrados
+            result = filterPathsByMaxCombats(criterios.getNumeroCombates(), result);
+        }
+
+        return result;
     }
 
     public void printPaths(ArrayUnorderedList<ArrayUnorderedList<Integer>> resultPaths) {
