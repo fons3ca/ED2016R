@@ -13,9 +13,9 @@ public class Criterio {
     private double duracaoTotal;
     private double custoMaximo;
     private double perdasCombate;
-    private double numeroCombates;
+    private int numeroCombates;
 
-    public Criterio(double duracaoTotal, double custoMaximo, double perdasCombate, double numeroCombates) {
+    public Criterio(double duracaoTotal, double custoMaximo, double perdasCombate, int numeroCombates) {
         this.duracaoTotal = duracaoTotal;
         this.custoMaximo = custoMaximo;
         this.perdasCombate = perdasCombate;
@@ -46,11 +46,11 @@ public class Criterio {
         this.perdasCombate = perdasCombate;
     }
 
-    public double getNumeroCombates() {
+    public int getNumeroCombates() {
         return numeroCombates;
     }
 
-    public void setNumeroCombates(double numeroCombates) {
+    public void setNumeroCombates(int numeroCombates) {
         this.numeroCombates = numeroCombates;
     }
     

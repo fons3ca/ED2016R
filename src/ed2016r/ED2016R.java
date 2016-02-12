@@ -151,22 +151,25 @@ public class ED2016R {
 //        lq.enqueue(vaesCastle);
 //        lq.enqueue(castleBlack);
         
-                System.out.println("Please Enter number of troops: ");
-        InputStreamReader istream = new InputStreamReader(System.in) ;
-               BufferedReader bufRead = new BufferedReader(istream) ;
-               String firstName = bufRead.readLine();
+        //System.out.println("Please Enter number of troops: ");
+        //InputStreamReader istream = new InputStreamReader(System.in) ;
+        //BufferedReader bufRead = new BufferedReader(istream) ;
+        //String firstName = bufRead.readLine();
                
-        int tropas = Integer.parseInt(firstName.toString());
+        //int tropas = Integer.parseInt(firstName.toString());
 
-        ArrayUnorderedList path = mapa.getMinTroopsPath(castleBlack, theEyrie, tropas);
+        //ArrayUnorderedList path = mapa.getMinTroopsPath(castleBlack, theEyrie, tropas);
         
-        if(mapa.canConquer(path, tropas)) {
-            Iterator it = path.iterator();
-            System.out.println("--------------------------------------------------");
-            while (it.hasNext()) {
-                System.out.println(it.next().toString() + "  ");
-            }
-        }
+        Criterio crit = new Criterio(-1, -1, -1, 3);
+        mapa.findBestPaths(castleBlack, theEyrie, crit);
+        
+//        if(mapa.canConquer(path, tropas)) {
+//            Iterator it = path.iterator();
+//            System.out.println("--------------------------------------------------");
+//            while (it.hasNext()) {
+//                System.out.println(it.next().toString() + "  ");
+//            }
+//        }
 
     }
     
