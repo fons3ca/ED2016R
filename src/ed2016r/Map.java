@@ -421,7 +421,7 @@ public class Map extends Graph<Cidade> implements MapADT<Cidade> {
         Iterator allpathsIt = allpaths.iterator();
         int cur;
         int next;
-        int combatCount = 0;
+        int combatCount = -1;
         
         while (allpathsIt.hasNext()) {
             ArrayUnorderedList<Integer> currentPath = (ArrayUnorderedList<Integer>) allpathsIt.next();
@@ -432,12 +432,15 @@ public class Map extends Graph<Cidade> implements MapADT<Cidade> {
             do {
                 if (currentPathIt.hasNext()) {
                     next = (int) currentPathIt.next();
+                    System.out.print("" + vertices[next].getNome() + " -> ");
                     combatCount++;
                 }
             } while (currentPathIt.hasNext());
+            System.out.println("#####combatCount = " + combatCount);
             if (combatCount>maxCombats) {
                 allpathsIt.remove();
             }
+            combatCount = -1;
         }
     }
     
@@ -468,9 +471,9 @@ public class Map extends Graph<Cidade> implements MapADT<Cidade> {
         while(it.hasNext()) {
             ArrayUnorderedList<Integer> cur = (ArrayUnorderedList<Integer>) it.next();
             Iterator it2 = cur.iterator();
-            System.out.println("-------------------------------");
+            System.out.println("-------------PRINT-----------");
             while(it2.hasNext()) {
-                System.out.println("" + vertices[(Integer)it2.next()]);
+                System.out.print("" + vertices[(Integer)it2.next()] + " -> ");
             }
         }
     }
