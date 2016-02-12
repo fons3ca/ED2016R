@@ -134,13 +134,6 @@ public class ArrayList<T> implements ListADT<T> {
                 return element;
             }
             
-            @Override
-            public void remove(){
-               for (int j = current-1; j < rear; j++) {
-                collection[j] = collection[j + 1];
-            }
-               rear--;
-            }
         };
         return it;
     }
