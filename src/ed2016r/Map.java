@@ -331,7 +331,8 @@ public class Map extends Graph<Cidade> implements MapADT<Cidade> {
         int cur;
         int next;
         double numOfDaysCP = 0;
-
+        ArrayUnorderedList<ArrayUnorderedList<Integer>> result = new ArrayUnorderedList<>();
+        
         while (allpathsIt.hasNext()) {
             ArrayUnorderedList<Integer> currentPath = (ArrayUnorderedList<Integer>) allpathsIt.next();
 
@@ -345,15 +346,20 @@ public class Map extends Graph<Cidade> implements MapADT<Cidade> {
                 if (this.wAdjMatrix[cur][next].first().getDuracao() > this.wAdjMatrix[cur][next].last().getDuracao()) {
                     numOfDaysCP += this.wAdjMatrix[cur][next].last().getDuracao();
                     //TODO meter alternativa no resultado
+                    //System.out.println("Alternativa 2: " + wAdjMatrix[cur][next].last().getDuracao());
                 } else {
+                    //System.out.println("Alternativa 1: " + wAdjMatrix[cur][next].first().getDuracao());
                     numOfDaysCP += this.wAdjMatrix[cur][next].first().getDuracao();
                 }
+                //modification
+                cur = next;
             } while (currentPathIt.hasNext());
-            if (numOfDaysCP > duracaoMax) {
-                allpathsIt.remove();
+            if (numOfDaysCP <= duracaoMax) {
+                result.addRear(currentPath);
             }
+            numOfDaysCP = 0;
         }
-        return allpaths;
+        return result;
     }
 
     private ArrayUnorderedList<ArrayUnorderedList<Integer>> filterPathsByMaxCost(double maxCost, ArrayUnorderedList<ArrayUnorderedList<Integer>> allpaths) {

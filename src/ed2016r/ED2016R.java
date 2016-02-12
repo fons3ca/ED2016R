@@ -160,8 +160,21 @@ public class ED2016R {
 
         //ArrayUnorderedList path = mapa.getMinTroopsPath(castleBlack, theEyrie, tropas);
         
-        Criterio crit = new Criterio(-1, -1, -1, 3);
-        mapa.findBestPaths(castleBlack, theEyrie, crit);
+        Criterio crit = new Criterio(100, -1, -1, 4);
+        ArrayUnorderedList<ArrayUnorderedList<Integer>> r = mapa.findBestPaths(castleBlack, theEyrie, crit);
+        
+        Iterator all = r.iterator();
+        Cidade[] city = mapa.getVertices();
+        while (all.hasNext()) {
+            ArrayUnorderedList<Integer> currentPath = (ArrayUnorderedList<Integer>) all.next();
+            Iterator curPath = currentPath.iterator();
+            System.out.println(" print ");
+            while (curPath.hasNext()) {
+                System.out.print("  " + city[(int)curPath.next()]);
+                
+            }
+            System.out.println("");
+        }
         
 //        if(mapa.canConquer(path, tropas)) {
 //            Iterator it = path.iterator();
