@@ -11,7 +11,7 @@ package ed2016r;
  */
 public class Cidade {
     private String nome;
-    private int defesas;
+    private double defesas;
     private boolean conquistada;
 
     public Cidade(String nome, int defesas) {
@@ -27,7 +27,7 @@ public class Cidade {
         this.nome = nome;
     }
 
-    public int getDefesas() {
+    public double getDefesas() {
         return defesas;
     }
 

@@ -332,7 +332,7 @@ public class Map extends Graph<Cidade> implements MapADT<Cidade> {
         int next;
         double numOfDaysCP = 0;
         ArrayUnorderedList<ArrayUnorderedList<Integer>> result = new ArrayUnorderedList<>();
-        
+
         while (allpathsIt.hasNext()) {
             ArrayUnorderedList<Integer> currentPath = (ArrayUnorderedList<Integer>) allpathsIt.next();
 
@@ -367,6 +367,7 @@ public class Map extends Graph<Cidade> implements MapADT<Cidade> {
         int cur;
         int next;
         double maxCostCP = 0;
+        ArrayUnorderedList<ArrayUnorderedList<Integer>> result = new ArrayUnorderedList<>();
 
         while (allpathsIt.hasNext()) {
             ArrayUnorderedList<Integer> currentPath = (ArrayUnorderedList<Integer>) allpathsIt.next();
@@ -388,42 +389,50 @@ public class Map extends Graph<Cidade> implements MapADT<Cidade> {
                     maxCostCP += alt1Cost;
                     maxCostCP += (Math.pow((vertices[next].getDefesas() / 10), 1.8)) * 100;
                 }
+                cur = next;
             } while (currentPathIt.hasNext());
-            if (maxCostCP > maxCost) {
-                allpathsIt.remove();
+            if (maxCostCP < maxCost) {
+                result.addRear(currentPath);
             }
+            maxCostCP = 0;
         }
-        return allpaths;
+        return result;
     }
 
     private ArrayUnorderedList<ArrayUnorderedList<Integer>> filterPathsByMaxLossPerCombat(double maxLossesCombat, ArrayUnorderedList<ArrayUnorderedList<Integer>> allpaths) {
         Iterator allpathsIt = allpaths.iterator();
-        int cur;
-        int next;
-
+        ArrayUnorderedList<ArrayUnorderedList<Integer>> result = new ArrayUnorderedList<>();
+        double maxLoss = 0;
+        
+        
         while (allpathsIt.hasNext()) {
             ArrayUnorderedList<Integer> currentPath = (ArrayUnorderedList<Integer>) allpathsIt.next();
-
             Iterator currentPathIt = currentPath.iterator();
-            cur = (int) currentPathIt.next();
-            next = cur;
-            do {
-                if (currentPathIt.hasNext()) {
-                    next = (int) currentPathIt.next();
+            while (currentPathIt.hasNext()) {
+                int current = (int)currentPathIt.next();
+                double a = (Math.pow((vertices[current].getDefesas() / 10), 1.8)) * 100;
+                //System.out.println("Cidade: " + vertices[current] + " maxLoss: " + maxLoss + " CurrentLoss: " + a);
+                if(maxLoss<a){
+                    maxLoss=a;
                 }
-                double singleCombatLosses = (Math.pow((vertices[next].getDefesas() / 10), 1.8)) * 100;
-                if (singleCombatLosses > maxLossesCombat) {
-                    allpathsIt.remove();
-                }
-            } while (currentPathIt.hasNext());
+                
+            }
+            if(maxLoss<=maxLossesCombat){
+                result.addRear(currentPath);
+            }
+            maxLoss = 0;
         }
-        return allpaths;
+        
+        
+        
+        
+        return result;
     }
 
     private ArrayUnorderedList<ArrayUnorderedList<Integer>> filterPathsByMaxCombats(int maxCombats, ArrayUnorderedList<ArrayUnorderedList<Integer>> allpaths) {
         Iterator allpathsIt = allpaths.iterator();
         ArrayUnorderedList<ArrayUnorderedList<Integer>> result = new ArrayUnorderedList<>();
-        
+
         while (allpathsIt.hasNext()) {
             ArrayUnorderedList<Integer> currentPath = (ArrayUnorderedList<Integer>) allpathsIt.next();
             System.out.println("Current size: " + (currentPath.size() - 1));
@@ -449,7 +458,7 @@ public class Map extends Graph<Cidade> implements MapADT<Cidade> {
         if (criterios.getPerdasCombate() > -1) {
             // Se perdasCombate > 0, filtra os caminhos por limite de perdas em combate, ficando allpaths apenas com os caminhos filtrados
             result = filterPathsByMaxLossPerCombat(criterios.getPerdasCombate(), result);
-        } 
+        }
         if (criterios.getNumeroCombates() > -1) {
             // Se numeroCombates > 0, filtra os caminhos por numero de combates limite, ficando allpaths apenas com os caminhos filtrados
             result = filterPathsByMaxCombats(criterios.getNumeroCombates(), result);
