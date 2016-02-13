@@ -5,12 +5,8 @@
  */
 package ed2016r;
 
-import List.ArrayUnorderedList;
-import LinkedQueue.LinkedQueue;
-import java.io.BufferedReader;
 import java.io.IOException;
-import java.io.InputStreamReader;
-import java.util.Iterator;
+
 
 /**
  *
@@ -22,8 +18,6 @@ public class ED2016R {
      * @param args the command line arguments
      */
     public static void main(String[] args) throws IOException {
-        InputStreamReader istream = new InputStreamReader(System.in);
-        BufferedReader bufRead = new BufferedReader(istream);
 
         //Instanciar o Mapa/Jogo
         Map mapa = new Map();
@@ -38,6 +32,8 @@ public class ED2016R {
         Cidade theEyrie = new Cidade("The eyrie", 54);//6
         Cidade winterfell = new Cidade("Winterfell", 64);//7
         Cidade castleBlack = new Cidade("Castle Black", 0);//8
+        
+        castleBlack.setConquistada(true);
 
         //Instanciar os Caminhos / Edges / Alternativas
         Alternativa vaesCastle = new Alternativa("Alternativa 1", 800, 10, 2.2);
@@ -111,6 +107,7 @@ public class ED2016R {
         mapa.addEdge(winterfell, castleBlack, winterfellCastle2);
 
         GameOfThrones got = new GameOfThrones();
+        Criterio crit = new Criterio(-1, -1, -1, -1);
         
         while(true) { // INICIAL MENU
             got.initialMenu();
@@ -120,7 +117,26 @@ public class ED2016R {
                     got.startGameMenu();
                     got.readOption();
                     if (got.getOpt() == 1) {
+                        while(true) {
+                            got.simMenu();
+                            got.readOption();
+                            if(got.getOpt() == 1) {
+                                // LER CIDADES INICIAL E DESTINO
+                            } else if(got.getOpt() == 2) {
+                                // SHOW PATHS BY MAX TROOPS LOST
+                            } else if(got.getOpt() == 3) {
+                                // SHOW PATHS BY LOSSES PER COMBAT
+                            } else if(got.getOpt() == 4) {
+                                // SHOW PATHS BY MAX COMBATS
+                            } else if(got.getOpt() == 5) {
+                                // SHOW PATHS BY CRITERIA
+                                
+                            } else if(got.getOpt() == 6) {
+                                break;
+                            }
+                        }
                         // SIMULATE PATH
+                        // LER CRITERIOS
                     } else if(got.getOpt() == 2) {
                         // CONQUER 
                     } else if(got.getOpt() == 3) {

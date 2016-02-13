@@ -18,8 +18,11 @@ import java.util.logging.Logger;
 public class GameOfThrones {
 
     final static String INVALID_OPTION = "Please enter a valid option!";
+    final static String INVALID_VALUE = "Please enter a valid value!";
     
     private int opt;
+    private double value;
+
     private InputStreamReader istream;
     private BufferedReader bufRead;
 
@@ -33,6 +36,10 @@ public class GameOfThrones {
         return opt;
     }
 
+    public double getValue() {
+        return value;
+    }
+    
     public void readOption() {
         String s;
         try {
@@ -44,7 +51,43 @@ public class GameOfThrones {
             readOption();
         }
     }
+    
+    public void readDouble() {
+        String s;
+        try {
+            System.out.print(" Value: ");
+            s = bufRead.readLine();
+            this.value = Double.parseDouble(s);
+        } catch(Exception ex) {
+            System.out.println("INVALID_OPTION");
+            readDouble();
+        }
+    }
 
+    public void printCriterias() {
+        System.out.println("+++++++++++++++++++++++++++++++");
+        System.out.println("+      PATHS BY CRITERIAS     +");
+        System.out.println("+++++++++++++++++++++++++++++++");
+        System.out.println("++    SET -1 IF NOT NEEDED    +");
+        System.out.println("+++++++++++++++++++++++++++++++");
+    }
+    
+    public void printDurationLine() {
+        System.out.println(" --Duration:");
+    }
+    
+    public void printMaxCostLine() {
+        System.out.println(" --Max Cost:");
+    }
+    
+    public void printLossPerCombatLine() {
+        System.out.println(" --LossPerCombat:");
+    }
+    
+    public void printMaxCombatsLine() {
+        System.out.println(" --MaxCombats:");
+    }
+    
     public void initialMenu() {
         System.out.println("+++++++++++++++++++++++++++++++");
         System.out.println("+             MENU            +");
@@ -69,9 +112,13 @@ public class GameOfThrones {
         System.out.println("+++++++++++++++++++++++++++++++");
         System.out.println("+        Simulate  Menu       +");
         System.out.println("+++++++++++++++++++++++++++++++");
-        System.out.println("+ 1. Simulate                 +");
-        System.out.println("+ 2. Conquer                  +");
-        System.out.println("+ 3. Back                     +");
+        System.out.println("+ --Show paths by:            +");
+        System.out.println("+ 1. Duration                 +");
+        System.out.println("+ 2. Max Troops Lost          +");
+        System.out.println("+ 3. Losses Per Combat        +");
+        System.out.println("+ 4. Max Combats              +");
+        System.out.println("+ 5. More than one Criteria   +");
+        System.out.println("+ 6. Back                     +");
         System.out.println("+++++++++++++++++++++++++++++++");
     }
     
