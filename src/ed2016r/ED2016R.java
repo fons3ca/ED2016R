@@ -116,33 +116,37 @@ public class ED2016R {
             got.initialMenu();
             got.readOption();
             if (got.getOpt() == 1) { // START GAME MENU
-                do {
+                while(true) {
                     got.startGameMenu();
                     got.readOption();
                     if (got.getOpt() == 1) {
                         // SIMULATE PATH
                     } else if(got.getOpt() == 2) {
                         // CONQUER 
+                    } else if(got.getOpt() == 3) {
+                        break;
                     }
-                } while(got.getOpt() != 3);
+                }
             } else if (got.getOpt() == 2) { // EDIT GAME MENU
-                do {
+                while(true) {
                     got.editGameMenu();
                     got.readOption();
                     if(got.getOpt() == 1) {
                         // EDIT CITY
-                        do {
+                        while(true) {
                             got.editCityMenu();
                             got.readOption();
                             if(got.getOpt() == 1) {
                                 // EDIT CITY NAME
                             } else if(got.getOpt() == 2) {
                                 // EDIT CITY DEFENSES
+                            } else if(got.getOpt() == 3) {
+                                break;
                             }
-                        } while(got.getOpt() != 3);
+                        }
                     } else if(got.getOpt() == 2){
                         // EDIT PATH
-                        do {
+                        while(true) {
                             got.editPathMenu();
                             got.readOption();
                             if(got.getOpt() == 1) {
@@ -151,10 +155,14 @@ public class ED2016R {
                                 // EDIT PATH DURATION
                             } else if(got.getOpt() == 3) {
                                 // EDIT PATH COST
+                            } else if(got.getOpt() == 4) {
+                                break;
                             }
-                        } while(got.getOpt() != 4);
+                        }
+                    } else if(got.getOpt() == 3) {
+                        break;
                     }
-                } while(got.getOpt() != 3); // BACK from editGameMenu
+                }
             } else if (got.getOpt() == 3) { // EXIT GAME
                 break;
             }
