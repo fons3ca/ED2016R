@@ -18,8 +18,6 @@ import java.util.Iterator;
  */
 public class ED2016R {
 
-    final static String INVALID_OPTION = "Please enter a valid option!";
-
     /**
      * @param args the command line arguments
      */
@@ -112,48 +110,55 @@ public class ED2016R {
         mapa.addEdge(winterfell, castleBlack, winterfellCastle);
         mapa.addEdge(winterfell, castleBlack, winterfellCastle2);
 
-        System.out.println("+++++++++++++++++++++++++++++++");
-        System.out.println("+Welcome to Game of <T>hrones!+");
-        System.out.println("+++++++++++++++++++++++++++++++\n");
-
-        System.out.println("Press ENTER to begin!");
-
-        bufRead.readLine();
-        System.out.println("+++++++++++++++++++++++++++++++");
-        System.out.println("+            MENU             +");
-        System.out.println("+++++++++++++++++++++++++++++++");
-        System.out.println("+ 1. Start game               +");
-        System.out.println("+ 2. Change game values       +");
-        System.out.println("+++++++++++++++++++++++++++++++");
-
-        String optS = bufRead.readLine();
-        int optI = -1;
-        try {
-            optI = Integer.parseInt(optS);
-        } catch (Exception e) {
-            System.out.println(INVALID_OPTION);
-        }
-        if (optI == 1) {//begin game
-            System.out.println("");
-            System.out.println("+++++++++++++++++++++++++++++++");
-            System.out.println("+        Game Started         +");
-            System.out.println("+++++++++++++++++++++++++++++++");
-            System.out.println("+ 1. Conquer Simulator        +");
-            System.out.println("+ 2. Iniciar conquista        +");
-            System.out.println("+++++++++++++++++++++++++++++++");
-            optS = bufRead.readLine();
-            try {
-                optI = Integer.parseInt(optS);
-            } catch (Exception e) {
-                System.out.println(INVALID_OPTION);
+        GameOfThrones got = new GameOfThrones();
+        
+        while(true) { // INICIAL MENU
+            got.initialMenu();
+            got.readOption();
+            if (got.getOpt() == 1) { // START GAME MENU
+                do {
+                    got.startGameMenu();
+                    got.readOption();
+                    if (got.getOpt() == 1) {
+                        // SIMULATE PATH
+                    } else if(got.getOpt() == 2) {
+                        // CONQUER 
+                    }
+                } while(got.getOpt() != 3);
+            } else if (got.getOpt() == 2) { // EDIT GAME MENU
+                do {
+                    got.editGameMenu();
+                    got.readOption();
+                    if(got.getOpt() == 1) {
+                        // EDIT CITY
+                        do {
+                            got.editCityMenu();
+                            got.readOption();
+                            if(got.getOpt() == 1) {
+                                // EDIT CITY NAME
+                            } else if(got.getOpt() == 2) {
+                                // EDIT CITY DEFENSES
+                            }
+                        } while(got.getOpt() != 3);
+                    } else if(got.getOpt() == 2){
+                        // EDIT PATH
+                        do {
+                            got.editPathMenu();
+                            got.readOption();
+                            if(got.getOpt() == 1) {
+                                // EDIT PATH DISTANCE
+                            } else if(got.getOpt() == 2) {
+                                // EDIT PATH DURATION
+                            } else if(got.getOpt() == 3) {
+                                // EDIT PATH COST
+                            }
+                        } while(got.getOpt() != 4);
+                    }
+                } while(got.getOpt() != 3); // BACK from editGameMenu
+            } else if (got.getOpt() == 3) { // EXIT GAME
+                break;
             }
-            if (optI==1) {
-                
-            }
-        } else if (optI == 2) {
-            //mecanismo para alterar valores de cidades e caminhos
         }
-
         //ArrayUnorderedList path = mapa.getMinTroopsPath(castleBlack, theEyrie, tropas);
     }
 
