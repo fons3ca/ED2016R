@@ -54,6 +54,10 @@ public class Criterio {
         this.numeroCombates = numeroCombates;
     }
     
-    
+    public void setCriterios() {
+        GameOfThrones got = new GameOfThrones();
+        got.printCriterias();
+        //got.readCriterias();
+    }
     
 }
