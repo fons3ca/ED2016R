@@ -110,6 +110,7 @@ public class ED2016R {
         Criterio crit = new Criterio(-1, -1, -1, -1);
         
         while(true) { // INICIAL MENU
+            got.beforeStart();
             got.initialMenu();
             got.readOption();
             if (got.getOpt() == 1) { // START GAME MENU
@@ -133,7 +134,6 @@ public class ED2016R {
                                 got.printDurationLine();
                                 got.readDouble();
                                 crit.setDuracaoTotal(got.getValue());
-                                System.out.println("\n" + crit.getDuracaoTotal() + "\n" + "\n" + crit.getCustoMaximo()+ "\n" + crit.getPerdasCombate()+ "\n" + crit.getNumeroCombates());
                                 mapa.printPaths(mapa.shortestPathsByDuration(1, mapa.findBestPaths(castleBlack, theEyrie, crit)));
                                 //mapa.printPaths(mapa.shortestPathsByDuration(1, mapa.dfsAllPaths(castleBlack, theEyrie)));
                             } else if(got.getOpt() == 6) {

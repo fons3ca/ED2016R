@@ -22,6 +22,7 @@ public class GameOfThrones {
     
     private int opt;
     private double value;
+    private int troops;
 
     private InputStreamReader istream;
     private BufferedReader bufRead;
@@ -38,6 +39,10 @@ public class GameOfThrones {
 
     public double getValue() {
         return value;
+    }
+    
+    public int getTropas() {
+        return troops;
     }
     
     public void readOption() {
@@ -59,8 +64,20 @@ public class GameOfThrones {
             s = bufRead.readLine();
             this.value = Double.parseDouble(s);
         } catch(Exception ex) {
-            System.out.println("INVALID_OPTION");
+            System.out.println(INVALID_VALUE);
             readDouble();
+        }
+    }
+    
+    public void readTroops() {
+        String s;
+        try {
+            System.out.print(" Starting Troops: ");
+            s = bufRead.readLine();
+            this.troops = Integer.parseInt(s);
+        } catch(Exception ex) {
+            System.out.println(INVALID_VALUE);
+            readTroops();
         }
     }
 
@@ -86,6 +103,14 @@ public class GameOfThrones {
     
     public void printMaxCombatsLine() {
         System.out.println(" --MaxCombats:");
+    }
+    
+    public void beforeStart() {
+        System.out.println("+++++++++++++++++++++++++++++++");
+        System.out.println("++++++++ GAME STARTING ++++++++");
+        System.out.println("+++++++++++++++++++++++++++++++");
+        System.out.println("+ Insert your starting troops +");
+        readTroops();
     }
     
     public void initialMenu() {
