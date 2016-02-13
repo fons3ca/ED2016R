@@ -15,15 +15,20 @@ import java.util.Iterator;
 /**
  *
  * @author Utilizador
- * @param <Cidade>
  */
 public class Map extends Graph<Cidade> implements MapADT<Cidade> {
 
+    /**
+     *
+     */
     protected ArrayUnorderedList<Alternativa>[][] wAdjMatrix;
     private boolean[] visited;      // to remember visit
     private ArrayUnorderedList<Integer> al;
     private int size;
 
+    /**
+     *cresates a map
+     */
     public Map() {
         super();
         this.wAdjMatrix = new ArrayUnorderedList[super.DEFAULT_CAPACITY][super.DEFAULT_CAPACITY];
@@ -129,6 +134,11 @@ public class Map extends Graph<Cidade> implements MapADT<Cidade> {
         this.removeEdge(getIndex(vertex1), getIndex(vertex2));
     }
 
+    /**
+     *
+     * @param index1
+     * @param index2
+     */
     @Override
     public void removeEdge(int index1, int index2) {
         if (indexIsValid(index1) && indexIsValid(index2)) {
@@ -139,15 +149,21 @@ public class Map extends Graph<Cidade> implements MapADT<Cidade> {
         }
     }
 
+    /**
+     *
+     * @param i
+     * @return
+     */
     public Cidade getCidadeAt(int i) {
         return this.vertices[i];
     }
 
-    @Override
-    public double shortestPathWeight(Cidade vertex1, Cidade vertex2) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-
+    /**
+     * @param source cidade de inicio dos caminhos
+     * @param destination cidade de destino dos caminhos
+     * @return Lista nao aordenada de listas nao ordenadas de integers que
+     * representam index de cidades
+     */
     public ArrayUnorderedList<ArrayUnorderedList<Integer>> dfsAllPaths(Cidade source, Cidade destination) {
         al = new ArrayUnorderedList<>();
         this.size = 0;
@@ -159,8 +175,8 @@ public class Map extends Graph<Cidade> implements MapADT<Cidade> {
         dfsAllPathsR(getIndex(source), getIndex(destination), resultQueue);
         return resultQueue;
     }
-
-    public void dfsAllPathsR(int src, int dst, ArrayUnorderedList<ArrayUnorderedList<Integer>> resultQueue) {
+    
+    private void dfsAllPathsR(int src, int dst, ArrayUnorderedList<ArrayUnorderedList<Integer>> resultQueue) {
         al.addRear(src);
         size++;
         visited[src] = true;
@@ -188,6 +204,12 @@ public class Map extends Graph<Cidade> implements MapADT<Cidade> {
         }
     }
 
+    /**
+     * 
+     * @param numPaths 
+     * @param allPaths
+     * @return ArrayUnorderedList<ArrayUnorderedList<>> caminhos com alternativas
+     */
     public ArrayUnorderedList<ArrayUnorderedList<Object>> getMinTroopsPath(int numPaths, ArrayUnorderedList<ArrayUnorderedList<Integer>> allPaths) {
         ArrayUnorderedList<ArrayUnorderedList<Integer>> resultPathOnly = new ArrayUnorderedList<>();
         ArrayUnorderedList<ArrayUnorderedList<Object>> result = new ArrayUnorderedList<>();
@@ -241,86 +263,23 @@ public class Map extends Graph<Cidade> implements MapADT<Cidade> {
         return result;
     }
 
-    public void teste(Cidade src, Cidade dst){
-        double numTropasTemp = 0;
-        double numTropas = Double.MAX_VALUE;
-        int numTropasDefesa;
-        double numTempoTemp = 0;
-        double minTempo = Double.MAX_VALUE;
-        
-        int opt = -1;
-        int cur;
-        int next;
-
-        ArrayUnorderedList<Alternativa> tempCaminho = new ArrayUnorderedList<>();
-        ArrayUnorderedList<Alternativa> resultCaminho = new ArrayUnorderedList<>();
-        ArrayUnorderedList<Cidade> tempCidade = new ArrayUnorderedList<>();
-        ArrayUnorderedList<Cidade> resultCidade = new ArrayUnorderedList<>();
-
-        ArrayUnorderedList<ArrayUnorderedList<Integer>> allPaths = new ArrayUnorderedList<>();
-        allPaths  = this.dfsAllPaths(src, dst);
-        Iterator it = allPaths.iterator();
-        while (it.hasNext()) {
-            ArrayUnorderedList currentPath = (ArrayUnorderedList) it.next();
-            Iterator cpit = currentPath.iterator();
-            
-            cur = (int) cpit.next();
-            next = getIndex(dst);
-            while (cpit.hasNext()) {
-                next = (int) cpit.next();
-                tempCidade.addRear(this.vertices[cur]);
-                double cansados1 = this.wAdjMatrix[cur][next].first().getDistancia();
-                double cansados2 = this.wAdjMatrix[cur][next].last().getDistancia();
-                //double perdasCombate = simuladorDefesa(next);
-                if (cansados2 <= cansados1) {
-                    numTempoTemp += cansados2;
-                    numTropasTemp += this.wAdjMatrix[cur][next].last().getDistancia();
-                    tempCaminho.addRear(this.wAdjMatrix[cur][next].last());
-                } else {
-                    numTempoTemp += cansados1;
-                    numTropasTemp += (this.wAdjMatrix[cur][next].first().getDistancia());
-                    tempCaminho.addRear(this.wAdjMatrix[cur][next].first());
-                }
-                if (!vertices[next].isConquistada()) {
-                    //numTropasTemp += perdasCombate;
-                }
-                cur = next;
-            }
-            tempCidade.addRear(this.vertices[next]);
-            if (minTempo > numTempoTemp || (minTempo == numTempoTemp && numTempoTemp <= numTropas)) {
-                numTropas = numTropasTemp;
-                minTempo = numTempoTemp;
-                resultCidade = new ArrayUnorderedList<>();
-                resultCaminho = new ArrayUnorderedList<>();
-                Iterator itCidade = tempCidade.iterator();
-                Iterator itCaminho = tempCaminho.iterator();
-                while (itCidade.hasNext()) {
-                    resultCidade.addRear((Cidade) itCidade.next());
-                }
-                while (itCaminho.hasNext()) {
-                    resultCaminho.addRear((Alternativa) itCaminho.next());
-                }
-            }
-            tempCidade = new ArrayUnorderedList<>();
-            tempCaminho = new ArrayUnorderedList<>();
-            numTropasTemp = 0;
-            numTempoTemp = 0;
-        }
-    }
     
-    
+    /**
+     * 
+     * @param allPaths todos os caminhos
+     * @return indexes do caminho que gasta menos tropas
+     */
     public ArrayUnorderedList<Integer> getMinTroopsPathIndex(ArrayUnorderedList<ArrayUnorderedList<Integer>> allPaths) {
         Iterator it = allPaths.iterator();
-        
+
         ArrayUnorderedList<Integer> bestPath = new ArrayUnorderedList<>();
         int cur;
         int next;
         double numTropasCP = 0;
         double numTropasOptimum = Double.MAX_VALUE;
         ArrayUnorderedList<Integer> p = new ArrayUnorderedList<>();
-        
-        //todos os caminho possiveis
 
+        //todos os caminho possiveis
         //iterar sobre todos os caminhos possiveis
         while (it.hasNext()) {
             //currentPath é o caminho seguinte no Array de caminhos
@@ -328,18 +287,18 @@ public class Map extends Graph<Cidade> implements MapADT<Cidade> {
             Iterator cpit = currentPath.iterator();
             cur = (int) cpit.next();
             next = cur;
-             while (cpit.hasNext()){
+            while (cpit.hasNext()) {
                 //if (cpit.hasNext()) {
-                    next = (int) cpit.next();
+                next = (int) cpit.next();
                 //}
-                    if (cur==next) {
-                        System.out.println("igual");
-                 } else {
-                 }
-                    
-                    System.out.println(this.wAdjMatrix[cur][next].first().getCusto());
-                    
-                    p.addRear(next);
+                if (cur == next) {
+                    System.out.println("igual");
+                } else {
+                }
+
+                System.out.println(this.wAdjMatrix[cur][next].first().getCusto());
+
+                p.addRear(next);
                 //num de tropas perdidas na viagem pela alternativa 1
                 double cansados1 = (this.wAdjMatrix[cur][next].first().getCusto()) * (this.wAdjMatrix[cur][next].first().getDistancia());
                 //num de tropas perdidas na viagem pela alternativa 2
@@ -361,8 +320,8 @@ public class Map extends Graph<Cidade> implements MapADT<Cidade> {
                 Iterator i = p.iterator();
                 bestPath = new ArrayUnorderedList<>();
                 while (i.hasNext()) {
-                    bestPath.addRear((int)i.next());
-       
+                    bestPath.addRear((int) i.next());
+
                 }
             }
             numTropasCP = 0;
@@ -370,6 +329,12 @@ public class Map extends Graph<Cidade> implements MapADT<Cidade> {
         return bestPath;
     }
 
+    /**
+     * 
+     * @param caminho
+     * @param tropas
+     * @return retorna calculo das tropas sobreviventes depois de percorrer um caminho
+     */
     public int canConquer(ArrayUnorderedList<Integer> caminho, int tropas) {
         if (!vertices[(int) caminho.first()].isConquistada()) {
             System.out.println("A cidade de inicio ainda nao foi conquistada!!");
@@ -392,6 +357,12 @@ public class Map extends Graph<Cidade> implements MapADT<Cidade> {
         return (int) (tropas - custo);
     }
 
+    /**
+     * 
+     * @param caminho a ser conquistado
+     * @param tropas num de tropas que o vao percorrer
+     * @return tropas sobreviventes ou -1 se nao foi possivel conquistar
+     */
     public int conquerPath(ArrayUnorderedList<Integer> caminho, int tropas) {
         int survivors = canConquer(caminho, tropas);
         if (survivors >= 0) {
@@ -405,6 +376,13 @@ public class Map extends Graph<Cidade> implements MapADT<Cidade> {
         return survivors;
     }
 
+    
+    /**
+     * 
+     * @param numPaths numero de caminhos pretendidos
+     * @param allpaths
+     * @return os n melhores caminhos em relacao a duracao em dias ja com as alternativas escolhidas
+     */
     public ArrayUnorderedList<ArrayUnorderedList<Object>> shortestPathsByDuration(int numPaths, ArrayUnorderedList<ArrayUnorderedList<Integer>> allpaths) {
         if (allpaths.isEmpty()) {
             return new ArrayUnorderedList<>();
@@ -450,8 +428,12 @@ public class Map extends Graph<Cidade> implements MapADT<Cidade> {
         return result;
     }
 
-    //metodo auxiliar
-    private ArrayUnorderedList<Integer> shortestPathByDurationIndexes(ArrayUnorderedList<ArrayUnorderedList<Integer>> allpaths) {
+    /**
+     * 
+     * @param allpaths
+     * @return lista com o caminho que dura menos dias.
+     */
+    public ArrayUnorderedList<Integer> shortestPathByDurationIndexes(ArrayUnorderedList<ArrayUnorderedList<Integer>> allpaths) {
         Iterator allpathsIt = allpaths.iterator();
         ArrayUnorderedList<Integer> bestPath = null;
         int cur;
@@ -465,14 +447,14 @@ public class Map extends Graph<Cidade> implements MapADT<Cidade> {
             next = cur;
             do {
                 //if (currentPathIt.hasNext()) {
-                    next = (int) currentPathIt.next();
-                    System.out.println("curr: " + cur + "next: " + next);
+                next = (int) currentPathIt.next();
+                System.out.println("curr: " + cur + "next: " + next);
                 //}
-                if(this.wAdjMatrix[cur][next].first()==null){
+                if (this.wAdjMatrix[cur][next].first() == null) {
                     System.out.println("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!1");
-                    
+
                 }
-               
+
                 if (this.wAdjMatrix[cur][next].first().getDuracao() > this.wAdjMatrix[cur][next].last().getDuracao()) {
                     numOfDaysCP += this.wAdjMatrix[cur][next].last().getDuracao();
                     //TODO meter alternativa no resultado
@@ -491,8 +473,14 @@ public class Map extends Graph<Cidade> implements MapADT<Cidade> {
         return bestPath;
     }
 
+    /**
+     * 
+     * @param duracaoMax
+     * @param allpaths
+     * @return todos es caminhos com duracao menor que duracaoMax
+     */
     private ArrayUnorderedList<ArrayUnorderedList<Integer>> filterPathsByDuration(double duracaoMax, ArrayUnorderedList<ArrayUnorderedList<Integer>> allpaths) {
-        if(allpaths.isEmpty()){
+        if (allpaths.isEmpty()) {
             System.out.println("VAZIO!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
         }
         Iterator allpathsIt = allpaths.iterator();
@@ -511,7 +499,7 @@ public class Map extends Graph<Cidade> implements MapADT<Cidade> {
                 if (currentPathIt.hasNext()) {
                     next = (int) currentPathIt.next();
                 }
-                if(this.wAdjMatrix[cur][next].first()==null){
+                if (this.wAdjMatrix[cur][next].first() == null) {
                     System.out.println("VAZIO!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
                     System.out.println("cur: " + cur + "next: " + next);
                 }
@@ -534,6 +522,12 @@ public class Map extends Graph<Cidade> implements MapADT<Cidade> {
         return result;
     }
 
+    /**
+     * 
+     * @param MaxCost
+     * @param allpaths
+     * @return todos es caminhos com custo de tropas menor que MaxCost
+     */
     private ArrayUnorderedList<ArrayUnorderedList<Integer>> filterPathsByMaxCost(double maxCost, ArrayUnorderedList<ArrayUnorderedList<Integer>> allpaths) {
         Iterator allpathsIt = allpaths.iterator();
         int cur;
@@ -577,6 +571,12 @@ public class Map extends Graph<Cidade> implements MapADT<Cidade> {
         return result;
     }
 
+    /**
+     * 
+     * @param MaxLossPerCombat
+     * @param allpaths
+     * @return todos es caminhos com custo por baatalha menor que MaxLossPerCombat
+     */
     private ArrayUnorderedList<ArrayUnorderedList<Integer>> filterPathsByMaxLossPerCombat(double maxLossesCombat, ArrayUnorderedList<ArrayUnorderedList<Integer>> allpaths) {
         Iterator allpathsIt = allpaths.iterator();
         ArrayUnorderedList<ArrayUnorderedList<Integer>> result = new ArrayUnorderedList<>();
@@ -601,6 +601,12 @@ public class Map extends Graph<Cidade> implements MapADT<Cidade> {
         return result;
     }
 
+     /**
+     * 
+     * @param maxCombats
+     * @param allpaths
+     * @return todos es caminhos num de combates travados menor maxCombats
+     */
     private ArrayUnorderedList<ArrayUnorderedList<Integer>> filterPathsByMaxCombats(int maxCombats, ArrayUnorderedList<ArrayUnorderedList<Integer>> allpaths) {
         Iterator allpathsIt = allpaths.iterator();
         ArrayUnorderedList<ArrayUnorderedList<Integer>> result = new ArrayUnorderedList<>();
@@ -615,6 +621,13 @@ public class Map extends Graph<Cidade> implements MapADT<Cidade> {
         return result;
     }
 
+    /**
+     * 
+     * @param start
+     * @param target
+     * @param criterios
+     * @return lista de caminhos segundo os filtros aplicados pelo utilizador
+     */
     public ArrayUnorderedList<ArrayUnorderedList<Integer>> findBestPaths(Cidade start, Cidade target, Criterio criterios) {
         // Vai buscar todos os caminhos
         ArrayUnorderedList<ArrayUnorderedList<Integer>> result = this.dfsAllPaths(start, target);
@@ -639,6 +652,10 @@ public class Map extends Graph<Cidade> implements MapADT<Cidade> {
         return result;
     }
 
+    /**
+     * Imprime uma determinada lista de caminhos
+     * @param resultPaths
+     */
     public void printPaths(ArrayUnorderedList<ArrayUnorderedList<Object>> resultPaths) {
         if (resultPaths.isEmpty()) {
             System.out.println("Nao existem caminhos!");
