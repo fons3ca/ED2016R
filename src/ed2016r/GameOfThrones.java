@@ -22,6 +22,7 @@ public class GameOfThrones {
     
     private int opt;
     private double value;
+
     private InputStreamReader istream;
     private BufferedReader bufRead;
 
@@ -35,6 +36,10 @@ public class GameOfThrones {
         return opt;
     }
 
+    public double getValue() {
+        return value;
+    }
+    
     public void readOption() {
         String s;
         try {
@@ -65,27 +70,22 @@ public class GameOfThrones {
         System.out.println("+++++++++++++++++++++++++++++++");
         System.out.println("++    SET -1 IF NOT NEEDED    +");
         System.out.println("+++++++++++++++++++++++++++++++");
+    }
+    
+    public void printDurationLine() {
         System.out.println(" --Duration:");
     }
     
-    public void readDuration() {
-        System.out.println(" --Duration:");
-        readDouble();
-    }
-    
-    public void readMaxCost() {
+    public void printMaxCostLine() {
         System.out.println(" --Max Cost:");
-        readDouble();
     }
     
-    public void readLossPerCombat() {
+    public void printLossPerCombatLine() {
         System.out.println(" --LossPerCombat:");
-        readDouble();
     }
     
-    public void readMaxCombats() {
+    public void printMaxCombatsLine() {
         System.out.println(" --MaxCombats:");
-        readDouble();
     }
     
     public void initialMenu() {

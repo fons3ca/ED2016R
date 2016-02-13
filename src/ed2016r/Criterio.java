@@ -57,7 +57,15 @@ public class Criterio {
     public void setCriterios() {
         GameOfThrones got = new GameOfThrones();
         got.printCriterias();
-        //got.readCriterias();
+        got.printDurationLine();
+        got.readDouble();
+        this.setDuracaoTotal(got.getValue());
+        got.printMaxCostLine();
+        this.setCustoMaximo(got.getValue());
+        got.printLossPerCombatLine();
+        this.setPerdasCombate(got.getValue());
+        got.printMaxCombatsLine();
+        this.setNumeroCombates((int) got.getValue());
     }
     
 }
