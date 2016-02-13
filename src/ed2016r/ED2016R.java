@@ -130,7 +130,12 @@ public class ED2016R {
                                 // SHOW PATHS BY MAX COMBATS
                             } else if(got.getOpt() == 5) {
                                 // SHOW PATHS BY CRITERIA
-                                
+                                got.printDurationLine();
+                                got.readDouble();
+                                crit.setDuracaoTotal(got.getValue());
+                                System.out.println("\n" + crit.getDuracaoTotal() + "\n" + "\n" + crit.getCustoMaximo()+ "\n" + crit.getPerdasCombate()+ "\n" + crit.getNumeroCombates());
+                                mapa.printPaths(mapa.shortestPathsByDuration(1, mapa.findBestPaths(castleBlack, theEyrie, crit)));
+                                //mapa.printPaths(mapa.shortestPathsByDuration(1, mapa.dfsAllPaths(castleBlack, theEyrie)));
                             } else if(got.getOpt() == 6) {
                                 break;
                             }

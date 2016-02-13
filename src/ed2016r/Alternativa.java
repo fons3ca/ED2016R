@@ -57,7 +57,7 @@ public class Alternativa {
 
     @Override
     public String toString() {
-        return "Alternativa{" + "nome=" + nome + ", distancia=" + distancia + ", duracao=" + duracao + ", custo=" + custo + '}';
+        return "{\n" + nome + "\n      distancia=" + distancia + "\n      duracao=" + duracao + "\n      custo=" + custo + "\n}\n";
     }
 
 }
