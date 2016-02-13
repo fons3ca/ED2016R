@@ -8,6 +8,7 @@ package ed2016r;
 import List.ArrayUnorderedList;
 import Graph.*;
 import LinkedQueue.LinkedQueue;
+import com.sun.xml.internal.stream.util.ReadOnlyIterator;
 import java.awt.BorderLayout;
 
 import java.util.Iterator;
@@ -149,6 +150,10 @@ public class Map extends Graph<Cidade> implements MapADT<Cidade> {
         }
     }
 
+    public Cidade[] getVertices() {
+        return vertices;
+    }
+    
     /**
      *
      * @param i
@@ -210,7 +215,10 @@ public class Map extends Graph<Cidade> implements MapADT<Cidade> {
      * @param allPaths
      * @return ArrayUnorderedList<ArrayUnorderedList<>> caminhos com alternativas
      */
-    public ArrayUnorderedList<ArrayUnorderedList<Object>> getMinTroopsPath(int numPaths, ArrayUnorderedList<ArrayUnorderedList<Integer>> allPaths) {
+    public ArrayUnorderedList<ArrayUnorderedList<Object>> shortestPathMinTroops(int numPaths, ArrayUnorderedList<ArrayUnorderedList<Integer>> allPaths) {
+        if(allPaths.isEmpty()) {
+            return new ArrayUnorderedList<>();
+        }
         ArrayUnorderedList<ArrayUnorderedList<Integer>> resultPathOnly = new ArrayUnorderedList<>();
         ArrayUnorderedList<ArrayUnorderedList<Object>> result = new ArrayUnorderedList<>();
         ArrayUnorderedList<Object> resultPA = new ArrayUnorderedList<>();
@@ -231,26 +239,26 @@ public class Map extends Graph<Cidade> implements MapADT<Cidade> {
             next = cur;
             resultPA.addRear(vertices[cur]);
             do {
-                if (currentPI.hasNext()) {
+                if(currentPI.hasNext()) {
                     next = (int) currentPI.next();
                 }
-                //num de tropas perdidas na viagem pela alternativa 1
-                double cansados1 = (this.wAdjMatrix[cur][next].first().getCusto()) * (this.wAdjMatrix[cur][next].first().getDistancia());
-                //num de tropas perdidas na viagem pela alternativa 2
-                double cansados2 = (this.wAdjMatrix[cur][next].last().getCusto()) * (this.wAdjMatrix[cur][next].first().getDistancia());
-                //num tropas perdidas no combate
-                double perdasCombate = (Math.pow((this.vertices[next].getDefesas() / 10), 1.8)) * 100;
-
-                if (cansados2 <= cansados1) {
-                    cost += cansados2;
-                    cost += perdasCombate;
-                    resultPA.addRear(this.wAdjMatrix[cur][next].last());
-                } else {
-                    cost += cansados1;
-                    cost += perdasCombate;
-                    resultPA.addRear(this.wAdjMatrix[cur][next].last());
+                if(!this.wAdjMatrix[cur][next].isEmpty()) {
+                    //num de tropas perdidas na viagem pela alternativa 1
+                    double cansados1 = (this.wAdjMatrix[cur][next].first().getCusto()) * (this.wAdjMatrix[cur][next].first().getDistancia());
+                    //num de tropas perdidas na viagem pela alternativa 2
+                    double cansados2 = (this.wAdjMatrix[cur][next].last().getCusto()) * (this.wAdjMatrix[cur][next].first().getDistancia());
+                    //num tropas perdidas no combate
+                    double perdasCombate = (Math.pow((this.vertices[next].getDefesas() / 10), 1.8)) * 100;
+                    if (cansados2 <= cansados1) {
+                        cost += cansados2;
+                        cost += perdasCombate;
+                        resultPA.addRear(this.wAdjMatrix[cur][next].last());
+                    } else {
+                        cost += cansados1;
+                        cost += perdasCombate;
+                        resultPA.addRear(this.wAdjMatrix[cur][next].last());
+                    }
                 }
-                cur = next;
                 resultPA.addRear(vertices[next]);
                 cur = next;
             } while (currentPI.hasNext());
@@ -262,8 +270,100 @@ public class Map extends Graph<Cidade> implements MapADT<Cidade> {
 
         return result;
     }
-
     
+public ArrayUnorderedList<ArrayUnorderedList<Object>> shortestPathsByLessTroopLosses(int numPaths, ArrayUnorderedList<ArrayUnorderedList<Integer>> allpaths) {
+        if (allpaths.isEmpty()) {
+            return new ArrayUnorderedList<>();
+        }
+        ArrayUnorderedList<ArrayUnorderedList<Integer>> resultPathOnly = new ArrayUnorderedList<>();
+        ArrayUnorderedList<ArrayUnorderedList<Object>> result = new ArrayUnorderedList<>();
+        ArrayUnorderedList<Object> resultPA = new ArrayUnorderedList<>();
+        double cost = 0;
+        for (int i = 0; i < numPaths; i++) {
+            ArrayUnorderedList<Integer> bestPath = getMinTroopsPathIndex(allpaths);
+            allpaths.remove(bestPath);
+            resultPathOnly.addRear(bestPath);
+        }
+
+        Iterator it = resultPathOnly.iterator();
+        while (it.hasNext()) {
+            ArrayUnorderedList<Integer> current = (ArrayUnorderedList<Integer>) it.next();
+            Iterator currentPI = current.iterator();
+            int cur, next;
+            cur = (int) currentPI.next();
+            next = cur;
+            resultPA.addRear(vertices[cur]);
+            do {
+                if(currentPI.hasNext()) {
+                    next = (int) currentPI.next();
+                }
+                if(!this.wAdjMatrix[cur][next].isEmpty()) {
+                    //num de tropas perdidas na viagem pela alternativa 1
+                    double pathlosses1 = (this.wAdjMatrix[cur][next].first().getCusto()) * (this.wAdjMatrix[cur][next].first().getDistancia());
+                    //num de tropas perdidas na viagem pela alternativa 2
+                    double pathlosses2 = (this.wAdjMatrix[cur][next].last().getCusto()) * (this.wAdjMatrix[cur][next].last().getDistancia());
+                    //num tropas perdidas no combate
+                    double perdasCombate = (Math.pow((this.vertices[next].getDefesas() / 10), 1.8)) * 100;
+                    if (pathlosses2 <= pathlosses1) {
+                        cost += pathlosses2;
+                        cost += perdasCombate;
+                        resultPA.addRear(this.wAdjMatrix[cur][next].last());
+                    } else {
+                        cost += pathlosses1;
+                        cost += perdasCombate;
+                        resultPA.addRear(this.wAdjMatrix[cur][next].first());
+                    }
+                }
+                resultPA.addRear(vertices[next]);
+                cur = next;
+            } while (currentPI.hasNext());
+            result.addRear(resultPA);
+            System.out.println("Path Cost: " + cost);
+            resultPA = new ArrayUnorderedList<>();
+            cost = 0;
+        }
+
+        return result;
+    }
+    
+    public ArrayUnorderedList<Integer> shortestPathByLessTroopLossesIndexes(ArrayUnorderedList<ArrayUnorderedList<Integer>> allpaths) {
+        Iterator allpathsIt = allpaths.iterator();
+        ArrayUnorderedList<Integer> bestPath = null;
+        int cur;
+        int next;
+        float numOfDaysCP = 0;
+        float numOfDaysOptimum = Float.MAX_VALUE;
+        while (allpathsIt.hasNext()) {
+            ArrayUnorderedList<Integer> currentPath = (ArrayUnorderedList<Integer>) allpathsIt.next();
+            Iterator currentPathIt = currentPath.iterator();
+            cur = (int) currentPathIt.next();
+            next = cur;
+            do {
+                //if (currentPathIt.hasNext()) {
+                next = (int) currentPathIt.next();
+                //}
+                if (this.wAdjMatrix[cur][next].first() == null) {
+                    System.out.println("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
+                }
+
+                if (this.wAdjMatrix[cur][next].first().getDuracao() > this.wAdjMatrix[cur][next].last().getDuracao()) {
+                    numOfDaysCP += this.wAdjMatrix[cur][next].last().getDuracao();
+                    //TODO meter alternativa no resultado
+                } else {
+                    numOfDaysCP += this.wAdjMatrix[cur][next].first().getDuracao();
+                }
+                cur = next;
+            } while (currentPathIt.hasNext());
+
+            if (numOfDaysOptimum > numOfDaysCP) {
+                numOfDaysOptimum = numOfDaysCP;
+                bestPath = currentPath;
+            }
+            numOfDaysCP = 0;
+        }
+        return bestPath;
+    }
+
     /**
      * 
      * @param allPaths todos os caminhos
@@ -287,31 +387,29 @@ public class Map extends Graph<Cidade> implements MapADT<Cidade> {
             Iterator cpit = currentPath.iterator();
             cur = (int) cpit.next();
             next = cur;
+            p.addRear(next);
             while (cpit.hasNext()) {
                 //if (cpit.hasNext()) {
                 next = (int) cpit.next();
                 //}
                 if (cur == next) {
                     System.out.println("igual");
-                } else {
                 }
-
-                System.out.println(this.wAdjMatrix[cur][next].first().getCusto());
-
-                p.addRear(next);
+                
                 //num de tropas perdidas na viagem pela alternativa 1
-                double cansados1 = (this.wAdjMatrix[cur][next].first().getCusto()) * (this.wAdjMatrix[cur][next].first().getDistancia());
+                double pathLosses1 = (this.wAdjMatrix[cur][next].first().getCusto()) * (this.wAdjMatrix[cur][next].first().getDistancia());
                 //num de tropas perdidas na viagem pela alternativa 2
-                double cansados2 = (this.wAdjMatrix[cur][next].last().getCusto()) * (this.wAdjMatrix[cur][next].last().getDistancia());
+                double pathLosses2 = (this.wAdjMatrix[cur][next].last().getCusto()) * (this.wAdjMatrix[cur][next].last().getDistancia());
                 //num tropas perdidas no combate
                 double perdasCombate = (Math.pow((this.vertices[next].getDefesas() / 10), 1.8)) * 100;
 
-                if (cansados2 <= cansados1) {
-                    numTropasCP += cansados2;
+                if (pathLosses2 <= pathLosses1) {
+                    numTropasCP += pathLosses2;
                 } else {
-                    numTropasCP += cansados1;
+                    numTropasCP += pathLosses1;
                 }
                 numTropasCP += perdasCombate;
+                p.addRear(next);
                 cur = next;
             }
 
@@ -420,7 +518,7 @@ public class Map extends Graph<Cidade> implements MapADT<Cidade> {
                 cur = next;
             } while (currentPI.hasNext());
             result.addRear(resultPA);
-            System.out.println("Cost min " + cost);
+            System.out.println("Path Cost: " + cost);
             resultPA = new ArrayUnorderedList<>();
             cost = 0;
         }
@@ -448,7 +546,6 @@ public class Map extends Graph<Cidade> implements MapADT<Cidade> {
             do {
                 //if (currentPathIt.hasNext()) {
                 next = (int) currentPathIt.next();
-                System.out.println("curr: " + cur + "next: " + next);
                 //}
                 if (this.wAdjMatrix[cur][next].first() == null) {
                     System.out.println("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!1");
@@ -664,7 +761,7 @@ public class Map extends Graph<Cidade> implements MapADT<Cidade> {
             while (it.hasNext()) {
                 ArrayUnorderedList<Integer> cur = (ArrayUnorderedList<Integer>) it.next();
                 Iterator it2 = cur.iterator();
-                System.out.println("-------------PRINT-----------");
+                System.out.println("--------> Caminho 1 <---------");
                 while (it2.hasNext()) {
                     System.out.println(it2.next().toString());
                 }
@@ -672,5 +769,221 @@ public class Map extends Graph<Cidade> implements MapADT<Cidade> {
         }
 
     }
+    
+    /**
+     * 
+     */
+    public void listCities() {
+        System.out.println("Cities: ");
+        for(int i=0; i<this.numVertices; i++) {
+            System.out.println("[" + i + "] " + vertices[i].getNome() + " [" + (int)vertices[i].getDefesas() + "]");
+        }
+    }
+    
+    public void editCityName() {
+        GameOfThrones input = new GameOfThrones();
+        do {
+            input.readOption();
+            if(input.getOpt() == -1) {
+                return;
+            }
+            if(input.getOpt() > 0 && input.getOpt() < this.numVertices) {
+                System.out.println("Set new name: ");
+                input.readString();
+                this.vertices[input.getOpt()].setNome(input.getString());
+                System.out.println("New name set: " + this.vertices[input.getOpt()]);
+            }
+        } while(input.getOpt() < 0 && input.getOpt() > this.numVertices-1);
+    }
 
+    /**
+     * 
+     */
+    public void editCityDefense() {
+        GameOfThrones input = new GameOfThrones();
+        do {
+            input.readOption();
+            if(input.getOpt() == -1) {
+                return;
+            }
+            if(input.getOpt() > 0 && input.getOpt() < this.numVertices) {
+                System.out.println("Set new Defense: ");
+                input.readDouble();
+                this.vertices[input.getOpt()].setDefesas((int) input.getValue());
+                System.out.println("New Defense set: " + (int)this.vertices[input.getOpt()].getDefesas());
+            }
+        } while(input.getOpt() < 0 && input.getOpt() > this.numVertices-1);
+    }
+    
+    /**
+     * 
+     */
+    public void editPathDistance() {
+        GameOfThrones input = new GameOfThrones();
+        int start, dest;
+        
+        do {
+            System.out.println("Cidade Partida: ");
+            input.readOption();
+            start = input.getOpt();
+            if(input.getOpt() == -1)
+                return;
+            System.out.println("Cidade Destino: ");
+            input.readOption();
+            dest = input.getOpt();
+            if(input.getOpt() == -1)
+                return;
+            
+            if(this.wAdjMatrix[start][dest].isEmpty()) {
+                System.out.println("Nao existe caminho entre essas cidades!");
+                return;
+            }
+            System.out.println(this.wAdjMatrix[start][dest].first().toString());
+            System.out.println(this.wAdjMatrix[start][dest].last().toString());
+            
+            do {
+                System.out.println("Which Alternative to change: ");
+                do {
+                    input.readOption();
+                } while(input.getOpt() != -1 && input.getOpt() != 1 && input.getOpt() != 2);
+                if(input.getOpt() == -1)
+                    return;
+                    
+                do {
+                    input.readDouble();
+                    if(input.getValue() == -1)
+                        return;
+                    
+                } while(input.getValue() < 0);
+                
+                double value = input.getValue();
+                
+                if(input.getOpt() == 1) {
+                    this.wAdjMatrix[start][dest].first().setDistancia((int) value);
+                    System.out.println("Values changed to: ");
+                    System.out.println(this.wAdjMatrix[start][dest].first().toString());
+                } else if(input.getOpt() == 2) {
+                    this.wAdjMatrix[start][dest].last().setDistancia((int) value);
+                    System.out.println("Values changed to: ");
+                    System.out.println(this.wAdjMatrix[start][dest].last().toString());
+                }
+            } while(input.getOpt() < 1 && input.getOpt() > 2);
+        } while(input.getOpt() < 0 && input.getOpt() > this.numVertices-1);
+        
+    }
+    
+    /**
+     * 
+     */
+    public void editPathDuration() {
+        GameOfThrones input = new GameOfThrones();
+        int start, dest;
+        
+        do {
+            System.out.println("Cidade Partida: ");
+            input.readOption();
+            start = input.getOpt();
+            if(input.getOpt() == -1)
+                return;
+            System.out.println("Cidade Destino: ");
+            input.readOption();
+            dest = input.getOpt();
+            if(input.getOpt() == -1)
+                return;
+            
+            if(this.wAdjMatrix[start][dest].isEmpty()) {
+                System.out.println("Nao existe caminho entre essas cidades!");
+                return;
+            }
+            System.out.println(this.wAdjMatrix[start][dest].first().toString());
+            System.out.println(this.wAdjMatrix[start][dest].last().toString());
+            
+            do {
+                System.out.println("Which Alternative to change: ");
+                do {
+                    input.readOption();
+                } while(input.getOpt() != -1 && input.getOpt() != 1 && input.getOpt() != 2);
+                if(input.getOpt() == -1)
+                    return;
+                    
+                do {
+                    input.readDouble();
+                    if(input.getValue() == -1)
+                        return;
+                    
+                } while(input.getValue() < 0);
+                
+                double value = input.getValue();
+                
+                if(input.getOpt() == 1) {
+                    this.wAdjMatrix[start][dest].first().setDuracao(value);
+                    System.out.println("Values changed to: ");
+                    System.out.println(this.wAdjMatrix[start][dest].first().toString());
+                } else if(input.getOpt() == 2) {
+                    this.wAdjMatrix[start][dest].last().setDuracao(value);
+                    System.out.println("Values changed to: ");
+                    System.out.println(this.wAdjMatrix[start][dest].last().toString());
+                }
+            } while(input.getOpt() < 1 && input.getOpt() > 2);
+        } while(input.getOpt() < 0 && input.getOpt() > this.numVertices-1);
+        
+    }
+    
+    /**
+     * 
+     */
+    public void editPathCost() {
+        GameOfThrones input = new GameOfThrones();
+        int start, dest;
+        
+        do {
+            System.out.println("Cidade Partida: ");
+            input.readOption();
+            start = input.getOpt();
+            if(input.getOpt() == -1)
+                return;
+            System.out.println("Cidade Destino: ");
+            input.readOption();
+            dest = input.getOpt();
+            if(input.getOpt() == -1)
+                return;
+            
+            if(this.wAdjMatrix[start][dest].isEmpty()) {
+                System.out.println("Nao existe caminho entre essas cidades!");
+                return;
+            }
+            System.out.println(this.wAdjMatrix[start][dest].first().toString());
+            System.out.println(this.wAdjMatrix[start][dest].last().toString());
+            
+            do {
+                System.out.println("Which Alternative to change: ");
+                do {
+                    input.readOption();
+                } while(input.getOpt() != -1 && input.getOpt() != 1 && input.getOpt() != 2);
+                if(input.getOpt() == -1)
+                    return;
+                    
+                do {
+                    input.readDouble();
+                    if(input.getValue() == -1)
+                        return;
+                    
+                } while(input.getValue() < 0);
+                
+                double value = input.getValue();
+                
+                if(input.getOpt() == 1) {
+                    this.wAdjMatrix[start][dest].first().setCusto(value);
+                    System.out.println("Values changed to: ");
+                    System.out.println(this.wAdjMatrix[start][dest].first().toString());
+                } else if(input.getOpt() == 2) {
+                    this.wAdjMatrix[start][dest].last().setCusto(value);
+                    System.out.println("Values changed to: ");
+                    System.out.println(this.wAdjMatrix[start][dest].last().toString());
+                }
+            } while(input.getOpt() < 1 && input.getOpt() > 2);
+        } while(input.getOpt() < 0 && input.getOpt() > this.numVertices-1);
+    }
+    
+    
 }

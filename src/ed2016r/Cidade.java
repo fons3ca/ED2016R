@@ -45,7 +45,7 @@ public class Cidade {
 
     @Override
     public String toString() {
-        return "" + this.nome + '\n';
+        return "" + this.nome;
     }
     
     

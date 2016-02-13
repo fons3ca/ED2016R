@@ -23,6 +23,7 @@ public class GameOfThrones {
     private int opt;
     private double value;
     private int troops;
+    private String string;
 
     private InputStreamReader istream;
     private BufferedReader bufRead;
@@ -43,6 +44,10 @@ public class GameOfThrones {
     
     public int getTropas() {
         return troops;
+    }
+    
+    public String getString() {
+        return string;
     }
 
     public void setTroops(int troops) {
@@ -82,6 +87,17 @@ public class GameOfThrones {
         } catch(Exception ex) {
             System.out.println(INVALID_VALUE);
             readTroops();
+        }
+    }
+    
+    public void readString() {
+        String s;
+        try {
+            s = bufRead.readLine();
+            this.string = s;
+        } catch(Exception ex) {
+            System.out.println(INVALID_VALUE);
+            readString();
         }
     }
 

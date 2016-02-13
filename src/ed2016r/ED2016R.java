@@ -123,9 +123,21 @@ public class ED2016R {
                             got.simMenu();
                             got.readOption();
                             if(got.getOpt() == 1) {
-                                // LER CIDADES INICIAL E DESTINO
+                                mapa.listCities();
+                                got.readOption();
+                                Cidade start = mapa.getCidadeAt(got.getOpt());
+                                got.readOption();
+                                Cidade dest = mapa.getCidadeAt(got.getOpt());
+                                mapa.printPaths(mapa.shortestPathsByDuration(1, mapa.dfsAllPaths(start, dest)));
                             } else if(got.getOpt() == 2) {
-                                // SHOW PATHS BY MAX TROOPS LOST
+                                mapa.listCities();
+                                got.readOption();
+                                Cidade start = mapa.getCidadeAt(got.getOpt());
+                                got.readOption();
+                                Cidade dest = mapa.getCidadeAt(got.getOpt());
+                                System.out.println(start.getNome());
+                                System.out.println(dest.getNome());
+                                mapa.printPaths(mapa.shortestPathsByLessTroopLosses(1, mapa.dfsAllPaths(start, dest)));
                             } else if(got.getOpt() == 3) {
                                 // SHOW PATHS BY LOSSES PER COMBAT
                             } else if(got.getOpt() == 4) {
@@ -159,25 +171,32 @@ public class ED2016R {
                             got.editCityMenu();
                             got.readOption();
                             if(got.getOpt() == 1) {
-                                // EDIT CITY NAME
+                                mapa.listCities();
+                                mapa.editCityName();
                             } else if(got.getOpt() == 2) {
-                                // EDIT CITY DEFENSES
+                                mapa.listCities();
+                                mapa.editCityDefense();
                             } else if(got.getOpt() == 3) {
                                 break;
                             }
                         }
                     } else if(got.getOpt() == 3) { // EDIT PATH
-                        got.editPathMenu();
+                        while(true) {
+                            got.editPathMenu();
                             got.readOption();
                             if(got.getOpt() == 1) {
-                                // EDIT PATH DISTANCE
+                                mapa.listCities();
+                                mapa.editPathDistance();
                             } else if(got.getOpt() == 2) {
-                                // EDIT PATH DURATION
+                                mapa.listCities();
+                                mapa.editPathDuration();
                             } else if(got.getOpt() == 3) {
-                                // EDIT PATH COST
+                                mapa.listCities();
+                                mapa.editPathCost();
                             } else if(got.getOpt() == 4) {
                                 break;
                             }
+                        }
                     } else if(got.getOpt() == 4) {
                         break;
                     }
