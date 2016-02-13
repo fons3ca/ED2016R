@@ -44,6 +44,10 @@ public class GameOfThrones {
     public int getTropas() {
         return troops;
     }
+
+    public void setTroops(int troops) {
+        this.troops = troops;
+    }
     
     public void readOption() {
         String s;
@@ -105,10 +109,9 @@ public class GameOfThrones {
         System.out.println(" --MaxCombats:");
     }
     
-    public void beforeStart() {
+    public void editTroops() {
         System.out.println("+++++++++++++++++++++++++++++++");
-        System.out.println("++++++++ GAME STARTING ++++++++");
-        System.out.println("+++++++++++++++++++++++++++++++");
+        System.out.println("+++++++  EDITING TROOPS +++++++");
         System.out.println("+ Insert your starting troops +");
         readTroops();
     }
@@ -151,9 +154,10 @@ public class GameOfThrones {
         System.out.println("+++++++++++++++++++++++++++++++");
         System.out.println("+       Edit Game Values      +");
         System.out.println("+++++++++++++++++++++++++++++++");
-        System.out.println("+ 1. Edit City                +");
-        System.out.println("+ 2. Edit Path                +");
-        System.out.println("+ 3. Back                     +");
+        System.out.println("+ 1. Edit Starting Troops     +");
+        System.out.println("+ 2. Edit City                +");
+        System.out.println("+ 3. Edit Path                +");
+        System.out.println("+ 4. Back                     +");
         System.out.println("+++++++++++++++++++++++++++++++");
     }
     

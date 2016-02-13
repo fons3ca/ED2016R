@@ -109,93 +109,83 @@ public class ED2016R {
         GameOfThrones got = new GameOfThrones();
         Criterio crit = new Criterio(-1, -1, -1, -1);
         
-//        while(true) { // INICIAL MENU
-//            got.beforeStart();
-//            got.initialMenu();
-//            got.readOption();
-//            if (got.getOpt() == 1) { // START GAME MENU
-//                while(true) {
-//                    got.startGameMenu();
-//                    got.readOption();
-//                    if (got.getOpt() == 1) {
-//                        while(true) {
-//                            got.simMenu();
-//                            got.readOption();
-//                            if(got.getOpt() == 1) {
-//                                // LER CIDADES INICIAL E DESTINO
-//                            } else if(got.getOpt() == 2) {
-//                                // SHOW PATHS BY MAX TROOPS LOST
-//                            } else if(got.getOpt() == 3) {
-//                                // SHOW PATHS BY LOSSES PER COMBAT
-//                            } else if(got.getOpt() == 4) {
-//                                // SHOW PATHS BY MAX COMBATS
-//                            } else if(got.getOpt() == 5) {
-//                                // SHOW PATHS BY CRITERIA
-//                                got.printDurationLine();
-//                                got.readDouble();
-//                                crit.setDuracaoTotal(got.getValue());
-//                                ArrayUnorderedList<ArrayUnorderedList<Integer>> b = mapa.findBestPaths(castleBlack, theEyrie, crit);
-//                                ArrayUnorderedList<ArrayUnorderedList<Object>> a = mapa.shortestPathsByDuration(1, b);
-//                                mapa.printPaths(a);
-//                                //mapa.printPaths(mapa.shortestPathsByDuration(1, mapa.dfsAllPaths(castleBlack, theEyrie)));
-//                            } else if(got.getOpt() == 6) {
-//                                break;
-//                            }
-//                        }
-//                        // SIMULATE PATH
-//                        // LER CRITERIOS
-//                    } else if(got.getOpt() == 2) {
-//                        // CONQUER 
-//                    } else if(got.getOpt() == 3) {
-//                        break;
-//                    }
-//                }
-//            } else if (got.getOpt() == 2) { // EDIT GAME MENU
-//                while(true) {
-//                    got.editGameMenu();
-//                    got.readOption();
-//                    if(got.getOpt() == 1) {
-//                        // EDIT CITY
-//                        while(true) {
-//                            got.editCityMenu();
-//                            got.readOption();
-//                            if(got.getOpt() == 1) {
-//                                // EDIT CITY NAME
-//                            } else if(got.getOpt() == 2) {
-//                                // EDIT CITY DEFENSES
-//                            } else if(got.getOpt() == 3) {
-//                                break;
-//                            }
-//                        }
-//                    } else if(got.getOpt() == 2){
-//                        // EDIT PATH
-//                        while(true) {
-//                            got.editPathMenu();
-//                            got.readOption();
-//                            if(got.getOpt() == 1) {
-//                                // EDIT PATH DISTANCE
-//                            } else if(got.getOpt() == 2) {
-//                                // EDIT PATH DURATION
-//                            } else if(got.getOpt() == 3) {
-//                                // EDIT PATH COST
-//                            } else if(got.getOpt() == 4) {
-//                                break;
-//                            }
-//                        }
-//                    } else if(got.getOpt() == 3) {
-//                        break;
-//                    }
-//                }
-//            } else if (got.getOpt() == 3) { // EXIT GAME
-//                break;
-//            }
-//        }
-        mapa.getMinTroopsPathIndex(mapa.dfsAllPaths(qohor, pentos));
-        System.out.println("main");
-        ArrayUnorderedList<Integer> A = mapa.getMinTroopsPathIndex(mapa.dfsAllPaths(qohor, pentos));
+        got.setTroops(10000); // STARTS WITH default: 10000 TROOPS
         
-        
-        
+        while(true) { // INICIAL MENU
+            got.initialMenu();
+            got.readOption();
+            if (got.getOpt() == 1) { // START GAME MENU
+                while(true) {
+                    got.startGameMenu();
+                    got.readOption();
+                    if (got.getOpt() == 1) {
+                        while(true) {
+                            got.simMenu();
+                            got.readOption();
+                            if(got.getOpt() == 1) {
+                                // LER CIDADES INICIAL E DESTINO
+                            } else if(got.getOpt() == 2) {
+                                // SHOW PATHS BY MAX TROOPS LOST
+                            } else if(got.getOpt() == 3) {
+                                // SHOW PATHS BY LOSSES PER COMBAT
+                            } else if(got.getOpt() == 4) {
+                                // SHOW PATHS BY MAX COMBATS
+                            } else if(got.getOpt() == 5) {
+                                // SHOW PATHS BY CRITERIA
+                                got.printDurationLine();
+                                got.readDouble();
+                                crit.setDuracaoTotal(got.getValue());
+                                mapa.printPaths(mapa.shortestPathsByDuration(1, mapa.dfsAllPaths(castleBlack, theEyrie)));
+                            } else if(got.getOpt() == 6) {
+                                break;
+                            }
+                        }
+                        // SIMULATE PATH
+                        // LER CRITERIOS
+                    } else if(got.getOpt() == 2) {
+                        // CONQUER 
+                    } else if(got.getOpt() == 3) {
+                        break;
+                    }
+                }
+            } else if (got.getOpt() == 2) { // EDIT GAME MENU
+                while(true) {
+                    got.editGameMenu();
+                    got.readOption();
+                    if(got.getOpt() == 1) { // EDIT STARTING TROOPS
+                        got.editTroops();
+                    } else if(got.getOpt() == 2){ // EDIT CITY
+                        while(true) {
+                            got.editCityMenu();
+                            got.readOption();
+                            if(got.getOpt() == 1) {
+                                // EDIT CITY NAME
+                            } else if(got.getOpt() == 2) {
+                                // EDIT CITY DEFENSES
+                            } else if(got.getOpt() == 3) {
+                                break;
+                            }
+                        }
+                    } else if(got.getOpt() == 3) { // EDIT PATH
+                        got.editPathMenu();
+                            got.readOption();
+                            if(got.getOpt() == 1) {
+                                // EDIT PATH DISTANCE
+                            } else if(got.getOpt() == 2) {
+                                // EDIT PATH DURATION
+                            } else if(got.getOpt() == 3) {
+                                // EDIT PATH COST
+                            } else if(got.getOpt() == 4) {
+                                break;
+                            }
+                    } else if(got.getOpt() == 4) {
+                        break;
+                    }
+                }
+            } else if (got.getOpt() == 3) { // EXIT GAME
+                break;
+            }
+        }
     }
 
 }
