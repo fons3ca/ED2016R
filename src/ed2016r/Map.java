@@ -187,33 +187,30 @@ public class Map extends Graph<Cidade> implements MapADT<Cidade> {
         }
     }
 
-    public ArrayUnorderedList<ArrayUnorderedList<Object>> getMinTroopsPath(int numAlt, ArrayUnorderedList<ArrayUnorderedList<Integer>> allPaths) {
-        int numTropasTemp = 0;
-        int numTropas = -1;
-        int cur;
-        int next;
-        ArrayUnorderedList<ArrayUnorderedList<Integer>> allPathIndex = new ArrayUnorderedList<>();
+    public ArrayUnorderedList<ArrayUnorderedList<Object>> getMinTroopsPath(int numPaths, ArrayUnorderedList<ArrayUnorderedList<Integer>> allPaths) {
+        ArrayUnorderedList<ArrayUnorderedList<Integer>> resultPathOnly = new ArrayUnorderedList<>();
         ArrayUnorderedList<ArrayUnorderedList<Object>> result = new ArrayUnorderedList<>();
-
-        for (int i = 0; i < numAlt; i++) {
-            ArrayUnorderedList<Integer> temp = getMinTroopsPathIndex(allPaths);
-            allPathIndex.addRear(temp);
-            allPaths.remove(temp);
+        ArrayUnorderedList<Object> resultPA = new ArrayUnorderedList<>();
+        double cost = 0;
+        System.out.println("old size: " + allPaths.size());
+        for (int i = 0; i < numPaths; i++) {
+            ArrayUnorderedList<Integer> bestPath = getMinTroopsPathIndex(allPaths);
+            allPaths.remove(bestPath);
+            resultPathOnly.addRear(bestPath);
         }
-        ArrayUnorderedList<Object> currentPathAlt = new ArrayUnorderedList<>();
-        Iterator it = allPathIndex.iterator();
-        //iterar sobre todos os caminhos possiveis
+        System.out.println("new size: " + allPaths.size());
+        Iterator it = resultPathOnly.iterator();
         while (it.hasNext()) {
-            //currentPath é o caminho seguinte no Array de caminhos
-            ArrayUnorderedList<Integer> currentPath = (ArrayUnorderedList) it.next();
-            Iterator cpit = currentPath.iterator();
-            cur = (int) cpit.next();
+            ArrayUnorderedList<Integer> current = (ArrayUnorderedList<Integer>) it.next();
+            Iterator currentPI = current.iterator();
+            int cur, next;
+            cur = (int) currentPI.next();
             next = cur;
+            resultPA.addRear(vertices[cur]);
             do {
-                if (cpit.hasNext()) {
-                    next = (int) cpit.next();
+                if (currentPI.hasNext()) {
+                    next = (int) currentPI.next();
                 }
-                currentPathAlt.addRear(this.vertices[cur]);
                 //num de tropas perdidas na viagem pela alternativa 1
                 double cansados1 = (this.wAdjMatrix[cur][next].first().getCusto()) * (this.wAdjMatrix[cur][next].first().getDistancia());
                 //num de tropas perdidas na viagem pela alternativa 2
@@ -222,21 +219,22 @@ public class Map extends Graph<Cidade> implements MapADT<Cidade> {
                 double perdasCombate = (Math.pow((this.vertices[next].getDefesas() / 10), 1.8)) * 100;
 
                 if (cansados2 <= cansados1) {
-                    numTropasTemp += cansados2;
-                    numTropasTemp += perdasCombate;
-                    currentPathAlt.addRear(this.wAdjMatrix[cur][next].last());
+                    cost += cansados2;
+                    cost += perdasCombate;
+                    resultPA.addRear(this.wAdjMatrix[cur][next].last());
                 } else {
-                    numTropasTemp += cansados1;
-                    numTropasTemp += perdasCombate;
-                    currentPathAlt.addRear(this.wAdjMatrix[cur][next].first());
+                    cost += cansados1;
+                    cost += perdasCombate;
+                    resultPA.addRear(this.wAdjMatrix[cur][next].last());
                 }
                 cur = next;
+                resultPA.addRear(vertices[next]);
+                cur = next;
+            } while (currentPI.hasNext());
+            result.addRear(resultPA);
 
-            } while (cpit.hasNext());//fim do caminho
-            currentPathAlt.addRear(this.vertices[next]);
-            
-            result.addRear(currentPathAlt);
-            currentPathAlt = new ArrayUnorderedList<>();
+            resultPA = new ArrayUnorderedList<>();
+            cost = 0;
         }
 
         return result;
@@ -335,6 +333,9 @@ public class Map extends Graph<Cidade> implements MapADT<Cidade> {
     }
 
     public ArrayUnorderedList<ArrayUnorderedList<Object>> shortestPathsByDuration(int numPaths, ArrayUnorderedList<ArrayUnorderedList<Integer>> allpaths) {
+        if(allpaths.isEmpty()){
+            return new ArrayUnorderedList<>();
+        }
         ArrayUnorderedList<ArrayUnorderedList<Integer>> resultPathOnly = new ArrayUnorderedList<>();
         ArrayUnorderedList<ArrayUnorderedList<Object>> result = new ArrayUnorderedList<>();
         ArrayUnorderedList<Object> resultPA = new ArrayUnorderedList<>();
@@ -554,16 +555,21 @@ public class Map extends Graph<Cidade> implements MapADT<Cidade> {
         return result;
     }
 
-    public void printPaths(ArrayUnorderedList<ArrayUnorderedList<Integer>> resultPaths) {
-        Iterator it = resultPaths.iterator();
-        while (it.hasNext()) {
-            ArrayUnorderedList<Integer> cur = (ArrayUnorderedList<Integer>) it.next();
-            Iterator it2 = cur.iterator();
-            System.out.println("-------------PRINT-----------");
-            while (it2.hasNext()) {
-                System.out.print("" + vertices[(Integer) it2.next()] + " -> ");
+    public void printPaths(ArrayUnorderedList<ArrayUnorderedList<Object>> resultPaths) {
+        if (resultPaths.isEmpty()) {
+            System.out.println("Nao existem caminhos!");
+        } else {
+            Iterator it = resultPaths.iterator();
+            while (it.hasNext()) {
+                ArrayUnorderedList<Integer> cur = (ArrayUnorderedList<Integer>) it.next();
+                Iterator it2 = cur.iterator();
+                System.out.println("-------------PRINT-----------");
+                while (it2.hasNext()) {
+                    System.out.println(it2.next().toString());
+                }
             }
         }
+
     }
 
 }
