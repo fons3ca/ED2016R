@@ -209,78 +209,81 @@ public class Map extends Graph<Cidade> implements MapADT<Cidade> {
         }
     }
 
-    /**
-     * 
-     * @param numPaths 
-     * @param allPaths
-     * @return ArrayUnorderedList<ArrayUnorderedList<>> caminhos com alternativas
-     */
-    public ArrayUnorderedList<ArrayUnorderedList<Object>> shortestPathMinTroops(int numPaths, ArrayUnorderedList<ArrayUnorderedList<Integer>> allPaths) {
-        if(allPaths.isEmpty()) {
-            return new ArrayUnorderedList<>();
-        }
-        ArrayUnorderedList<ArrayUnorderedList<Integer>> resultPathOnly = new ArrayUnorderedList<>();
-        ArrayUnorderedList<ArrayUnorderedList<Object>> result = new ArrayUnorderedList<>();
-        ArrayUnorderedList<Object> resultPA = new ArrayUnorderedList<>();
-        double cost = 0;
-        System.out.println("old size: " + allPaths.size());
-        for (int i = 0; i < numPaths; i++) {
-            ArrayUnorderedList<Integer> bestPath = getMinTroopsPathIndex(allPaths);
-            allPaths.remove(bestPath);
-            resultPathOnly.addRear(bestPath);
-        }
-        System.out.println("new size: " + allPaths.size());
-        Iterator it = resultPathOnly.iterator();
-        while (it.hasNext()) {
-            ArrayUnorderedList<Integer> current = (ArrayUnorderedList<Integer>) it.next();
-            Iterator currentPI = current.iterator();
-            int cur, next;
-            cur = (int) currentPI.next();
-            next = cur;
-            resultPA.addRear(vertices[cur]);
-            do {
-                if(currentPI.hasNext()) {
-                    next = (int) currentPI.next();
-                }
-                if(!this.wAdjMatrix[cur][next].isEmpty()) {
-                    //num de tropas perdidas na viagem pela alternativa 1
-                    double cansados1 = (this.wAdjMatrix[cur][next].first().getCusto()) * (this.wAdjMatrix[cur][next].first().getDistancia());
-                    //num de tropas perdidas na viagem pela alternativa 2
-                    double cansados2 = (this.wAdjMatrix[cur][next].last().getCusto()) * (this.wAdjMatrix[cur][next].first().getDistancia());
-                    //num tropas perdidas no combate
-                    double perdasCombate = (Math.pow((this.vertices[next].getDefesas() / 10), 1.8)) * 100;
-                    if (cansados2 <= cansados1) {
-                        cost += cansados2;
-                        cost += perdasCombate;
-                        resultPA.addRear(this.wAdjMatrix[cur][next].last());
-                    } else {
-                        cost += cansados1;
-                        cost += perdasCombate;
-                        resultPA.addRear(this.wAdjMatrix[cur][next].last());
-                    }
-                }
-                resultPA.addRear(vertices[next]);
-                cur = next;
-            } while (currentPI.hasNext());
-            result.addRear(resultPA);
-
-            resultPA = new ArrayUnorderedList<>();
-            cost = 0;
-        }
-
-        return result;
-    }
+//    /**
+//     * 
+//     * @param numPaths 
+//     * @param allPaths
+//     * @return ArrayUnorderedList<ArrayUnorderedList<>> caminhos com alternativas
+//     */
+//    public ArrayUnorderedList<ArrayUnorderedList<Object>> shortestPathMinTroops(int numPaths, ArrayUnorderedList<ArrayUnorderedList<Integer>> allPaths) {
+//        if(allPaths.isEmpty()) {
+//            return new ArrayUnorderedList<>();
+//        }
+//        ArrayUnorderedList<ArrayUnorderedList<Integer>> resultPathOnly = new ArrayUnorderedList<>();
+//        ArrayUnorderedList<ArrayUnorderedList<Object>> result = new ArrayUnorderedList<>();
+//        ArrayUnorderedList<Object> resultPA = new ArrayUnorderedList<>();
+//        double cost = 0;
+//        System.out.println("old size: " + allPaths.size());
+//        for (int i = 0; i < numPaths; i++) {
+//            ArrayUnorderedList<Integer> bestPath = getMinTroopsPathIndex(allPaths);
+//            allPaths.remove(bestPath);
+//            resultPathOnly.addRear(bestPath);
+//        }
+//        System.out.println("new size: " + allPaths.size());
+//        Iterator it = resultPathOnly.iterator();
+//        while (it.hasNext()) {
+//            ArrayUnorderedList<Integer> current = (ArrayUnorderedList<Integer>) it.next();
+//            Iterator currentPI = current.iterator();
+//            int cur, next;
+//            cur = (int) currentPI.next();
+//            next = cur;
+//            resultPA.addRear(vertices[cur]);
+//            do {
+//                if(currentPI.hasNext()) {
+//                    next = (int) currentPI.next();
+//                }
+//                if(!this.wAdjMatrix[cur][next].isEmpty()) {
+//                    //num de tropas perdidas na viagem pela alternativa 1
+//                    double cansados1 = (this.wAdjMatrix[cur][next].first().getCusto()) * (this.wAdjMatrix[cur][next].first().getDistancia());
+//                    //num de tropas perdidas na viagem pela alternativa 2
+//                    double cansados2 = (this.wAdjMatrix[cur][next].last().getCusto()) * (this.wAdjMatrix[cur][next].first().getDistancia());
+//                    //num tropas perdidas no combate
+//                    double perdasCombate = (Math.pow((this.vertices[next].getDefesas() / 10), 1.8)) * 100;
+//                    if (cansados2 <= cansados1) {
+//                        cost += cansados2;
+//                        cost += perdasCombate;
+//                        resultPA.addRear(this.wAdjMatrix[cur][next].last());
+//                    } else {
+//                        cost += cansados1;
+//                        cost += perdasCombate;
+//                        resultPA.addRear(this.wAdjMatrix[cur][next].last());
+//                    }
+//                }
+//                resultPA.addRear(vertices[next]);
+//                cur = next;
+//            } while (currentPI.hasNext());
+//            result.addRear(resultPA);
+//
+//            resultPA = new ArrayUnorderedList<>();
+//            cost = 0;
+//        }
+//
+//        return result;
+//    }
     
 public ArrayUnorderedList<ArrayUnorderedList<Object>> shortestPathsByLessTroopLosses(int numPaths, ArrayUnorderedList<ArrayUnorderedList<Integer>> allpaths) {
         if (allpaths.isEmpty()) {
             return new ArrayUnorderedList<>();
         }
+        if(numPaths >= allpaths.size()) {
+            numPaths = allpaths.size();
+        }
         ArrayUnorderedList<ArrayUnorderedList<Integer>> resultPathOnly = new ArrayUnorderedList<>();
         ArrayUnorderedList<ArrayUnorderedList<Object>> result = new ArrayUnorderedList<>();
         ArrayUnorderedList<Object> resultPA = new ArrayUnorderedList<>();
         double cost = 0;
         for (int i = 0; i < numPaths; i++) {
-            ArrayUnorderedList<Integer> bestPath = getMinTroopsPathIndex(allpaths);
+            ArrayUnorderedList<Integer> bestPath = shortestPathByLessTroopLossesIndexes(allpaths);
             allpaths.remove(bestPath);
             resultPathOnly.addRear(bestPath);
         }
@@ -331,101 +334,207 @@ public ArrayUnorderedList<ArrayUnorderedList<Object>> shortestPathsByLessTroopLo
         ArrayUnorderedList<Integer> bestPath = null;
         int cur;
         int next;
-        float numOfDaysCP = 0;
-        float numOfDaysOptimum = Float.MAX_VALUE;
+        double cost = 0;
+        double costOptimum = Double.MAX_VALUE;
         while (allpathsIt.hasNext()) {
             ArrayUnorderedList<Integer> currentPath = (ArrayUnorderedList<Integer>) allpathsIt.next();
             Iterator currentPathIt = currentPath.iterator();
             cur = (int) currentPathIt.next();
             next = cur;
             do {
-                //if (currentPathIt.hasNext()) {
+                if (currentPathIt.hasNext()) {
                 next = (int) currentPathIt.next();
-                //}
-                if (this.wAdjMatrix[cur][next].first() == null) {
-                    System.out.println("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
                 }
-
-                if (this.wAdjMatrix[cur][next].first().getDuracao() > this.wAdjMatrix[cur][next].last().getDuracao()) {
-                    numOfDaysCP += this.wAdjMatrix[cur][next].last().getDuracao();
-                    //TODO meter alternativa no resultado
-                } else {
-                    numOfDaysCP += this.wAdjMatrix[cur][next].first().getDuracao();
+                if(!this.wAdjMatrix[cur][next].isEmpty()) {
+                    //num de tropas perdidas na viagem pela alternativa 1
+                    double pathlosses1 = (this.wAdjMatrix[cur][next].first().getCusto()) * (this.wAdjMatrix[cur][next].first().getDistancia());
+                    //num de tropas perdidas na viagem pela alternativa 2
+                    double pathlosses2 = (this.wAdjMatrix[cur][next].last().getCusto()) * (this.wAdjMatrix[cur][next].last().getDistancia());
+                    //num tropas perdidas no combate
+                    double perdasCombate = (Math.pow((this.vertices[next].getDefesas() / 10), 1.8)) * 100;
+                    if (pathlosses2 <= pathlosses1) {
+                        cost += pathlosses2;
+                        cost += perdasCombate;
+                    } else {
+                        cost += pathlosses1;
+                        cost += perdasCombate;
+                    }
                 }
                 cur = next;
             } while (currentPathIt.hasNext());
 
-            if (numOfDaysOptimum > numOfDaysCP) {
-                numOfDaysOptimum = numOfDaysCP;
+            if (costOptimum > cost) {
+                costOptimum = cost;
                 bestPath = currentPath;
             }
-            numOfDaysCP = 0;
+            cost = 0;
         }
         return bestPath;
     }
 
-    /**
-     * 
-     * @param allPaths todos os caminhos
-     * @return indexes do caminho que gasta menos tropas
-     */
-    public ArrayUnorderedList<Integer> getMinTroopsPathIndex(ArrayUnorderedList<ArrayUnorderedList<Integer>> allPaths) {
-        Iterator it = allPaths.iterator();
+    public ArrayUnorderedList<ArrayUnorderedList<Object>> shortestPathsByMaxCombatLosses(int numPaths, ArrayUnorderedList<ArrayUnorderedList<Integer>> allpaths) {
+        if (allpaths.isEmpty()) {
+            return new ArrayUnorderedList<>();
+        }
+        if(numPaths >= allpaths.size()) {
+            numPaths = allpaths.size();
+        }
+        ArrayUnorderedList<ArrayUnorderedList<Integer>> resultPathOnly = new ArrayUnorderedList<>();
+        ArrayUnorderedList<ArrayUnorderedList<Object>> result = new ArrayUnorderedList<>();
+        ArrayUnorderedList<Object> resultPA = new ArrayUnorderedList<>();
+        double cost = 0;
+        for (int i = 0; i < numPaths; i++) {
+            ArrayUnorderedList<Integer> bestPath = shortestPathByMaxCombatLossesIndexes(allpaths);
+            allpaths.remove(bestPath);
+            resultPathOnly.addRear(bestPath);
+        }
 
-        ArrayUnorderedList<Integer> bestPath = new ArrayUnorderedList<>();
+        Iterator it = resultPathOnly.iterator();
+        while (it.hasNext()) {
+            ArrayUnorderedList<Integer> current = (ArrayUnorderedList<Integer>) it.next();
+            Iterator currentPI = current.iterator();
+            int cur, next;
+            cur = (int) currentPI.next();
+            next = cur;
+            resultPA.addRear(vertices[cur]);
+            do {
+                if(currentPI.hasNext()) {
+                    next = (int) currentPI.next();
+                }
+                if(!this.wAdjMatrix[cur][next].isEmpty()) {
+                    //num de tropas perdidas na viagem pela alternativa 1
+                    double pathlosses1 = (this.wAdjMatrix[cur][next].first().getCusto()) * (this.wAdjMatrix[cur][next].first().getDistancia());
+                    //num de tropas perdidas na viagem pela alternativa 2
+                    double pathlosses2 = (this.wAdjMatrix[cur][next].last().getCusto()) * (this.wAdjMatrix[cur][next].last().getDistancia());
+                    //num tropas perdidas no combate
+                    double perdasCombate = (Math.pow((this.vertices[next].getDefesas() / 10), 1.8)) * 100;
+                    if (pathlosses2 <= pathlosses1) {
+                        cost += pathlosses2;
+                        cost += perdasCombate;
+                        resultPA.addRear(this.wAdjMatrix[cur][next].last());
+                    } else {
+                        cost += pathlosses1;
+                        cost += perdasCombate;
+                        resultPA.addRear(this.wAdjMatrix[cur][next].first());
+                    }
+                }
+                resultPA.addRear(vertices[next]);
+                cur = next;
+            } while (currentPI.hasNext());
+            result.addRear(resultPA);
+            System.out.println("Path Cost: " + cost);
+            resultPA = new ArrayUnorderedList<>();
+            cost = 0;
+        }
+
+        return result;
+    }
+    
+    public ArrayUnorderedList<Integer> shortestPathByMaxCombatLossesIndexes(ArrayUnorderedList<ArrayUnorderedList<Integer>> allpaths) {
+        Iterator allpathsIt = allpaths.iterator();
+        ArrayUnorderedList<Integer> bestPath = null;
         int cur;
         int next;
-        double numTropasCP = 0;
-        double numTropasOptimum = Double.MAX_VALUE;
-        ArrayUnorderedList<Integer> p = new ArrayUnorderedList<>();
-
-        //todos os caminho possiveis
-        //iterar sobre todos os caminhos possiveis
-        while (it.hasNext()) {
-            //currentPath é o caminho seguinte no Array de caminhos
-            ArrayUnorderedList currentPath = (ArrayUnorderedList) it.next();
-            Iterator cpit = currentPath.iterator();
-            cur = (int) cpit.next();
+        double cost = 0;
+        double costOptimum = Double.MAX_VALUE;
+        while (allpathsIt.hasNext()) {
+            ArrayUnorderedList<Integer> currentPath = (ArrayUnorderedList<Integer>) allpathsIt.next();
+            Iterator currentPathIt = currentPath.iterator();
+            cur = (int) currentPathIt.next();
             next = cur;
-            p.addRear(next);
-            while (cpit.hasNext()) {
-                //if (cpit.hasNext()) {
-                next = (int) cpit.next();
-                //}
-                if (cur == next) {
-                    System.out.println("igual");
+            do {
+                if (currentPathIt.hasNext()) {
+                next = (int) currentPathIt.next();
                 }
-                
-                //num de tropas perdidas na viagem pela alternativa 1
-                double pathLosses1 = (this.wAdjMatrix[cur][next].first().getCusto()) * (this.wAdjMatrix[cur][next].first().getDistancia());
-                //num de tropas perdidas na viagem pela alternativa 2
-                double pathLosses2 = (this.wAdjMatrix[cur][next].last().getCusto()) * (this.wAdjMatrix[cur][next].last().getDistancia());
-                //num tropas perdidas no combate
-                double perdasCombate = (Math.pow((this.vertices[next].getDefesas() / 10), 1.8)) * 100;
-
-                if (pathLosses2 <= pathLosses1) {
-                    numTropasCP += pathLosses2;
-                } else {
-                    numTropasCP += pathLosses1;
+                if(!this.wAdjMatrix[cur][next].isEmpty()) {
+                    //num de tropas perdidas na viagem pela alternativa 1
+                    double pathlosses1 = (this.wAdjMatrix[cur][next].first().getCusto()) * (this.wAdjMatrix[cur][next].first().getDistancia());
+                    //num de tropas perdidas na viagem pela alternativa 2
+                    double pathlosses2 = (this.wAdjMatrix[cur][next].last().getCusto()) * (this.wAdjMatrix[cur][next].last().getDistancia());
+                    //num tropas perdidas no combate
+                    double perdasCombate = (Math.pow((this.vertices[next].getDefesas() / 10), 1.8)) * 100;
+                    if (pathlosses2 <= pathlosses1) {
+                        cost += pathlosses2;
+                        cost += perdasCombate;
+                    } else {
+                        cost += pathlosses1;
+                        cost += perdasCombate;
+                    }
                 }
-                numTropasCP += perdasCombate;
-                p.addRear(next);
                 cur = next;
-            }
+            } while (currentPathIt.hasNext());
 
-            if (numTropasOptimum > numTropasCP) {
-                numTropasOptimum = numTropasCP;
-                Iterator i = p.iterator();
-                bestPath = new ArrayUnorderedList<>();
-                while (i.hasNext()) {
-                    bestPath.addRear((int) i.next());
-
-                }
+            if (costOptimum > cost) {
+                costOptimum = cost;
+                bestPath = currentPath;
             }
-            numTropasCP = 0;
+            cost = 0;
         }
         return bestPath;
     }
+    
+//    /**
+//     * 
+//     * @param allPaths todos os caminhos
+//     * @return indexes do caminho que gasta menos tropas
+//     */
+//    public ArrayUnorderedList<Integer> getMinTroopsPathIndex(ArrayUnorderedList<ArrayUnorderedList<Integer>> allPaths) {
+//        Iterator it = allPaths.iterator();
+//
+//        ArrayUnorderedList<Integer> bestPath = new ArrayUnorderedList<>();
+//        int cur;
+//        int next;
+//        double numTropasCP = 0;
+//        double numTropasOptimum = Double.MAX_VALUE;
+//        ArrayUnorderedList<Integer> p = new ArrayUnorderedList<>();
+//
+//        //todos os caminho possiveis
+//        //iterar sobre todos os caminhos possiveis
+//        while (it.hasNext()) {
+//            //currentPath é o caminho seguinte no Array de caminhos
+//            ArrayUnorderedList currentPath = (ArrayUnorderedList) it.next();
+//            Iterator cpit = currentPath.iterator();
+//            cur = (int) cpit.next();
+//            next = cur;
+//            p.addRear(next);
+//            while (cpit.hasNext()) {
+//                //if (cpit.hasNext()) {
+//                next = (int) cpit.next();
+//                //}
+//                if (cur == next) {
+//                    System.out.println("igual");
+//                }
+//                
+//                //num de tropas perdidas na viagem pela alternativa 1
+//                double pathLosses1 = (this.wAdjMatrix[cur][next].first().getCusto()) * (this.wAdjMatrix[cur][next].first().getDistancia());
+//                //num de tropas perdidas na viagem pela alternativa 2
+//                double pathLosses2 = (this.wAdjMatrix[cur][next].last().getCusto()) * (this.wAdjMatrix[cur][next].last().getDistancia());
+//                //num tropas perdidas no combate
+//                double perdasCombate = (Math.pow((this.vertices[next].getDefesas() / 10), 1.8)) * 100;
+//
+//                if (pathLosses2 <= pathLosses1) {
+//                    numTropasCP += pathLosses2;
+//                } else {
+//                    numTropasCP += pathLosses1;
+//                }
+//                numTropasCP += perdasCombate;
+//                p.addRear(next);
+//                cur = next;
+//            }
+//
+//            if (numTropasOptimum > numTropasCP) {
+//                numTropasOptimum = numTropasCP;
+//                Iterator i = p.iterator();
+//                bestPath = new ArrayUnorderedList<>();
+//                while (i.hasNext()) {
+//                    bestPath.addRear((int) i.next());
+//
+//                }
+//            }
+//            numTropasCP = 0;
+//        }
+//        return bestPath;
+//    }
 
     /**
      * 
@@ -484,6 +593,9 @@ public ArrayUnorderedList<ArrayUnorderedList<Object>> shortestPathsByLessTroopLo
     public ArrayUnorderedList<ArrayUnorderedList<Object>> shortestPathsByDuration(int numPaths, ArrayUnorderedList<ArrayUnorderedList<Integer>> allpaths) {
         if (allpaths.isEmpty()) {
             return new ArrayUnorderedList<>();
+        }
+        if(numPaths >= allpaths.size()) {
+            numPaths = allpaths.size();
         }
         ArrayUnorderedList<ArrayUnorderedList<Integer>> resultPathOnly = new ArrayUnorderedList<>();
         ArrayUnorderedList<ArrayUnorderedList<Object>> result = new ArrayUnorderedList<>();
@@ -757,17 +869,18 @@ public ArrayUnorderedList<ArrayUnorderedList<Object>> shortestPathsByLessTroopLo
         if (resultPaths.isEmpty()) {
             System.out.println("Nao existem caminhos!");
         } else {
+            int pathCount = 1;
             Iterator it = resultPaths.iterator();
             while (it.hasNext()) {
                 ArrayUnorderedList<Integer> cur = (ArrayUnorderedList<Integer>) it.next();
                 Iterator it2 = cur.iterator();
-                System.out.println("--------> Caminho 1 <---------");
+                System.out.println("--------> Caminho " + pathCount + " <---------");
                 while (it2.hasNext()) {
                     System.out.println(it2.next().toString());
                 }
+                pathCount++;
             }
         }
-
     }
     
     /**
