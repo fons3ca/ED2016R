@@ -1,34 +1,24 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
+
 package ed2016r;
 
 import List.ArrayUnorderedList;
 import Graph.*;
-import LinkedQueue.LinkedQueue;
-import com.sun.xml.internal.stream.util.ReadOnlyIterator;
-import java.awt.BorderLayout;
 
 import java.util.Iterator;
 
 /**
- *
- * @author Utilizador
+ * @author Tiago Fernandes - 8120152
+ * @author Nuno Fonseca - 8120116
  */
 public class Map extends Graph<Cidade> implements MapADT<Cidade> {
 
-    /**
-     *
-     */
     protected ArrayUnorderedList<Alternativa>[][] wAdjMatrix;
     private boolean[] visited;      // to remember visit
     private ArrayUnorderedList<Integer> al;
     private int size;
 
     /**
-     *cresates a map
+     * Método construtor de Map
      */
     public Map() {
         super();
@@ -40,7 +30,6 @@ public class Map extends Graph<Cidade> implements MapADT<Cidade> {
 
     /**
      * Adiciona um caminho entre duas cidades
-     *
      * @param index1 index da cidade
      * @param index2 index da cidade destino
      * @param alt
@@ -56,8 +45,7 @@ public class Map extends Graph<Cidade> implements MapADT<Cidade> {
 
     /**
      * Se existe estes vertices envia para AddEdge os indexs
-     *
-     * @param vertex1
+     * @param vertex1 
      * @param vertex2
      * @param alt
      */
@@ -68,8 +56,7 @@ public class Map extends Graph<Cidade> implements MapADT<Cidade> {
 
     /**
      * Adiciona uma cidade
-     *
-     * @param vertex cidade
+     * @param vertex cidade a adicionar
      */
     @Override
     public void addVertex(Cidade vertex) {
@@ -89,8 +76,7 @@ public class Map extends Graph<Cidade> implements MapADT<Cidade> {
 
     /**
      * Remove um vertex (Cidade)
-     *
-     * @param index
+     * @param index posicao a remover.
      */
     public void removeVertex(int index) {
         if (indexIsValid(index)) {
@@ -116,9 +102,8 @@ public class Map extends Graph<Cidade> implements MapADT<Cidade> {
     }
 
     /**
-     * Procura o vertex (Cidade) e se existir chama removeVertex(i)
-     *
-     * @param vertex
+     * Método que procura o vertex (Cidade) e se existir chama removeVertex(i)
+     * @param vertex Cidade a remover.
      */
     @Override
     public void removeVertex(Cidade vertex) {
@@ -130,15 +115,20 @@ public class Map extends Graph<Cidade> implements MapADT<Cidade> {
         }
     }
 
+    /**
+     * Método que envia os indexes de duas cidade para o método removeEdge para remover.
+     * @param vertex1 Cidade inicio.
+     * @param vertex2 Cidade destino.
+     */
     @Override
     public void removeEdge(Cidade vertex1, Cidade vertex2) {
         this.removeEdge(getIndex(vertex1), getIndex(vertex2));
     }
 
     /**
-     *
-     * @param index1
-     * @param index2
+     * Método que remove o caminho entre duas Cidades
+     * @param index1 Index da Cidade incial
+     * @param index2 Index da Cidade Destino
      */
     @Override
     public void removeEdge(int index1, int index2) {
@@ -150,14 +140,18 @@ public class Map extends Graph<Cidade> implements MapADT<Cidade> {
         }
     }
 
+    /**
+     * Método que retorna todos as Cidades.
+     * @return 
+     */
     public Cidade[] getVertices() {
         return vertices;
     }
     
     /**
-     *
-     * @param i
-     * @return
+     * Método que retorna a cidade na posição "i"
+     * @param i Posição da cidade a retornar.
+     * @return Retorna a cidade na posição "i".
      */
     public Cidade getCidadeAt(int i) {
         return this.vertices[i];
@@ -166,7 +160,7 @@ public class Map extends Graph<Cidade> implements MapADT<Cidade> {
     /**
      * @param source cidade de inicio dos caminhos
      * @param destination cidade de destino dos caminhos
-     * @return Lista nao aordenada de listas nao ordenadas de integers que
+     * @return Lista nao ordenada de listas nao ordenadas de integers que
      * representam index de cidades
      */
     public ArrayUnorderedList<ArrayUnorderedList<Integer>> dfsAllPaths(Cidade source, Cidade destination) {
@@ -195,19 +189,17 @@ public class Map extends Graph<Cidade> implements MapADT<Cidade> {
             //System.out.println("Find destination");
             ArrayUnorderedList<Integer> path = new ArrayUnorderedList<>();
             for (Integer i : al) {
-                //Prints the path --> introduzir numa lista
+                //introduzir numa lista
                 path.addRear(i);
-                //System.out.print(vertices[i] + "  ");
             }
-            //System.out.println();
             resultQueue.addRear(path);
             return;
         }
         for (int I = 0; I < this.numVertices; I++) {
             if (adjMatrix[src][I] == true) {
                 if (visited[I] == false) {
-                    dfsAllPathsR(I, dst, resultQueue);        // These lines do
-                    visited[I] = false;   // main job of backtracking
+                    dfsAllPathsR(I, dst, resultQueue);
+                    visited[I] = false;
                     size--;
                     al.removeIndex(size);
                 }
@@ -216,10 +208,12 @@ public class Map extends Graph<Cidade> implements MapADT<Cidade> {
     }
 
     /**
-     * 
-     * @param numPaths
-     * @param allpaths
-     * @return 
+     * Método que retorna um ArrayUnorderedList de ArrayUnorderedList de Objects
+     * ordenado pelo minimo de tropas perdidas.
+     * @param numPaths Número de Alternativas que o utilizador pretende.
+     * @param allpaths Todos os caminhos de uma Cidade inicial a uma Cidade destino.
+     * @return Retorna ArrayUnorderedList de ArrayUnorderedList de Objects 
+     * ordenado pelo minimo de tropas perdidas.
      */
     public ArrayUnorderedList<ArrayUnorderedList<Object>> shortestPathsByLessTroopLosses(int numPaths, ArrayUnorderedList<ArrayUnorderedList<Integer>> allpaths) {
         if (allpaths.isEmpty()) {
@@ -334,10 +328,12 @@ public class Map extends Graph<Cidade> implements MapADT<Cidade> {
     }
 
     /**
-     * 
-     * @param numPaths
-     * @param allpaths
-     * @return 
+     * Método que retorna um ArrayUnorderedList de ArrayUnorderedList de Objects
+     * ordenado pelo minimo de tropas perdidas por combate individual.
+     * @param numPaths Número de Alternativas que o utilizador pretende.
+     * @param allpaths Todos os caminhos de uma Cidade inicial a uma Cidade destino.
+     * @return Retorna ArrayUnorderedList de ArrayUnorderedList de Objects 
+     * ordenado pelo minimo de tropas perdidas por combate individual.
      */
     public ArrayUnorderedList<ArrayUnorderedList<Object>> shortestPathsByMinCombatLosses(int numPaths, ArrayUnorderedList<ArrayUnorderedList<Integer>> allpaths) {
         if (allpaths.isEmpty()) {
@@ -445,10 +441,12 @@ public class Map extends Graph<Cidade> implements MapADT<Cidade> {
     }
     
     /**
-     * 
-     * @param numPaths
-     * @param allpaths
-     * @return 
+     * Método que retorna um ArrayUnorderedList de ArrayUnorderedList de Objects
+     * ordenado pelo minimo de combates.
+     * @param numPaths Número de Alternativas que o utilizador pretende.
+     * @param allpaths Todos os caminhos de uma Cidade inicial a uma Cidade destino.
+     * @return Retorna ArrayUnorderedList de ArrayUnorderedList de Objects 
+     * ordenado pelo minimo de combates.
      */
     public ArrayUnorderedList<ArrayUnorderedList<Object>> shortestPathsByMinCombats(int numPaths, ArrayUnorderedList<ArrayUnorderedList<Integer>> allpaths) {
         if (allpaths.isEmpty()) {
@@ -544,9 +542,9 @@ public class Map extends Graph<Cidade> implements MapADT<Cidade> {
     }
 
     /**
-     * 
-     * @param caminho
-     * @param tropas
+     * Método que verifica se uma cidade pode ser conquistada.
+     * @param caminho Caminho de uma Cidade inicial a uma Cidade destino.
+     * @param tropas Tropas que o utilizador possui.
      * @return retorna calculo das tropas sobreviventes depois de percorrer um caminho
      */
     public int canConquer(ArrayUnorderedList<Integer> caminho, int tropas) {
@@ -572,7 +570,8 @@ public class Map extends Graph<Cidade> implements MapADT<Cidade> {
     }
 
     /**
-     * 
+     * Método que conquista todas as cidades num determinado caminho, se no final
+     * restarem sobreviventes.
      * @param caminho a ser conquistado
      * @param tropas num de tropas que o vao percorrer
      * @return tropas sobreviventes ou -1 se nao foi possivel conquistar
@@ -646,7 +645,6 @@ public class Map extends Graph<Cidade> implements MapADT<Cidade> {
     }
 
     /**
-     * 
      * @param allpaths
      * @return lista com o caminho que dura menos dias.
      */
@@ -891,7 +889,7 @@ public class Map extends Graph<Cidade> implements MapADT<Cidade> {
     }
     
     /**
-     * 
+     * Método que lista todas as Cidades.
      */
     public void listCities() {
         System.out.println("Cities: ");
@@ -900,6 +898,9 @@ public class Map extends Graph<Cidade> implements MapADT<Cidade> {
         }
     }
     
+    /**
+     * Método que serve para editar o nome de uma Cidade.
+     */
     public void editCityName() {
         GameOfThrones input = new GameOfThrones();
         do {
@@ -917,7 +918,7 @@ public class Map extends Graph<Cidade> implements MapADT<Cidade> {
     }
 
     /**
-     * 
+     * Método que serve para editar as defesas de uma Cidade.
      */
     public void editCityDefense() {
         GameOfThrones input = new GameOfThrones();
@@ -936,7 +937,7 @@ public class Map extends Graph<Cidade> implements MapADT<Cidade> {
     }
     
     /**
-     * 
+     * Método que serve para editar a distancia de um caminho.
      */
     public void editPathDistance() {
         GameOfThrones input = new GameOfThrones();
@@ -993,7 +994,7 @@ public class Map extends Graph<Cidade> implements MapADT<Cidade> {
     }
     
     /**
-     * 
+     * Método que serve para editar a duracao de um caminho.
      */
     public void editPathDuration() {
         GameOfThrones input = new GameOfThrones();
@@ -1050,7 +1051,7 @@ public class Map extends Graph<Cidade> implements MapADT<Cidade> {
     }
     
     /**
-     * 
+     * Método que serve para editar o custo de um caminho.
      */
     public void editPathCost() {
         GameOfThrones input = new GameOfThrones();

@@ -1,19 +1,13 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
+
 package ed2016r;
 
 import java.io.BufferedReader;
-import java.io.IOException;
 import java.io.InputStreamReader;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 /**
- *
- * @author n_fon
+ * Classe Game of Thrones que guarda variaveis uteis para os inputs.
+ * @author Tiago Fernandes - 8120152
+ * @author Nuno Fonseca - 8120116
  */
 public class GameOfThrones {
 
@@ -28,32 +22,58 @@ public class GameOfThrones {
     private InputStreamReader istream;
     private BufferedReader bufRead;
 
+    /**
+     * Método construtor que instancia a Classe Game of Thrones.
+     */
     public GameOfThrones() {
         istream = new InputStreamReader(System.in);
         bufRead = new BufferedReader(istream);
         this.opt = -1;
     }
 
+    /**
+     * Método que devolve a opção.
+     * @return Retorna a opção.
+     */
     public int getOpt() {
         return opt;
     }
 
+    /**
+     * Método que devolve um valor do tipo double. (Usado para a leitura de valores).
+     * @return Retorna um valor do tipo Double.
+     */
     public double getValue() {
         return value;
     }
     
+    /**
+     * Método que devolve o número de tropas do utilizador.
+     * @return Retorna o número de tropas do utilizador.
+     */
     public int getTropas() {
         return troops;
     }
     
+    /**
+     * Método que retorna uma string.
+     * @return Retorna uma string.
+     */
     public String getString() {
         return string;
     }
 
+    /**
+     * Método que altera o número de tropas do utilizador.
+     * @param troops Valor para o qual vai ser alterado.
+     */
     public void setTroops(int troops) {
         this.troops = troops;
     }
     
+    /**
+     * Método de leitura de uma opção.
+     */
     public void readOption() {
         String s;
         try {
@@ -66,6 +86,9 @@ public class GameOfThrones {
         }
     }
     
+    /**
+     * Método de leitura de um Double.
+     */
     public void readDouble() {
         String s;
         try {
@@ -78,6 +101,9 @@ public class GameOfThrones {
         }
     }
     
+    /**
+     * Método de leitura do número de tropas.
+     */
     public void readTroops() {
         String s;
         try {
@@ -90,6 +116,9 @@ public class GameOfThrones {
         }
     }
     
+    /**
+     * Método de leitura de uma String.
+     */
     public void readString() {
         String s;
         try {
@@ -101,6 +130,19 @@ public class GameOfThrones {
         }
     }
 
+    /**
+     * Método que Altera o número de tropas.
+     */
+    public void editTroops() {
+        System.out.println("+++++++++++++++++++++++++++++++");
+        System.out.println("+++++++  EDITING TROOPS +++++++");
+        System.out.println("+ Insert your starting troops +");
+        readTroops();
+    }
+    
+    /**************************************************************
+     * Métodos que imprimem partes do Menu.
+     **************************************************************/
     public void printCriterias() {
         System.out.println("+++++++++++++++++++++++++++++++");
         System.out.println("+      PATHS BY CRITERIAS     +");
@@ -127,13 +169,6 @@ public class GameOfThrones {
     
     public void printNumAlternatives() {
         System.out.println(" --How many alternatives: ");
-    }
-    
-    public void editTroops() {
-        System.out.println("+++++++++++++++++++++++++++++++");
-        System.out.println("+++++++  EDITING TROOPS +++++++");
-        System.out.println("+ Insert your starting troops +");
-        readTroops();
     }
     
     public void initialMenu() {

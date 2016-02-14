@@ -1,16 +1,11 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
+
 package ed2016r;
 
 import java.io.IOException;
-import List.ArrayUnorderedList;
 
 /**
- *
- * @author n_fon
+ * @author Tiago Fernandes - 8120152
+ * @author Nuno Fonseca - 8120116
  */
 public class ED2016R {
 
@@ -33,6 +28,7 @@ public class ED2016R {
         Cidade winterfell = new Cidade("Winterfell", 64);//7
         Cidade castleBlack = new Cidade("Castle Black", 0);//8
         
+        // SETTING STARTING CITY
         castleBlack.setConquistada(true);
 
         //Instanciar os Caminhos / Edges / Alternativas
@@ -106,6 +102,7 @@ public class ED2016R {
         mapa.addEdge(winterfell, castleBlack, winterfellCastle);
         mapa.addEdge(winterfell, castleBlack, winterfellCastle2);
 
+        // Instanciar GOT (Guarda inputs e prints do Menu) e Criterios.
         GameOfThrones got = new GameOfThrones();
         Criterio crit = new Criterio(-1, -1, -1, -1);
         
@@ -119,11 +116,11 @@ public class ED2016R {
                 while(true) {
                     got.startGameMenu();
                     got.readOption();
-                    if (got.getOpt() == 1) {
+                    if (got.getOpt() == 1) { // SHOW SIMULATION MENU
                         while(true) {
                             got.simMenu();
                             got.readOption();
-                            if(got.getOpt() == 1) {
+                            if(got.getOpt() == 1) { // SHOW SHORTEST PATHS BY MINIMUM DURATION
                                 mapa.listCities();
                                 got.readOption();
                                 Cidade start = mapa.getCidadeAt(got.getOpt());
@@ -133,7 +130,7 @@ public class ED2016R {
                                 got.readOption();
                                 numAlts = got.getOpt();
                                 mapa.printPaths(mapa.shortestPathsByMinDuration(numAlts, mapa.dfsAllPaths(start, dest)));
-                            } else if(got.getOpt() == 2) {
+                            } else if(got.getOpt() == 2) { // SHOW SHORTEST PATHS BY LESS TROOP LOSSES
                                 mapa.listCities();
                                 got.readOption();
                                 Cidade start = mapa.getCidadeAt(got.getOpt());
@@ -143,7 +140,7 @@ public class ED2016R {
                                 got.readOption();
                                 numAlts = got.getOpt();
                                 mapa.printPaths(mapa.shortestPathsByLessTroopLosses(numAlts, mapa.dfsAllPaths(start, dest)));
-                            } else if(got.getOpt() == 3) {
+                            } else if(got.getOpt() == 3) { // SHOW SHORTEST PATHS BY LESS TROOPS LOST IN A SINGLE COMBAT
                                 mapa.listCities();
                                 got.readOption();
                                 Cidade start = mapa.getCidadeAt(got.getOpt());
@@ -153,7 +150,7 @@ public class ED2016R {
                                 got.readOption();
                                 numAlts = got.getOpt();
                                 mapa.printPaths(mapa.shortestPathsByMinCombatLosses(numAlts, mapa.dfsAllPaths(start, dest)));
-                            } else if(got.getOpt() == 4) {
+                            } else if(got.getOpt() == 4) { // SHOW SHORTEST PATHS BY MINIMUM COMBATS UNTIL REACHING DESTINATION
                                 mapa.listCities();
                                 got.readOption();
                                 Cidade start = mapa.getCidadeAt(got.getOpt());
@@ -163,8 +160,7 @@ public class ED2016R {
                                 got.readOption();
                                 numAlts = got.getOpt();
                                 mapa.printPaths(mapa.shortestPathsByMinCombats(numAlts, mapa.dfsAllPaths(start, dest)));
-                            } else if(got.getOpt() == 5) {
-                                // SHOW PATHS BY CRITERIA :TODO:
+                            } else if(got.getOpt() == 5) { // SHOW SHORTEST PATHS BY CRITERIA (INSERT -1 FOR NON PRETENDED CRITERIA)
                                 mapa.listCities();
                                 got.readOption();
                                 Cidade start = mapa.getCidadeAt(got.getOpt());
@@ -192,7 +188,7 @@ public class ED2016R {
                             }
                         }
                     } else if(got.getOpt() == 2) {
-                        mapa.conquerPath(caminho, numAlts);
+                        //mapa.conquerPath(caminho, numAlts);
                     } else if(got.getOpt() == 3) {
                         break;
                     }
@@ -207,10 +203,10 @@ public class ED2016R {
                         while(true) {
                             got.editCityMenu();
                             got.readOption();
-                            if(got.getOpt() == 1) {
+                            if(got.getOpt() == 1) { // EDIT CITY NAME
                                 mapa.listCities();
                                 mapa.editCityName();
-                            } else if(got.getOpt() == 2) {
+                            } else if(got.getOpt() == 2) { // EDIT CITY DEFENSE
                                 mapa.listCities();
                                 mapa.editCityDefense();
                             } else if(got.getOpt() == 3) {
@@ -221,13 +217,13 @@ public class ED2016R {
                         while(true) {
                             got.editPathMenu();
                             got.readOption();
-                            if(got.getOpt() == 1) {
+                            if(got.getOpt() == 1) { // EDIT PATH DISTANCE
                                 mapa.listCities();
                                 mapa.editPathDistance();
-                            } else if(got.getOpt() == 2) {
+                            } else if(got.getOpt() == 2) { // EDIT PATH DURATION
                                 mapa.listCities();
                                 mapa.editPathDuration();
-                            } else if(got.getOpt() == 3) {
+                            } else if(got.getOpt() == 3) { // EDIT PATH COST
                                 mapa.listCities();
                                 mapa.editPathCost();
                             } else if(got.getOpt() == 4) {
