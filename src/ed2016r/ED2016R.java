@@ -110,6 +110,7 @@ public class ED2016R {
         Criterio crit = new Criterio(-1, -1, -1, -1);
         
         got.setTroops(10000); // STARTS WITH default: 10000 TROOPS
+        int numAlts = 1;
         
         while(true) { // INICIAL MENU
             got.initialMenu();
@@ -128,34 +129,70 @@ public class ED2016R {
                                 Cidade start = mapa.getCidadeAt(got.getOpt());
                                 got.readOption();
                                 Cidade dest = mapa.getCidadeAt(got.getOpt());
-                                mapa.printPaths(mapa.shortestPathsByDuration(1, mapa.dfsAllPaths(start, dest)));
+                                got.printNumAlternatives();
+                                got.readOption();
+                                numAlts = got.getOpt();
+                                mapa.printPaths(mapa.shortestPathsByMinDuration(numAlts, mapa.dfsAllPaths(start, dest)));
                             } else if(got.getOpt() == 2) {
                                 mapa.listCities();
                                 got.readOption();
                                 Cidade start = mapa.getCidadeAt(got.getOpt());
                                 got.readOption();
                                 Cidade dest = mapa.getCidadeAt(got.getOpt());
-                                System.out.println(start.getNome());
-                                System.out.println(dest.getNome());
-                                mapa.printPaths(mapa.shortestPathsByLessTroopLosses(1, mapa.dfsAllPaths(start, dest)));
+                                got.printNumAlternatives();
+                                got.readOption();
+                                numAlts = got.getOpt();
+                                mapa.printPaths(mapa.shortestPathsByLessTroopLosses(numAlts, mapa.dfsAllPaths(start, dest)));
                             } else if(got.getOpt() == 3) {
-                                // SHOW PATHS BY LOSSES PER COMBAT
+                                mapa.listCities();
+                                got.readOption();
+                                Cidade start = mapa.getCidadeAt(got.getOpt());
+                                got.readOption();
+                                Cidade dest = mapa.getCidadeAt(got.getOpt());
+                                got.printNumAlternatives();
+                                got.readOption();
+                                numAlts = got.getOpt();
+                                mapa.printPaths(mapa.shortestPathsByMinCombatLosses(numAlts, mapa.dfsAllPaths(start, dest)));
                             } else if(got.getOpt() == 4) {
-                                // SHOW PATHS BY MAX COMBATS
+                                mapa.listCities();
+                                got.readOption();
+                                Cidade start = mapa.getCidadeAt(got.getOpt());
+                                got.readOption();
+                                Cidade dest = mapa.getCidadeAt(got.getOpt());
+                                got.printNumAlternatives();
+                                got.readOption();
+                                numAlts = got.getOpt();
+                                mapa.printPaths(mapa.shortestPathsByMinCombats(numAlts, mapa.dfsAllPaths(start, dest)));
                             } else if(got.getOpt() == 5) {
-                                // SHOW PATHS BY CRITERIA
+                                // SHOW PATHS BY CRITERIA :TODO:
+                                mapa.listCities();
+                                got.readOption();
+                                Cidade start = mapa.getCidadeAt(got.getOpt());
+                                got.readOption();
+                                Cidade dest = mapa.getCidadeAt(got.getOpt());
+                                got.printCriterias();
                                 got.printDurationLine();
                                 got.readDouble();
                                 crit.setDuracaoTotal(got.getValue());
-                                mapa.printPaths(mapa.shortestPathsByDuration(1, mapa.dfsAllPaths(castleBlack, theEyrie)));
+                                got.printMaxCostLine();
+                                got.readDouble();
+                                crit.setCustoMaximo(got.getValue());
+                                got.printLossPerCombatLine();
+                                got.readDouble();
+                                crit.setPerdasCombate(got.getValue());
+                                got.printMaxCombatsLine();
+                                got.readDouble();
+                                crit.setNumeroCombates((int)got.getValue());
+                                got.printNumAlternatives();
+                                got.readOption();
+                                numAlts = got.getOpt();
+                                mapa.printPaths(mapa.shortestPathsByLessTroopLosses(numAlts, mapa.findBestPaths(start, dest, crit)));
                             } else if(got.getOpt() == 6) {
                                 break;
                             }
                         }
-                        // SIMULATE PATH
-                        // LER CRITERIOS
                     } else if(got.getOpt() == 2) {
-                        // CONQUER 
+                        mapa.conquerPath(caminho, numAlts);
                     } else if(got.getOpt() == 3) {
                         break;
                     }

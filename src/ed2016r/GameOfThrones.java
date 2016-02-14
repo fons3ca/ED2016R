@@ -125,6 +125,10 @@ public class GameOfThrones {
         System.out.println(" --MaxCombats:");
     }
     
+    public void printNumAlternatives() {
+        System.out.println(" --How many alternatives: ");
+    }
+    
     public void editTroops() {
         System.out.println("+++++++++++++++++++++++++++++++");
         System.out.println("+++++++  EDITING TROOPS +++++++");
@@ -134,7 +138,7 @@ public class GameOfThrones {
     
     public void initialMenu() {
         System.out.println("+++++++++++++++++++++++++++++++");
-        System.out.println("+             MENU            +");
+        System.out.println("+      Game OF <T>hrones      +");
         System.out.println("+++++++++++++++++++++++++++++++");
         System.out.println("+ 1. Start game               +");
         System.out.println("+ 2. Change game values       +");
@@ -157,10 +161,10 @@ public class GameOfThrones {
         System.out.println("+        Simulate  Menu       +");
         System.out.println("+++++++++++++++++++++++++++++++");
         System.out.println("+ --Show paths by:            +");
-        System.out.println("+ 1. Duration                 +");
-        System.out.println("+ 2. Max Troops Lost          +");
-        System.out.println("+ 3. Losses Per Combat        +");
-        System.out.println("+ 4. Max Combats              +");
+        System.out.println("+ 1. Min Duration             +");
+        System.out.println("+ 2. Min Troops Lost          +");
+        System.out.println("+ 3. Min Losses Per Combat    +");
+        System.out.println("+ 4. Min Combats              +");
         System.out.println("+ 5. More than one Criteria   +");
         System.out.println("+ 6. Back                     +");
         System.out.println("+++++++++++++++++++++++++++++++");
